@@ -61,17 +61,11 @@ FunctionEditorPageBinding.prototype.handleAction = function ( action ) {
 			break;
 		
 		case PageBinding.ACTION_DOPOSTBACK :
-			if (action.target.getID() == "switchbutton") {
-
-				//fix crashing Chrome if svg icon set, workarround
-				action.target.setImage();
-
-				if ( !this._isSourceMode ) {
-					this._cover ( false );
-					var decks = this.bindingWindow.bindingMap.decks;
-					decks.select ( "sourcedeck" );
-					this._isSourceMode = true;
-				}
+			if (action.target.getID() == "switchbutton" && !this._isSourceMode) {
+				this._cover ( false );
+				var decks = this.bindingWindow.bindingMap.decks;
+				decks.select ( "sourcedeck" );
+				this._isSourceMode = true;
 			}
 			break;
 

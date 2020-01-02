@@ -39,6 +39,7 @@ namespace Composite.C1Console.Scheduling
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             using (ThreadDataManager.Initialize())
+            using (ServiceLocator.EnsureThreadDataServiceScope())
             {
                 Execute();
             }

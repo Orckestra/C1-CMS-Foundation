@@ -285,6 +285,7 @@ namespace Composite.Core.WebClient.Presentation
                         catch (Exception ex)
                         {
                             Log.LogCritical("AdministrativeOutputTransformationHttpModule", ex);
+                            throw;
                         }
                     }
 

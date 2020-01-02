@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,7 +6,6 @@ using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
-using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.Data.Types;
 
@@ -39,7 +38,7 @@ namespace Composite.Data
         private static readonly int PageCacheSize = 5000;
         private static readonly int PageStructureCacheSize = 3000;
         private static readonly int ChildrenCacheSize = 2000;
-        private static readonly int PagePlaceholderCacheSize = 500;
+        private static readonly int PagePlaceholderCacheSize = 10000;
 
         private static readonly Cache<string, IReadOnlyCollection<IPage>> _pageCache = new Cache<string, IReadOnlyCollection<IPage>>("Pages", PageCacheSize);
         private static readonly Cache<string, ReadOnlyCollection<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyCollection<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
@@ -198,21 +197,24 @@ namespace Composite.Data
         public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId, Guid versionId)
         {
             string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId, versionId);
-            var cachedValue = _placeholderCache.Get(cacheKey);
-            if (cachedValue != null)
+            var result = _placeholderCache.Get(cacheKey);
+
+            if (result == null)
             {
-                return cachedValue;
+                using (var conn = new DataConnection())
+                {
+                    conn.DisableServices();
+
+                    var list = DataFacade.GetData<IPagePlaceholderContent>(false)
+                        .Where(f => f.PageId == pageId && f.VersionId == versionId).ToList();
+
+                    result = new ReadOnlyCollection<IPagePlaceholderContent>(list);
+                }
+
+                _placeholderCache.Add(cacheKey, result);
             }
 
-            var list = DataFacade.GetData<IPagePlaceholderContent>()
-                .Where(f => f.PageId == pageId 
-                            && f.VersionId == versionId).ToList();
-
-            var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
-
-            _placeholderCache.Add(cacheKey, readonlyList);
-
-            return readonlyList;
+            return result;
         }
 
         #endregion Public
@@ -301,7 +303,7 @@ namespace Composite.Data
 
             if (result == null)
             {
-                Log.LogWarning(LogTitle, "No IPageStructure entries found for Page with Id '{0}'".FormatWith(pageId));
+                Log.LogWarning(LogTitle, $"No IPageStructure entries found for Page with Id '{pageId}'");
             }
 
             _pageStructureCache.Add(cacheKey, result);
@@ -348,13 +350,10 @@ namespace Composite.Data
 
         private static void OnPageChanged(object sender, DataEventArgs args)
         {
-            IPage page = args.Data as IPage;
-            if (page == null)
+            if (args.Data is IPage page)
             {
-                return;
+                _pageCache.Remove(GetCacheKey(page.Id, page.DataSourceId));
             }
-
-            _pageCache.Remove(GetCacheKey(page.Id, page.DataSourceId));
         }
 
 
@@ -368,13 +367,10 @@ namespace Composite.Data
 
         private static void OnPagePlaceholderChanged(object sender, DataEventArgs args)
         {
-            var placeHolder = args.Data as IPagePlaceholderContent;
-            if (placeHolder == null)
+            if (args.Data is IPagePlaceholderContent placeHolder)
             {
-                return;
+                _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.VersionId, placeHolder.DataSourceId));
             }
-
-            _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.VersionId, placeHolder.DataSourceId));
         }
 
 
@@ -390,14 +386,11 @@ namespace Composite.Data
 
         private static void OnPageStructureChanged(object sender, DataEventArgs args)
         {
-            var ps = args.Data as IPageStructure;
-            if (ps == null)
+            if (args.Data is IPageStructure pageStructure)
             {
-                return;
+                _pageStructureCache.Remove(pageStructure.Id);
+                _childrenCache.Remove(pageStructure.ParentId);
             }
-
-            _pageStructureCache.Remove(ps.Id);
-            _childrenCache.Remove(ps.ParentId);
         }
 
         private static IPage CreateWrapper(IPage page)

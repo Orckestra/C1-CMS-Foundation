@@ -390,7 +390,17 @@ namespace Composite.Data.DynamicTypes
                                                                                    .Contains(f.Name));
                     foreach (var field in customFields)
                     {
-                        newDataTypeDescriptor.Fields.Remove(newDataTypeDescriptor.Fields[field.Name]);
+                        var fieldDescriptor = newDataTypeDescriptor.Fields[field.Name];
+
+                        if (fieldDescriptor != null)
+                        {
+                            newDataTypeDescriptor.Fields.Remove(fieldDescriptor);
+                        }
+                        else
+                        {
+                            Log.LogWarning(nameof(DynamicTypeManager), $"Property '{field.Name}' was missing in the generated interface type '{interfaceType.FullName}'");
+                        }
+
                         newDataTypeDescriptor.Fields.Add(field);
                     }
                 }

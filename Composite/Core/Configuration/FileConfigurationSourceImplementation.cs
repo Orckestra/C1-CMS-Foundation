@@ -1,4 +1,4 @@
-﻿//===============================================================================
+//===============================================================================
 // Microsoft patterns & practices Enterprise Library
 // Core
 //===============================================================================
@@ -9,6 +9,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE.
 //===============================================================================
 
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using System.Collections.Generic;
 
 
@@ -47,8 +48,19 @@ namespace Composite.Core.Configuration
         public override System.Configuration.ConfigurationSection GetSection(string sectionName)
         {
             System.Configuration.Configuration configuration = GetConfiguration();
+            System.Configuration.ConfigurationSection configurationSection;
 
-            System.Configuration.ConfigurationSection configurationSection = configuration.GetSection(sectionName) as System.Configuration.ConfigurationSection;
+            try
+            {
+                configurationSection = configuration.GetSection(sectionName) as System.Configuration.ConfigurationSection;
+            }
+            catch (System.Configuration.ConfigurationException ex)
+            {
+                // retry once
+                UpdateCache();
+                configuration = GetConfiguration();
+                configurationSection = configuration.GetSection(sectionName) as System.Configuration.ConfigurationSection;
+            }
 
             SetConfigurationWatchers(sectionName, configurationSection);
 

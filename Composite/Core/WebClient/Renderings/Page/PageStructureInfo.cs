@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -96,7 +96,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             return PageListInDocumentOrder(GetSiteMap(), 0);
         }
 
-
         private static IEnumerable<KeyValuePair<Guid, string>> PageListInDocumentOrder(IEnumerable<XElement> pageElements, int indentLevel)
         {
             var indentString = new string(' ', indentLevel);
@@ -105,8 +104,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             foreach (XElement pageElement in pageElements)
             {
                 string label = GetLabelForPageElement(indentString, pageElement);
-                string id = pageElement.Attribute(AttributeNames.Id).Value;
-                yield return new KeyValuePair<Guid, string>(new Guid(id), label);
+                var id = GetIdForPageElement(pageElement);
+                yield return new KeyValuePair<Guid, string>(id, label);
 
                 foreach (KeyValuePair<Guid, string> childOption in PageListInDocumentOrder(pageElement.Elements(), indentLevel + 1))
                 {
@@ -115,7 +114,13 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static string GetLabelForPageElement(string indentString, XElement pageElement)
+        internal static Guid GetIdForPageElement(XElement pageElement)
+        {
+            string id = pageElement.Attribute(AttributeNames.Id).Value;
+            return Guid.Parse(id);
+        }
+
+        internal static string GetLabelForPageElement(string indentString, XElement pageElement)
         {
             string labelText = (pageElement.Attribute(AttributeNames.MenuTitle) ?? pageElement.Attribute(AttributeNames.Title)).Value;
 

@@ -12,26 +12,11 @@ namespace Composite.Core.Configuration
         private readonly object _lock = new object();
 
 
-        public string ApplicationName
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ApplicationName;
-            }
-        }
+        public string ApplicationName => GlobalSettingsProviderPluginFacade.ApplicationName;
 
-        public string ApplicationShortName
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ApplicationShortName;
-            }
-        }
+        public string ApplicationShortName => GlobalSettingsProviderPluginFacade.ApplicationShortName;
 
-        public string BrandedVersionAssemblySource
-        {
-            get { return GlobalSettingsProviderPluginFacade.BrandedVersionAssemblySource; }
-        }
+        public string BrandedVersionAssemblySource => GlobalSettingsProviderPluginFacade.BrandedVersionAssemblySource;
 
 
         public CultureInfo DefaultCultureInfo
@@ -52,7 +37,7 @@ namespace Composite.Core.Configuration
             {
                 string defaultCultureName = GlobalSettingsProviderPluginFacade.DefaultCultureName;
 
-                CultureInfo defaultCulture = CultureInfo.CreateSpecificCulture(defaultCultureName);
+                var defaultCulture = CultureInfo.CreateSpecificCulture(defaultCultureName);
 
                 return defaultCulture.Name;
             }
@@ -60,159 +45,49 @@ namespace Composite.Core.Configuration
 
 
 
-        public string ConfigurationDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ConfigurationDirectory;
-            }
-        }
+        public string ConfigurationDirectory => GlobalSettingsProviderPluginFacade.ConfigurationDirectory;
 
 
-
-        public string GeneratedAssembliesDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.GeneratedAssembliesDirectory;
-            }
-        }
+        public string GeneratedAssembliesDirectory => GlobalSettingsProviderPluginFacade.GeneratedAssembliesDirectory;
 
 
-
-        public string SerializedWorkflowsDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.SerializedWorkflowsDirectory;
-            }
-        }
+        public string SerializedWorkflowsDirectory => GlobalSettingsProviderPluginFacade.SerializedWorkflowsDirectory;
 
 
-
-        public string SerializedConsoleMessagesDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.SerializedConsoleMessagesDirectory;
-            }
-        }
+        public string SerializedConsoleMessagesDirectory => GlobalSettingsProviderPluginFacade.SerializedConsoleMessagesDirectory;
 
 
-        public string AppCodeDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.AppCodeDirectory;
-            }
-        }
+        public string AppCodeDirectory => GlobalSettingsProviderPluginFacade.AppCodeDirectory;
 
 
-        public string BinDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.BinDirectory;
-            }
-        }
+        public string BinDirectory => GlobalSettingsProviderPluginFacade.BinDirectory;
 
 
-
-        public string TempDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.TempDirectory;
-            }
-        }
+        public string TempDirectory => GlobalSettingsProviderPluginFacade.TempDirectory;
 
 
-
-        public string CacheDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.CacheDirectory;
-            }
-        }
+        public string CacheDirectory => GlobalSettingsProviderPluginFacade.CacheDirectory;
 
 
-        public string PackageDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.PackageDirectory;
-            }
-        }
+        public string PackageDirectory => GlobalSettingsProviderPluginFacade.PackageDirectory;
 
 
-
-        public string AutoPackageInstallDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.AutoPackageInstallDirectory;
-            }
-        }
+        public string AutoPackageInstallDirectory => GlobalSettingsProviderPluginFacade.AutoPackageInstallDirectory;
 
 
-
-        public string TreeDefinitionsDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.TreeDefinitionsDirectory;
-            }
-        }
+        public string TreeDefinitionsDirectory => GlobalSettingsProviderPluginFacade.TreeDefinitionsDirectory;
 
 
-        public string PageTemplateFeaturesDirectory
-        {
-            get 
-            {
-                return GlobalSettingsProviderPluginFacade.PageTemplateFeaturesDirectory;
-            }
-        }
+        public string PageTemplateFeaturesDirectory => GlobalSettingsProviderPluginFacade.PageTemplateFeaturesDirectory;
 
 
-
-        public string DataMetaDataDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.DataMetaDataDirectory;
-            }
-        }
+        public string DataMetaDataDirectory => GlobalSettingsProviderPluginFacade.DataMetaDataDirectory;
 
 
-
-        public string InlineCSharpFunctionDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.InlineCSharpFunctionDirectory;
-            }
-        }
+        public string InlineCSharpFunctionDirectory => GlobalSettingsProviderPluginFacade.InlineCSharpFunctionDirectory;
 
 
-
-        public string PackageLicenseDirectory
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.PackageLicenseDirectory;
-            }
-        }
-        
-
-
-        public IResourceCacheSettings ResourceCacheSettings
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ResourceCacheSettings;
-            }
-        }
+        public string PackageLicenseDirectory => GlobalSettingsProviderPluginFacade.PackageLicenseDirectory;
 
 
         public IEnumerable<string> NonProbableAssemblyNames
@@ -247,108 +122,43 @@ namespace Composite.Core.Configuration
         {
             lock (_lock)
             {
-                if (_addedNonProbableAssemblyNames.Contains(assemblyNamePatern) == false) throw new InvalidOperationException("The assembly name pattern has not been added");
+                if (!_addedNonProbableAssemblyNames.Contains(assemblyNamePatern))
+                {
+                    throw new InvalidOperationException("The assembly name pattern has not been added");
+                }
                 _addedNonProbableAssemblyNames.Remove(assemblyNamePatern);
             }
         }
 
 
-        public int ConsoleMessageQueueItemSecondToLive
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ConsoleMessageQueueItemSecondToLive;
-            }
-        }
+        public int ConsoleMessageQueueItemSecondToLive => GlobalSettingsProviderPluginFacade.ConsoleMessageQueueItemSecondToLive;
 
 
-        public bool EnableDataTypesAutoUpdate
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.EnableDataTypesAutoUpdate;
-            }
-        }
+        public bool EnableDataTypesAutoUpdate => GlobalSettingsProviderPluginFacade.EnableDataTypesAutoUpdate;
 
 
-        public bool BroadcastConsoleElementChanges 
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.BroadcastConsoleElementChanges;
-            }
-        }
+        public bool BroadcastConsoleElementChanges => GlobalSettingsProviderPluginFacade.BroadcastConsoleElementChanges;
 
 
-        public string AutoCreatedAdministratorUserName
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.AutoCreatedAdministratorUserName;
-            }
-        }
+        public string AutoCreatedAdministratorUserName => GlobalSettingsProviderPluginFacade.AutoCreatedAdministratorUserName;
 
 
-
-        public TimeSpan WorkflowTimeout
-        {
-            get 
-            {
-                return TimeSpan.Parse(GlobalSettingsProviderPluginFacade.WorkflowTimeout); 
-            }
-        }
+        public TimeSpan WorkflowTimeout => TimeSpan.Parse(GlobalSettingsProviderPluginFacade.WorkflowTimeout);
 
 
+        public TimeSpan ConsoleTimeout => TimeSpan.Parse(GlobalSettingsProviderPluginFacade.ConsoleTimeout);
 
-        public TimeSpan ConsoleTimeout
-        {
-            get 
-            {
-                return TimeSpan.Parse(GlobalSettingsProviderPluginFacade.ConsoleTimeout);
-            }
-        }
-
-        public bool OnlyTranslateWhenApproved
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.OnlyTranslateWhenApproved;
-            }
-        }
+        public bool OnlyTranslateWhenApproved => GlobalSettingsProviderPluginFacade.OnlyTranslateWhenApproved;
 
 
-        public ICachingSettings Caching
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.Caching;
-            }
-        }
+        public ICachingSettings Caching => GlobalSettingsProviderPluginFacade.Caching;
 
 
-        public int ImageQuality
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ImageQuality;
-            }
-        }
+        public int ImageQuality => GlobalSettingsProviderPluginFacade.ImageQuality;
 
-        public bool PrettifyPublicMarkup
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.PrettifyPublicMarkup;
-            }
-        }
+        public bool PrettifyPublicMarkup => GlobalSettingsProviderPluginFacade.PrettifyPublicMarkup;
 
-        public bool PrettifyRenderFunctionExceptions
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.PrettifyRenderFunctionExceptions;
-            }
-        }
+        public bool PrettifyRenderFunctionExceptions => GlobalSettingsProviderPluginFacade.PrettifyRenderFunctionExceptions;
 
         public bool FunctionPreviewEnabled => GlobalSettingsProviderPluginFacade.FunctionPreviewEnabled;
 

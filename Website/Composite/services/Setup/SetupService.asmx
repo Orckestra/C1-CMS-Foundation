@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.Core.WebClient.Setup.SetupService" %>
+<%@ WebService Language="C#" Class="Composite.Core.WebClient.Setup.SetupService" %>
 
 using System;
 using System.IO;
@@ -146,19 +146,22 @@ namespace Composite.Core.WebClient.Setup
         [WebMethod]
         public bool SetUp(string setupDescriptionXML, string username, string email, string password, string language, string consolelanguage, bool newsletter)
         {
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized) return true;
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized || SystemSetupFacade.SetupIsRunning) return true;
 
             SystemSetupFacade.SetupIsRunning = true;
-            SystemSetupFacade.IsSystemFirstTimeInitialized = true;
 
             try
             {
                 return SetupServiceFacade.SetUp(setupDescriptionXML, username, password, email, language, consolelanguage, newsletter);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.LogError(LogTitle, ex);
                 throw;
+            }
+            finally
+            {
+                SystemSetupFacade.IsSystemFirstTimeInitialized = true;
             }
         }
 

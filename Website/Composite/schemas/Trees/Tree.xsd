@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="Tree"
     targetNamespace="http://www.composite.net/ns/management/trees/treemarkup/1.0"
     elementFormDefault="qualified"
@@ -817,7 +817,19 @@
       </xs:annotation>
     </xs:attribute>
 
-    <xs:attributeGroup ref="IconGroup" />
+		<xs:attribute name="BrowserUrl" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom URL to display in the console browser when this element is focused.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute name="BrowserImage" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom image (URL) to display in the console browser when this element is shown in lists / focused.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attributeGroup ref="IconGroup" />
 
     <xs:attributeGroup ref="OpenedIconGroup" />
     
@@ -942,7 +954,22 @@
       </xs:annotation>
     </xs:attribute>
 
-    <xs:attributeGroup ref="DisplayGroup" />
+
+		<xs:attribute name="BrowserUrl" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom URL for each data item, to display in the console browser when this element is focused. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		
+		<xs:attribute name="BrowserImage" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom image (URL) for each data item, to display in the console browser when this element is focused. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		
+		<xs:attributeGroup ref="DisplayGroup" />
 
     <xs:attributeGroup ref="IconGroup" />
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 
 namespace Composite.Core.WebClient.Renderings
@@ -25,6 +25,8 @@ namespace Composite.Core.WebClient.Renderings
         /// <summary>
         /// When true, the request will not continue. Default is false
         /// </summary>
-        public bool EndRequest { get; set; } 
-	}
+        public bool EndRequest { get; set; }
+
+        internal bool IsNotEmpty => PreventPublicCaching || EndRequest || RedirectRequesterTo != null;
+    }
 }

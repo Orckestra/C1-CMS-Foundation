@@ -725,8 +725,14 @@ ViewBinding.prototype.show = function () {
 			if (this._type == ViewBinding.TYPE_DOCKVIEW && this.windowBinding != null) {
 				this.windowBinding.getBindingElement ().style.position = "static";
 			}
-			this.updatePositionDimension ();
-			this.isVisible = true;
+
+			var self = this;
+
+			setTimeout(function () { //Edge require timeout #522
+				self.updatePositionDimension();
+				self.isVisible = true;
+			}, 0);
+			
 		} else {
 			ViewBinding.superclass.show.call ( this );
 		}

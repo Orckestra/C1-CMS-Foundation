@@ -941,7 +941,8 @@ Binding.prototype.subTreeFromString = function ( markup ) {
  */
 Binding.prototype.getProperty = function ( attname ) {
 
-	var value = this.bindingElement.getAttribute ( attname );
+	var value = this.bindingElement.getAttribute ( attname.toLowerCase() );
+
 	if ( value ) {
 		value = Types.castFromString ( value );
 	}
@@ -957,7 +958,7 @@ Binding.prototype.getProperty = function ( attname ) {
  * @param {string} attname The name of the attribute
  * @param {object} value The attribute value.
  */
-Binding.prototype.setProperty = function ( prop, value ) {
+Binding.prototype.setProperty = function (attname, value ) {
 
 	if ( value != null ) {
 
@@ -969,20 +970,20 @@ Binding.prototype.setProperty = function ( prop, value ) {
 		 * This will prevent recursive calls to methods which in turn
 		 * modifies the properties of the binding.
 		 */
-		if ( String ( this.bindingElement.getAttribute ( prop )) != value ) {
+		if ( String ( this.bindingElement.getAttribute ( attname.toLowerCase() )) != value ) {
 
-			this.bindingElement.setAttribute ( prop, value );
+			this.bindingElement.setAttribute ( attname.toLowerCase(), value );
 			if ( this.isAttached == true ) {
 
 				/*
 				 * Handle persistance.
 				 */
 				if ( Persistance.isEnabled && value != null ) {
-					if ( this._persist != null && this._persist [ prop ]) {
-						this._persist [ prop ] = value;
+					if ( this._persist != null && this._persist [ attname ]) {
+						this._persist [ attname ] = value;
 						Persistance.setPersistedProperty (
 							this.bindingElement.id,
-							prop,
+							attname,
 							value
 						);
 					}
@@ -991,14 +992,14 @@ Binding.prototype.setProperty = function ( prop, value ) {
 				/*
 				 * Handle "setters" (methods invoked when setting the property).
 				 */
-				var method = this.propertyMethodMap [ prop ];
+				var method = this.propertyMethodMap [ attname ];
 				if ( method ) {
-					method.call ( this, this.getProperty ( prop ));
+					method.call ( this, this.getProperty ( attname ));
 				}
 			}
 		}
 	} else {
-		this.deleteProperty ( prop );
+		this.deleteProperty ( attname );
 	}
 }
 
@@ -1006,9 +1007,9 @@ Binding.prototype.setProperty = function ( prop, value ) {
  * Remove bound element attribute.
  * @param {string} prop The name of the attribute
  */
-Binding.prototype.deleteProperty = function ( prop ) {
+Binding.prototype.deleteProperty = function ( attname ) {
 
-	this.bindingElement.removeAttribute ( prop );
+	this.bindingElement.removeAttribute ( attname.toLowerCase() );
 }
 
 /**

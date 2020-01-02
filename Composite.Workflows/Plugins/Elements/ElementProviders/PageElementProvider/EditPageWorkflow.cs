@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -269,7 +269,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
+            var contents = DataFacade.GetData<IPagePlaceholderContent>(false)
+                .Where(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId)
+                .ToList();
             var namedXhtmlFragments = contents.ToDictionary(content => content.PlaceHolderId, content => content.Content ?? "");
 
 
@@ -355,8 +357,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
 
                         var contentDictionary = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
-                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(
-                            f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
+                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(false)
+                            .Where(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
 
                         foreach (var existingContent in existingContents)
                         {
@@ -575,8 +577,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             TrimFieldValues(selectedPage);
 
             if (!FieldHasValidLength(selectedPage.Title, nameof(IPage.Title), 255)
-                || !FieldHasValidLength(selectedPage.MenuTitle, nameof(IPage.MenuTitle), 64)
-                || !FieldHasValidLength(selectedPage.UrlTitle, nameof(IPage.UrlTitle), 64)
+                || !FieldHasValidLength(selectedPage.MenuTitle, nameof(IPage.MenuTitle), 192)
+                || !FieldHasValidLength(selectedPage.UrlTitle, nameof(IPage.UrlTitle), 192)
                 || !FieldHasValidLength(selectedPage.FriendlyUrl, nameof(IPage.FriendlyUrl), 64))
             {
                 e.Result = false;

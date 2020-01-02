@@ -1,4 +1,4 @@
-# C1 CMS Foundation
+# C1 CMS Foundation[![Reviews here...!](http://hackathon.composite.net/maw/github/reviews.png)](https://www.facebook.com/pg/C1CMS/reviews)
 
 C1 CMS Foundation - a .NET based Web Content Management System, open source and a bundle of joy!
 
@@ -16,6 +16,6 @@ Download binaries from https://github.com/Orckestra/CMS-Foundation/releases/late
 Head over to https://gitter.im/Orckestra/C1-CMS or add an issue
 
 ## Who are we? ##
-Orckestra is the company driving the development of C1 CMS Foundation. We have a team  working full time on this CMS and on other cool stuff you can add to it. We are situated in Austin, Montreal, Copenhagen and Kiev. We specialize in enterprise commerce software. 
+Orckestra is the company driving the development of C1 CMS Foundation. We have a team  working full time on this CMS and on other cool stuff you can add to it. We are situated in Montreal, Copenhagen and Kiev. We specialize in enterprise omni channel commerce software. 
 
 You can visit us at http://c1.orckestra.com and http://www.orckestra.com/

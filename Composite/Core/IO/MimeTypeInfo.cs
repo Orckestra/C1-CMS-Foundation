@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -28,7 +28,7 @@ namespace Composite.Core.IO
         private static readonly ConcurrentDictionary<string, bool> _iisServeableExtensions = new ConcurrentDictionary<string, bool>();
 
         private static List<string> _textMimeTypes =
-            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
+            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Json, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
                                MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Asmx, MimeTypeInfo.Aspx, MimeTypeInfo.Asax, MimeTypeInfo.CSharp, 
                                MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
@@ -66,6 +66,9 @@ namespace Composite.Core.IO
 
         /// <exclude />
         public static string Js => "text/js";
+
+        /// <exclude />
+        public static string Json => "application/json";
 
         /// <exclude />
         public static string Xml => "text/xml";
@@ -161,7 +164,8 @@ namespace Composite.Core.IO
             _toCanonical.Add("application/x-javascript", MimeTypeInfo.Js);
             RegisterMimeType(MimeTypeInfo.Js, "js", "mimetype-js", true);
 
-            RegisterMimeType("text/html", new[] { "htm", "html", "xhtml" }, "mimetype-html", true);
+            RegisterMimeType(MimeTypeInfo.Json, new[] { "json" }, "mimetype-js");
+            RegisterMimeType(MimeTypeInfo.Html, new[] { "htm", "html", "xhtml" }, "mimetype-html", true);
 
             // Audio/Video
             RegisterMimeType("audio/x-wav", "wav", null, true);

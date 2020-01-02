@@ -12,6 +12,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         public FileStream FileStream;
         public CircularList<LogEntry> NewEntries = new CircularList<LogEntry>(100);
         public DateTime CreationDate;
+        public DateTime? LastUsageTime;
+        public DateTime? LastFlushTime;
         public DateTime StartupTime;
 
         private bool _disposed;

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="GlobalDataFolderLabel" value="Global Datatypes" />
   <string key="GlobalDataFolderToolTip" value="Global datatypes" />
@@ -10,7 +10,7 @@
   <string key="PageMetaDataFolderToolTip" value="Page metatypes" />
   <string key="Add" value="Add Datatype" />
   <string key="AddToolTip" value="Add new global datatype" />
-  <string key="ViewUnpublishedItems" value="List Unpublished Data" />
+  <string key="ViewUnpublishedItems" value="List Unpublished Content" />
   <string key="ViewUnpublishedItemsToolTip" value="Get an overview of data that haven't been published yet" />
   <string key="ViewUnpublishedItems-document-title" value="Unpublished data" />
   <string key="ViewUnpublishedItems-document-description" value="The list below display data items which are currently being edited or are ready to be approved / published." />

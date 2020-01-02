@@ -68,12 +68,8 @@ DataInputDialogBinding.prototype.buildButton = function () {
 			self._isButtonClicked = false;
 		}, 1000);
 
-		var handle = self.getProperty("handle");
 
-		var definition = ViewDefinition.clone(
-			handle,
-			"Generated.ViewDefinition.Handle." + KeyMaster.getUniqueKey()
-		);
+		var definition = self.getDefinition();
 
 		if (definition instanceof DialogViewDefinition) {
 
@@ -107,6 +103,22 @@ DataInputDialogBinding.prototype.buildButton = function () {
 	});
 	this._dialogButtonBinding = button;
 };
+
+/**
+ * Get definition to invoke.
+ */
+DataInputDialogBinding.prototype.getDefinition = function () {
+
+	var handle = this.getProperty("handle");
+
+	var definition = ViewDefinition.clone(
+		handle,
+		"Generated.ViewDefinition.Handle." + KeyMaster.getUniqueKey()
+	);
+
+	return definition;
+};
+
 
 /**
  * Invoke dialog programatically.

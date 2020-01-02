@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite.C1Console.Events;
@@ -427,6 +427,18 @@ namespace Composite.Data
         }
 
 
+        /// <summary>
+        /// Fire this when an external store has changed outside the process to notify subscribers to the StoreChangeEvent.  
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="publicationScope"></param>
+        /// <param name="locale"></param>
+        public static void FireExternalStoreChangedEvent(Type dataType, PublicationScope publicationScope, CultureInfo locale)
+        {
+            FireStoreChangedEvent(dataType, publicationScope, locale, false);
+        }
+
+
         internal static void FireDataBeforeAddEvent(Type dataType, IData data)
         {
             var args = new DataEventArgs(dataType, data);
@@ -450,18 +462,6 @@ namespace Composite.Data
             _dataAfterAddEventDictionary.Fire<DataEventHandler>(dataType, callback => callback(null, args));
 
             FireStoreChangedEvent(dataType, data);
-        }
-
-
-        /// <summary>
-        /// Fire this when an external store has changed outside the process to notify subscribers to the StoreChangeEvent.  
-        /// </summary>
-        /// <param name="dataType"></param>
-        /// <param name="publicationScope"></param>
-        /// <param name="locale"></param>
-        internal static void FireExternalStoreChangedEvent(Type dataType, PublicationScope publicationScope, CultureInfo locale)
-        {
-            FireStoreChangedEvent(dataType, publicationScope, locale, false);
         }
 
 

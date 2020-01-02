@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Castle.Core.Internal;
+using Composite.Core.Extensions;
 
 namespace Composite.C1Console.Security.Plugins.LoginSessionStore.Runtime
 {
-    internal class LoginSessionStoreResolver : ILoginSessionStore
+    internal class LoginSessionStoreResolver : ILoginSessionStore, ILoginSessionStoreRedirectedLogout
     {
         private readonly IEnumerable<ILoginSessionStore> _loginSessionStores;
 
@@ -36,5 +36,10 @@ namespace Composite.C1Console.Security.Plugins.LoginSessionStore.Runtime
         }
 
         public IPAddress UserIpAddress => PreferredLoginSessionStore()?.UserIpAddress;
+
+        public string LogoutUrl => _loginSessionStores
+            .OfType<ILoginSessionStoreRedirectedLogout>()
+            .Select(_ => _.LogoutUrl)
+            .FirstOrDefault(url => !string.IsNullOrEmpty(url));
     }
 }

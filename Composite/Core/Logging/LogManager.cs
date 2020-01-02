@@ -76,7 +76,7 @@ namespace Composite.Core.Logging
 
         internal static void Flush()
         {
-            FileLogger?.Flush();
+            FileLogger?.Flush(true);
         }
 
 
@@ -136,7 +136,7 @@ namespace Composite.Core.Logging
                             {
                                 // Waiting for some time until all log files are released
                                 // This ensures that LogViewer will get all the logs from previous, currently being shutdown AppDomain(s)
-                                return new LogEntry[0];
+                                return Array.Empty<LogEntry>();
                             }
 
                             continue;

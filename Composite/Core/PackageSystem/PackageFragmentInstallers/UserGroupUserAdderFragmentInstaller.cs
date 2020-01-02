@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Linq;
@@ -9,7 +9,7 @@ using Composite.Data.Types;
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
     /// <summary>    
-    /// Adds all the users to the specified user group. Used in starter site packages.
+    /// Adds all the users to the specified user group. Assign language permissions to those groups. Used in starter site packages.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -51,6 +51,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     userUserGroupRelation.UserId = user.Id;
                     userUserGroupRelation.UserGroupId = userGroup.Id;
                     DataFacade.AddNew<IUserUserGroupRelation>(userUserGroupRelation);
+                }
+
+                foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
+                {
+                    var userGroupActiveLocale = DataFacade.BuildNew<IUserGroupActiveLocale>();
+                    userGroupActiveLocale.UserGroupId = userGroup.Id;
+                    userGroupActiveLocale.CultureName = cultureInfo.Name;
+                    DataFacade.AddNew<IUserGroupActiveLocale>(userGroupActiveLocale);
                 }
             }
 

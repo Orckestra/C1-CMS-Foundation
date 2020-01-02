@@ -1,0 +1,78 @@
+<cms:formdefinition xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0">
+	<cms:bindings>
+		<cms:binding name="Id" type="System.Guid" optional="true" />
+		<cms:binding name="Hostname" type="System.String" optional="true" />
+		<cms:binding name="HomePageId" type="System.Guid" optional="true" />
+		<cms:binding name="Culture" type="System.String" optional="true" />
+		<cms:binding name="IncludeHomePageInUrl" type="System.Boolean" optional="true" />
+		<cms:binding name="IncludeCultureInUrl" type="System.Boolean" optional="true" />
+		<cms:binding name="PageNotFoundUrl" type="System.String" optional="true" />
+		<cms:binding name="Aliases" type="System.String" optional="true" />
+		<cms:binding name="EnforceHttps" type="System.Boolean" />
+		<cms:binding name="UsePermanentRedirect" type="System.Boolean" />
+	</cms:bindings>
+	<cms:layout>
+		<cms:layout.label>
+			<f:NullCheck>
+				<f:NullCheck.CheckValue>
+					<cms:read source="Aliases" />
+				</f:NullCheck.CheckValue>
+				<f:NullCheck.WhenNull>
+					${Orckestra.Tools.UrlConfiguration, HostnameBinding.AddNewHostnameTitle}
+				</f:NullCheck.WhenNull>
+				<f:NullCheck.WhenNotNull>
+					<cms:read source="Hostname" />
+				</f:NullCheck.WhenNotNull>
+			</f:NullCheck>
+		</cms:layout.label>
+
+		<FieldGroup>
+			<TextBox Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Hostname.Label}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Hostname.Help}" SpellCheck="false">
+				<TextBox.Text>
+					<cms:bind source="Hostname" />
+				</TextBox.Text>
+			</TextBox>
+			<DoubleKeySelector Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Page.Label}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Page.Help}" Required="true">
+				<DoubleKeySelector.FirstKey>
+					<cms:bind source="HomePageId" />
+				</DoubleKeySelector.FirstKey>
+				<DoubleKeySelector.SecondKey>
+					<cms:bind source="Culture" />
+				</DoubleKeySelector.SecondKey>
+				<DoubleKeySelector.Options>
+					<f:StaticMethodCall Type="Composite.Plugins.Routing.Hostnames.FormFunctions" Method="GetRootPages" />
+				</DoubleKeySelector.Options>
+			</DoubleKeySelector>
+			<CheckBox Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.Label}" ItemLabel="${Orckestra.Tools.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.ItemLabel}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.IncludeHomepageUrlTitle.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="IncludeHomePageInUrl" />
+				</CheckBox.Checked>
+			</CheckBox>
+			<CheckBox Label="" ItemLabel="${Orckestra.Tools.UrlConfiguration, HostnameBinding.IncludeLanguageUrlMapping.ItemLabel}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.IncludeLanguageUrlMapping.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="IncludeCultureInUrl" />
+				</CheckBox.Checked>
+			</CheckBox>
+			<CheckBox Label="" ItemLabel="${Orckestra.Tools.UrlConfiguration, HostnameBinding.EnforceHttps.ItemLabel}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.EnforceHttps.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="EnforceHttps" />
+				</CheckBox.Checked>
+			</CheckBox>
+			<UrlComboBox Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Custom404Page.Help}" SpellCheck="false">
+        <UrlComboBox.Text>
+					<cms:bind source="PageNotFoundUrl" />
+				</UrlComboBox.Text>
+			</UrlComboBox>
+			<TextArea Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Aliases.Label}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.Aliases.Help}" SpellCheck="false">
+				<TextArea.Text>
+					<cms:bind source="Aliases" />
+				</TextArea.Text>
+			</TextArea>
+			<CheckBox Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.Label}" ItemLabel="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.ItemLabel}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="UsePermanentRedirect" />
+				</CheckBox.Checked>
+			</CheckBox>
+		</FieldGroup>
+	</cms:layout>
+</cms:formdefinition>

@@ -613,7 +613,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
         #endregion
-        private CodeActivity codeActivity_MultipleVersionsDeletionConfirmed;
         private StateActivity finalStateActivity;
         private SetStateActivity setStateActivity3;
         private StateInitializationActivity finalizeInitializationActivity;

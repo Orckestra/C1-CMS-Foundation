@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -354,7 +354,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 return new List<ElementAction>();
             }
 
-            if (data is ILocalizedControlled && !UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope))
+            if (UserSettings.ActiveLocaleCultureInfo == null || data is ILocalizedControlled && !UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope))
             {
                 return new List<ElementAction>();
             }
@@ -370,7 +370,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
 
-            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true, false).FirstOrDefault();
+            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
             if (publicData != null)
             {
                 var unpublishAction = new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Unpublish) { DoIgnoreEntityTokenLocking = true }))
@@ -397,19 +397,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
                 if (publishControlled.PublicationStatus == Draft)
                 {
-                    if (ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges) == false)
+                    if (!ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges))
                     {
-                        ActionToken actionToken;
-
                         IActionTokenProvider actionTokenProvider = ProcessControllerAttributesFacade.GetActionTokenProvider(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges);
-                        if (actionTokenProvider != null)
-                        {
-                            actionToken = actionTokenProvider.GetActionToken(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, data);
-                        }
-                        else
-                        {
-                            actionToken = new UndoPublishedChangesActionToken();
-                        }
+
+                        var actionToken = actionTokenProvider?.GetActionToken(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, data)
+                                                             ?? new UndoPublishedChangesActionToken();
 
                         var undoPublishedChangesAction = new ElementAction(new ActionHandle(actionToken))
                         {

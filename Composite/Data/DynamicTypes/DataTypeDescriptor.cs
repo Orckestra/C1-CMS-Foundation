@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -548,6 +548,7 @@ namespace Composite.Data.DynamicTypes
                 BuildNewHandlerTypeName = this.BuildNewHandlerTypeName,
                 LabelFieldName = this.LabelFieldName,
                 InternalUrlPrefix = this.InternalUrlPrefix,
+                Searchable = this.Searchable
             };
 
             foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in this.DataAssociations)

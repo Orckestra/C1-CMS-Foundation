@@ -8,7 +8,7 @@ module.exports = {
 			.setUsername('admin')
 			.setPassword('123456')
 			.click('@submitButton')
-			.waitForElementNotVisible('@usernameField', 5000);
+			.waitForElementNotPresent('@usernameField', 5000);
 		// Check that start screen is shown
 		browser.page.appWindow().enter();
 		startScreen.waitForElementVisible('@startFrame', 5000);

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>C1CMS.ConsoleComponents</id>
+    <title>C1 CMS Console Components</title>
+    <version>$version$</version>
+    <authors>Orckestra A/S</authors>
+    <owners>Orckestra A/S</owners>
+    <licenseUrl>https://c1.orckestra.com/MPL11</licenseUrl>
+    <projectUrl>https://github.com/Orckestra/C1-CMS-Foundation</projectUrl>
+    <!--iconUrl></iconUrl-->
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Contains React components distributed with C1 CMS.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>C1CMS cms</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Website\Composite\console\**\*.*" target="Composite\console" /> 
+    <file src="Website\jspm.config.js" target="Composite" />
+    <file src="Website\package.json" target="Composite" />
+  </files>
+</package>

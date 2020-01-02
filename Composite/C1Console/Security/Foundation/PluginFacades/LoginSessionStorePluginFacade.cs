@@ -26,8 +26,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         public static bool HasConfiguration()
         {
-            return (ConfigurationServices.ConfigurationSource != null) &&
-                   (ConfigurationServices.ConfigurationSource.GetSection(LoginSessionStoreSettings.SectionName) != null);
+            return ConfigurationServices.ConfigurationSource?.GetSection(LoginSessionStoreSettings.SectionName) != null;
         }
 
 
@@ -53,24 +52,21 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         }
 
 
-        public static void FlushUsername()
+        public static string Logout()
         {
             using (_resourceLocker.ReadLocker)
             {
-                _resourceLocker.Resources.Provider.FlushUsername();
+                var provider = _resourceLocker.Resources.Provider;
+
+                provider.FlushUsername();
+
+                return (provider as ILoginSessionStoreRedirectedLogout)?.LogoutUrl;
             }
         }
 
 
 
-        public static string StoredUsername
-        {
-            get
-            {
-                 return _resourceLocker.Resources.Provider.StoredUsername;
-            }
-        }
-
+        public static string StoredUsername => _resourceLocker.Resources.Provider.StoredUsername;
 
 
         public static IPAddress UserIpAddress
@@ -97,15 +93,15 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", LoginSessionStoreSettings.SectionName), ex);
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{LoginSessionStoreSettings.SectionName}' from the configuration.", ex);
         }
 
 
 
         private sealed class Resources
         {
-            public LoginSessionStoreFactory Factory { get; set; }
-            public ILoginSessionStore Provider { get; set; }
+            private LoginSessionStoreFactory Factory { get; set; }
+            public ILoginSessionStore Provider { get; private set; }
 
             public static void DoInitializeResources(Resources resources)
             {
@@ -127,7 +123,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
                 }
                 else if (RuntimeInformation.IsUnittest)
                 {
-                    // This is a fall bakc for unittests
+                    // This is a fallback for unittests
                     resources.Provider = new BuildinLoginSessionStore();
                 }
             }

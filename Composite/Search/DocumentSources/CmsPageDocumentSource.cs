@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -49,7 +49,8 @@ namespace Composite.Search.DocumentSources
                     var entityToken = GetAdministratedEntityToken(page);
                     return entityToken != null ? FromPage(page, entityToken, null) : null;
                 },
-                data => GetDocumentId((IPage) data));
+                data => GetDocumentId((IPage) data),
+                PageShouldBeIndexed);
 
             _changesIndexNotifier.Start();
         }
@@ -64,12 +65,14 @@ namespace Composite.Search.DocumentSources
         public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
             ICollection<IPage> unpublishedPages;
+            IDictionary<Guid, Guid> parentPageIDs;
 
             var (lastPageId, lastPagesPublicationScope) = ParseContinuationToken(continuationToken);
 
             using (var conn = new DataConnection(PublicationScope.Unpublished, culture))
             {
                 unpublishedPages = conn.Get<IPage>().Evaluate();
+                parentPageIDs = conn.Get<IPageStructure>().ToDictionary(ps => ps.Id, ps => ps.ParentId);
             }
 
             unpublishedPages = unpublishedPages
@@ -78,9 +81,12 @@ namespace Composite.Search.DocumentSources
                 .ToList();
 
             var publishedPages = new Dictionary<Tuple<Guid, Guid>, IPage>();
+            HashSet<Guid> publishedPageIds;
+
             using (var conn = new DataConnection(PublicationScope.Published, culture))
             {
                 publishedPages = conn.Get<IPage>().ToDictionary(page => new Tuple<Guid, Guid>(page.Id, page.VersionId));
+                publishedPageIds = new HashSet<Guid>(publishedPages.Select(p => p.Key.Item1));
             }
 
             var unpublishedMetaData = GetAllMetaData(PublicationScope.Unpublished, culture);
@@ -89,12 +95,13 @@ namespace Composite.Search.DocumentSources
 
             foreach (var unpublishedPage in unpublishedPages)
             {
+                Guid pageId = unpublishedPage.Id;
                 var entityToken = unpublishedPage.GetDataEntityToken();
 
-                IPage publishedPage;
-                if (unpublishedPage.Id.CompareTo(lastPageId) > 0
-                    && publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
-                        out publishedPage))
+                if (pageId.CompareTo(lastPageId) > 0
+                    && publishedPages.TryGetValue(new Tuple<Guid, Guid>(pageId, unpublishedPage.VersionId),
+                        out IPage publishedPage)
+                    && AllAncestorPagesArePublished(pageId, publishedPageIds, parentPageIDs))
                 {
                     yield return new DocumentWithContinuationToken
                     {
@@ -109,7 +116,7 @@ namespace Composite.Search.DocumentSources
                     }
                 }
 
-                if (unpublishedPage.Id.CompareTo(lastPageId) > 0
+                if (pageId.CompareTo(lastPageId) > 0
                     || lastPagesPublicationScope == PublicationScope.Published)
                 {
                     yield return new DocumentWithContinuationToken
@@ -121,7 +128,7 @@ namespace Composite.Search.DocumentSources
             }
         }
 
-        private (Guid lastPage , PublicationScope publicationScope) ParseContinuationToken(string continuationToken)
+        private (Guid lastPage, PublicationScope publicationScope) ParseContinuationToken(string continuationToken)
         {
             if (continuationToken == null)
             {
@@ -261,6 +268,83 @@ namespace Composite.Search.DocumentSources
             }
 
             return result;
+        }
+
+        private bool AllAncestorPagesArePublished(Guid pageId, HashSet<Guid> publishedPageIds,
+            IDictionary<Guid, Guid> parentPageIDs)
+        {
+            int depth = 100;
+
+            while (depth > 0)
+            {
+                if (!parentPageIDs.TryGetValue(pageId, out Guid parentPageID))
+                {
+                    // The the page is unreachable from the tree, no need to index it
+                    return false;
+                }
+
+                if (parentPageID == Guid.Empty)
+                {
+                    return true;
+                }
+
+                if (!publishedPageIds.Contains(parentPageID))
+                {
+                    return false;
+                }
+
+                pageId = parentPageID;
+                depth--;
+            }
+
+            Log.LogError(nameof(CmsPageDocumentSource), $"There's a loop in page hierarchy. Page ID: '{pageId}'");
+            return false;
+        }
+
+        private bool AllAncestorPagesArePublished(Guid pageId, CultureInfo locale)
+        {
+            using (var dc = new DataConnection(PublicationScope.Published, locale))
+            {
+                dc.DisableServices();
+
+                int depth = 100;
+
+                while (depth > 0)
+                {
+                    var parentPageId = PageManager.GetParentId(pageId);
+                    if (parentPageId == Guid.Empty) return true;
+
+                    var parentPage = PageManager.GetPageById(parentPageId, true);
+                    if (parentPage == null)
+                    {
+                        return false;
+                    }
+
+                    pageId = parentPageId;
+                    depth--;
+                }
+            }
+
+            Log.LogError(nameof(CmsPageDocumentSource), $"There's a loop in page hierarchy. Page ID: '{pageId}'");
+            return false;
+        }
+
+        private bool PageShouldBeIndexed(IData data)
+        {
+            if (!(data is IPage page))
+            {
+                return true;
+            }
+
+            if (data.DataSourceId.PublicationScope == PublicationScope.Published)
+            {
+                return AllAncestorPagesArePublished(page.Id, page.DataSourceId.LocaleScope);
+            }
+
+            // Indexing the unpublished version fo the page only if the page is not in the "published" state,
+            // or the published version isn't indexed
+            return page.PublicationStatus != GenericPublishProcessController.Published
+                   || !AllAncestorPagesArePublished(page.Id, page.DataSourceId.LocaleScope);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Composite.Core.WebClient.Renderings.Data;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
@@ -47,6 +47,7 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{69303D16-F681-4C2F-BA73-AF8B2B94AAB2}")]
         [ForeignKey(typeof(IPageType), "Id", NullReferenceValue = "{00000000-0000-0000-0000-000000000000}", NullReferenceValueType = typeof(Guid))]
         [DefaultFieldGuidValue("{00000000-0000-0000-0000-000000000000}")]
+        [SearchableField(false, true, true)]
         Guid PageTypeId { get; set; }
 
 
@@ -59,7 +60,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
-        [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = true)]
+        [StoreFieldType(PhysicalStoreFieldType.String, 192, IsNullable = true)]
         [ImmutableFieldId("{3E398FA5-7961-4a75-A6CE-C147B7F4B90A}")]
         [SearchableField(true, false, false)]
         string MenuTitle { get; set; }

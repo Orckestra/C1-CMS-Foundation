@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace Composite.Data
 
             foreach (Guid metaDataTypeId in metaDataTypeIds)
             {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeId);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeId);
 
                 yield return TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
             }
@@ -78,7 +78,7 @@ namespace Composite.Data
 
             foreach (Tuple<Guid, string> metaDataTypeIdAndName in metaDataTypeIdAndNames)
             {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeIdAndName.Item1);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeIdAndName.Item1);
 
                 yield return new Tuple<Type, string>(TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName), metaDataTypeIdAndName.Item2);
             }
@@ -130,7 +130,7 @@ namespace Composite.Data
             {
                 bool anyExists = DataFacade.GetData<ICompositionContainer>().Any();
 
-                if (anyExists == false)
+                if (!anyExists)
                 {
                     ICompositionContainer defaultContainer = DataFacade.BuildNew<ICompositionContainer>();
 
@@ -183,7 +183,7 @@ namespace Composite.Data
         {
             foreach (Guid metaDataTypeId in GetAllowedMetaDataDefinitions(page).Select(f => f.MetaDataTypeId).Distinct())
             {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeId);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDataTypeId);
 
                 yield return TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
             }
@@ -229,9 +229,9 @@ namespace Composite.Data
         /// <returns></returns>
         public static bool IsDefinitionAllowed(IPageMetaDataDefinition pageMetaDataDefinition, IPage page)
         {
-            Guid pageId = page.GetPageIdOrNull();
+            if (page != null && pageMetaDataDefinition.DefiningItemId == page.PageTypeId) return true;
 
-            if (pageMetaDataDefinition.DefiningItemId == page.PageTypeId) return true;
+            Guid pageId = page.GetPageIdOrNull();
 
             // Its not a pagetype attached meta data definitions, check page attacked
             int levelsToParent = CountLevelsToParent(pageMetaDataDefinition.DefiningItemId, pageId);
@@ -297,6 +297,8 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page)
         {
+            Verify.ArgumentNotNull(page, nameof(page));
+
             return GetMetaData(page, DataScopeManager.CurrentDataScope);
         }
 
@@ -305,6 +307,8 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page, DataScopeIdentifier dataScopeIdentifier)
         {
+            Verify.ArgumentNotNull(page, nameof(page));
+
             using (new DataScope(dataScopeIdentifier))
             {
                 foreach (IPageMetaDataDefinition pageMetaDataDefinition in page.GetAllowedMetaDataDefinitions())
@@ -437,15 +441,7 @@ namespace Composite.Data
 
             for (int i = 0; i < startLevel; i++)
             {
-                List<IPage> newPages = new List<IPage>();
-
-                foreach (IPage p in pages)
-                {
-                    IEnumerable<IPage> children = p.GetChildren();
-                    newPages.AddRange(children);
-                }
-
-                pages = newPages;
+                pages = pages.SelectMany(page => page.GetChildren()).ToList();
             }
 
 
@@ -458,15 +454,7 @@ namespace Composite.Data
                     yield return p;
                 }
 
-                List<IPage> newPages = new List<IPage>();
-
-                foreach (IPage p in pages)
-                {
-                    IEnumerable<IPage> children = p.GetChildren();
-                    newPages.AddRange(children);
-                }
-
-                pages = newPages;
+                pages = pages.SelectMany(page => page.GetChildren()).ToList();
             }
         }
 
@@ -500,7 +488,7 @@ namespace Composite.Data
                 if (pageMetaDataDefinition.DefiningItemId == definingItemId &&
                     pageMetaDataDefinition.MetaDataTypeId == metaDataTypeId && 
                     pageMetaDataDefinition.Label != label &&
-                    pageMetaDataDefinitions.Count() == 1)
+                    pageMetaDataDefinitions.Count == 1)
                 {
                     return true; // Allow renaming of label
                 }
@@ -560,6 +548,8 @@ namespace Composite.Data
         /// <param name="metaDataContainerId"></param>
         public static void AddMetaDataDefinition(this IPageType definingPageType, string name, string label, Guid metaDataTypeId, Guid metaDataContainerId)
         {
+            Verify.ArgumentNotNull(definingPageType, nameof(definingPageType));
+
             AddDefinition(definingPageType.Id, name, label, metaDataTypeId, metaDataContainerId, 0, 0);
         }
 
@@ -623,14 +613,13 @@ namespace Composite.Data
             IData data = page.GetMetaData(metaDataDefinitionName, metaDataType);
             if (data != null) return;
 
-            IPublishControlled newData = DataFacade.BuildNew(metaDataType) as IPublishControlled;
+            var newData = (IPublishControlled) DataFacade.BuildNew(metaDataType);
             newDataTemplate.FullCopyChangedTo(newData);
             newData.PublicationStatus = GenericPublishProcessController.Draft;
 
-            PageMetaDataFacade.AssignMetaDataSpecificValues(newData, metaDataDefinitionName, page);
+            AssignMetaDataSpecificValues(newData, metaDataDefinitionName, page);
 
-            ILocalizedControlled localizedData = newData as ILocalizedControlled;
-            if (localizedData != null)
+            if (newData is ILocalizedControlled localizedData)
             {
                 localizedData.SourceCultureName = page.SourceCultureName;
             }
@@ -656,7 +645,7 @@ namespace Composite.Data
         {
             IPageMetaDataDefinition pageMetaDataDefinition = GetMetaDataDefinition(definingPageType.Id, metaDataDefinitionName);
 
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
             Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
             IEnumerable<IPage> affectedPages = PageMetaDataFacade.GetMetaDataAffectedPagesByPageTypeId(definingPageType.Id);
@@ -673,18 +662,17 @@ namespace Composite.Data
                 IData data = affectedPage.GetMetaData(metaDataDefinitionName, metaDataType);
                 if (data != null) continue;
 
-                IPublishControlled newData = DataFacade.BuildNew(metaDataType) as IPublishControlled;
+                var newData = (IPublishControlled) DataFacade.BuildNew(metaDataType);
                 newDataTemplate.FullCopyChangedTo(newData);
                 newData.PublicationStatus = GenericPublishProcessController.Draft;
                 PageMetaDataFacade.AssignMetaDataSpecificValues(newData, metaDataDefinitionName, affectedPage);
 
-                ILocalizedControlled localizedData = newData as ILocalizedControlled;
-                if(localizedData != null)
+                if(newData is ILocalizedControlled localizedData)
                 {
                     localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                 }
 
-                newData = DataFacade.AddNew((IData) newData) as IPublishControlled;
+                newData = (IPublishControlled) DataFacade.AddNew((IData) newData);
 
                 if (newData.PublicationStatus != affectedPage.PublicationStatus)
                 {
@@ -850,8 +838,8 @@ namespace Composite.Data
                     continue;
                 }
 
-                bool existsINOtherScope = ExistInOtherScope(page, otherPageMetaDataDefinitions);
-                if (existsINOtherScope)
+                bool existsInOtherScope = ExistInOtherScope(page, otherPageMetaDataDefinitions);
+                if (existsInOtherScope)
                 {
                     datasNotToDelete.Add(data);
                 }

@@ -25,7 +25,7 @@ namespace Composite.C1Console.Workflow
 
         private C1FileSystemWatcher _fileWatcher;
 
-        private readonly ConcurrentDictionary<Guid, byte> _createdWorkflows = new ConcurrentDictionary<Guid, byte>();
+        private static readonly ConcurrentDictionary<Guid, byte> _createdWorkflows = new ConcurrentDictionary<Guid, byte>();
 
         public FileWorkflowPersistenceService(string baseDirectory)
         {

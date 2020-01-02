@@ -1,6 +1,7 @@
-﻿using Composite.Data;
+using Composite.Data;
 using Composite.Core.WebClient.Renderings.Foundation;
 using Composite.Core.WebClient.Renderings.Foundation.PluginFacades;
+using Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler;
 
 
 namespace Composite.Core.WebClient.Renderings
@@ -11,14 +12,21 @@ namespace Composite.Core.WebClient.Renderings
         {
             foreach (string name in RenderingResponseHandlerRegistry.RenderingResponseHandlerNames)
             {
-                if (RenderingResponseHandlerPluginFacade.IsDataRenderingResponseHandler(name) == false) continue;
+                if (!RenderingResponseHandlerPluginFacade.IsDataRenderingResponseHandler(name)) continue;
 
-                RenderingResponseHandlerResult result = RenderingResponseHandlerPluginFacade.GetDataResponseHandling(name, requestedItemEntityToken);
+                var result = RenderingResponseHandlerPluginFacade.GetDataResponseHandling(name, requestedItemEntityToken);
 
-                if ((result != null) && 
-                    (result.PreventPublicCaching 
-                    || result.EndRequest
-                    || (result.RedirectRequesterTo != null)))
+                if (result != null && result.IsNotEmpty)
+                {
+                    return result;
+                }
+            }
+
+            foreach (var responseHandler in ServiceLocator.GetServices<IDataRenderingResponseHandler>())
+            {
+                var result = responseHandler.GetDataResponseHandling(requestedItemEntityToken);
+
+                if (result != null && result.IsNotEmpty)
                 {
                     return result;
                 }

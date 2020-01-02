@@ -69,8 +69,8 @@ namespace Composite.Services
 				},
 				new KeyValuePair
 				{
-					Key = "QA, Documentation & Support",
-					Value = "Vitaly Vysotskyi;Pavlo Kuzminskiy"
+					Key = "QA, Documentation",
+					Value = "Vitaly Vysotskyi"
 				},
 				new KeyValuePair
 				{

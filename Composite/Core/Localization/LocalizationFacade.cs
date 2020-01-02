@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -109,7 +109,7 @@ namespace Composite.Core.Localization
             Verify.That(IsLocaleInstalled(cultureName), "The locale '{0}' is not installed and the url mapping name can not be renamed", cultureName);
             Verify.That(!IsUrlMappingNameInUse(cultureName, newUrlMappingName), "The url mapping '{0}' is already used", newUrlMappingName);
 
-            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Single(f => f.CultureName != cultureName);            
+            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Single(f => f.CultureName == cultureName);            
             systemActiveLocale.UrlMappingName = newUrlMappingName;
             DataFacade.Update(systemActiveLocale);
         }
@@ -178,6 +178,19 @@ namespace Composite.Core.Localization
                             UserSettings.SetForeignLocaleCultureInfo(username, cultureInfo);
                         }
                     }
+
+                    List<Guid> usergroupids =
+                        (from u in DataFacade.GetData<IUserGroup>()
+                         select u.Id).ToList();
+
+                    foreach (Guid usergroupid in usergroupids)
+                    {
+                        var groupLang = DataFacade.BuildNew<IUserGroupActiveLocale>();
+                        groupLang.Id = Guid.NewGuid();
+                        groupLang.CultureName = cultureInfo.ToString();
+                        groupLang.UserGroupId = usergroupid;
+                        DataFacade.AddNew(groupLang);
+                    }
                 }
 
                 if (DataLocalizationFacade.DefaultLocalizationCulture == null)
@@ -189,6 +202,11 @@ namespace Composite.Core.Localization
             }
 
             DynamicTypeManager.AddLocale(cultureInfo);
+
+            if (makeFlush)
+            {
+                C1Console.Events.GlobalEventSystemFacade.FlushTheSystem(false);
+            }
         }
 
 

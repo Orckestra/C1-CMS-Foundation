@@ -12,7 +12,7 @@ PopupBinding.POSITION_LEFT 		= "left";
 
 PopupBinding.TYPE_NORMAL		= "normal";
 PopupBinding.TYPE_FIXED			= "fixed"; // scrollbars on overflow
-PopupBinding.FIXED_MAX			= 12;
+PopupBinding.FIXED_MAX			= 7;
 PopupBinding.CLASSNAME_OVERFLOW = "overflow";
 PopupBinding.CLASSNAME_TEXTONLY = "textonly";
 
@@ -599,7 +599,7 @@ PopupBinding.prototype.fitOnScreen = function () {
 			switch ( CSSComputer.getPosition ( this.bindingElement.offsetParent )) {
 				case "absolute" :
 					y = y - h - this.targetElement.offsetHeight;
-					if ( y < 0 ) {
+					if (y < 0) {
 						y = 0;
 					}
 					break;

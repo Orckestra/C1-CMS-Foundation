@@ -1,22 +1,32 @@
 using System;
 using System.Collections.Generic;
+using Composite.Core.Extensions;
 
 
 namespace Composite.C1Console.Actions
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FlowControllerServicesContainer
     {
-        private Dictionary<Type, List<object>> _services = new Dictionary<Type, List<object>>();
+        private readonly Dictionary<Type, List<object>> _services = new Dictionary<Type, List<object>>();
 
 
         /// <exclude />
         public FlowControllerServicesContainer()
         { }
 
+
+        /// <exclude />
+        public FlowControllerServicesContainer(params IFlowControllerService[] services)
+        {
+            foreach (var service in services)
+            {
+                AddService(service);
+            }
+        }
 
         // Creates a new service container and initialized it with the services from servicesContainerToClone.
         /// <exclude />
@@ -34,14 +44,7 @@ namespace Composite.C1Console.Actions
 
             foreach (Type interfaceType in type.GetInterfaces())
             {
-                List<object> list;
-
-                if (_services.TryGetValue(interfaceType, out list) == false)
-                {
-                    list = new List<object>();
-
-                    _services.Add(interfaceType, list);
-                }
+                List<object> list = _services.GetOrAdd(interfaceType, () => new List<object>());
 
                 list.Add(flowControllerService);
             }
@@ -56,8 +59,7 @@ namespace Composite.C1Console.Actions
 
             foreach (Type interfaceType in type.GetInterfaces())
             {
-                List<object> list;
-                if (_services.TryGetValue(interfaceType, out list) == false) throw new InvalidOperationException();
+                if (!_services.TryGetValue(interfaceType, out var list)) throw new InvalidOperationException();
 
                 list.Remove(flowControllerService);
             }
@@ -83,16 +85,14 @@ namespace Composite.C1Console.Actions
         /// <exclude />
         public IFlowControllerService GetService(Type serviceType)
         {
-            List<object> list;
-
-            if (_services.TryGetValue(serviceType, out list) == false)
+            if (!_services.TryGetValue(serviceType, out var list))
             {
                 return null;
             }
 
             if (list.Count > 1)
             {
-                throw new InvalidOperationException(string.Format("More than one services of type '{0}' is added", serviceType));
+                throw new InvalidOperationException($"More than one service of type '{serviceType}' was added");
             }
 
             return (IFlowControllerService)list[0];

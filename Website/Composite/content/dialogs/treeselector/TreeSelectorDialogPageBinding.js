@@ -223,6 +223,9 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 				if (this._parents.has(arg)) {
 					this._treeBinding._handleCommandBroadcast(broadcast);
 					return;
+				} else if (this._treeBinding.hasToken(arg)) {
+					this._treeBinding._handleCommandBroadcast(broadcast, arg);
+					return;
 				}
 			}
 			break;
@@ -348,7 +351,7 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
 
 	this._genericViewBinding.setNode(node);
 	var generictab = this.bindingWindow.bindingMap.generictab;
-	generictab.containingTabBoxBinding.select(generictab);
+	generictab.containingTabBoxBinding.select(generictab, true);
 	this._updateHistory(node ? node.getEntityToken() : null);
 	this._updateBroadcasters();
 	this._updateAddressBar(node);
@@ -598,16 +601,9 @@ TreeSelectorDialogPageBinding.prototype._updateDisplayAndResult = function (tree
 	var prop 		= this._selectionResult;
 
 	selections.each ( function ( binding ) {
-		if (prop == "EntityToken" && binding.node) {
-
-			result.add(
-				binding.node.getEntityToken()
-			);
-		} else {
-			result.add(
-				binding.getProperty(prop)
-			);
-		}
+		result.add(
+			binding.getProperty(prop)
+		);
 		value += binding.getLabel ();
 		if ( selections.hasNext ()) {
 			value += "; ";

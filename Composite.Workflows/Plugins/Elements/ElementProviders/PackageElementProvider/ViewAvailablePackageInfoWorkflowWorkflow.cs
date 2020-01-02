@@ -50,8 +50,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void AddOnDescriptionExists(object sender, ConditionalEventArgs e)
         {
-            PackageDescription packageDescription;
-            this.TryGetBinding(BindingNames.PackageDescription, out packageDescription);
+            this.TryGetBinding(BindingNames.PackageDescription, out PackageDescription packageDescription);
             e.Result = packageDescription != null;
         }
 
@@ -84,7 +83,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             var purchasableSubscriptions = packageDescription.AvailableInSubscriptions.Where(f => f.Purchasable).ToList();
 
-            bool showTrialInformation = false;
             var licenses = GetSubscriptionLicenses(packageDescription.AvailableInSubscriptions);
 
             var validLicense = licenses.Where(l => !l.Expired)

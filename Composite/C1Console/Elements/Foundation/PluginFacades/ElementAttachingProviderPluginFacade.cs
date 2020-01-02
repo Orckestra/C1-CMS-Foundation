@@ -52,7 +52,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
         {
             Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
 
-            IMultibleResultElementAttachingProvider elementAttachingProvider = (IMultibleResultElementAttachingProvider)GetElementAttachingProvider(providerName);
+            var elementAttachingProvider = (IMultipleResultElementAttachingProvider)GetElementAttachingProvider(providerName);
 
             IEnumerable<ElementAttachingProviderResult> result = elementAttachingProvider.GetAlternateElementLists(parentEntityToken, piggybag);
 
@@ -74,9 +74,9 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
 
 
-        public static bool IsMultibleResultElementAttachingProvider(string providerName)
+        public static bool IsMultipleResultElementAttachingProvider(string providerName)
         {
-            return GetElementAttachingProvider(providerName) is IMultibleResultElementAttachingProvider;
+            return GetElementAttachingProvider(providerName) is IMultipleResultElementAttachingProvider;
         }
 
 
@@ -135,7 +135,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", ElementAttachingProviderSettings.SectionName), ex);
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{ElementAttachingProviderSettings.SectionName}' from the configuration.", ex);
         }
 
 

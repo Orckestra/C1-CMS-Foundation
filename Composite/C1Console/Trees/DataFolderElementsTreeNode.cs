@@ -193,7 +193,7 @@ namespace Composite.C1Console.Trees
                     if (dataEntityToken != null)
                     {
                         var data = dataEntityToken.Data;
-                        Verify.IsNotNull(data, "data is null, " + dataEntityToken);
+                        if (data == null) return Enumerable.Empty<Element>();
 
                         referenceType = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.DeclaringType;
                         referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(data, null);
@@ -816,7 +816,7 @@ namespace Composite.C1Console.Trees
                             this.ToUpperCompareMethodInfo
                             ),
                         this.StringStartsWithMethodInfo,
-                        Expression.Constant(castedValue)
+                        Expression.Constant(castedValue.ToUpperInvariant())
                         ),
                     Expression.Constant(false)
                 );

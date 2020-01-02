@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Runtime;
@@ -47,6 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             public const string User = "User";
             public const string UserFormLogin = "UserFormLogin";
             public const string NewPassword = "NewPassword";
+            public const string ActiveContentLanguage = "ActiveLocaleName";
         }
 
         private void CheckActiveLanguagesExists(object sender, System.Workflow.Activities.ConditionalEventArgs e)
@@ -79,11 +81,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             this.Bindings.Add("C1ConsoleUiCultures", regionLanguageList);
             this.Bindings.Add("C1ConsoleUiLanguageName", c1ConsoleUiLanguage.Name);
 
-            if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any() && (user.Username != UserSettings.Username))
-            {
-                this.Bindings.Add("ActiveLocaleName", UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Name);
-                this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle));
-            }
+            var currentActiveCulture = UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username);
+            this.Bindings.Add("ActiveLocaleName", currentActiveCulture != null ? currentActiveCulture.Name : null);
+            this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle));
 
             var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>
             {
@@ -156,7 +156,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             bindingsElement.Add(helper.GetBindingsMarkup());
             placeHolderElement.Add(helper.GetFormMarkup());
 
-            helper.UpdateWithNewBindings(this.Bindings, UserSettings.GetActiveLocaleCultureInfos(user.Username));
+            helper.UpdateWithNewBindings(this.Bindings, UserSettings.GetActiveLocaleCultureInfos(user.Username, false));
         }
 
 
@@ -191,47 +191,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             foreach (ValidationResult result in validationResults)
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", BindingNames.User, result.Key), result.Message);
+                this.ShowFieldMessage($"{BindingNames.User}.{result.Key}", result.Message);
                 userValidated = false;
             }
 
 
             List<CultureInfo> newActiveLocales = ActiveLocalesFormsHelper.GetSelectedLocalesTypes(this.Bindings).ToList();
-            List<CultureInfo> currentActiveLocales = null;
-            CultureInfo selectedActiveLocal = null;
+            List<CultureInfo> currentActiveLocales = UserSettings.GetActiveLocaleCultureInfos(user.Username, false).ToList();
 
-            if (newActiveLocales.Count > 0)
-            {
-                currentActiveLocales = UserSettings.GetActiveLocaleCultureInfos(user.Username).ToList();
+            string selectedActiveLocaleName = this.GetBinding<string>("ActiveLocaleName");
 
-
-                string selectedActiveLocaleName = (user.Username != UserSettings.Username ?
-                    this.GetBinding<string>("ActiveLocaleName") :
-                    UserSettings.ActiveLocaleCultureInfo.ToString());
-
-                if (selectedActiveLocaleName != null)
-                {
-                    selectedActiveLocal = CultureInfo.CreateSpecificCulture(selectedActiveLocaleName);
-                    if (!newActiveLocales.Contains(selectedActiveLocal))
-                    {
-                        if (user.Username != UserSettings.Username)
-                        {
-                            this.ShowFieldMessage("ActiveLocaleName", GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked"));
-                        }
-                        else
-                        {
-                            this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", GetText("Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
-                        }
-                        userValidated = false;
-                    }
-                }
-            }
-            else
-            {
-                this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", GetText("Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
-                userValidated = false;
-            }
-
+            CultureInfo selectedActiveLocale = CultureInfo.CreateSpecificCulture(selectedActiveLocaleName);
 
             string systemPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken);
 
@@ -358,14 +328,14 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                         }
                     }
 
-                    if (selectedActiveLocal != null)
+                    if (selectedActiveLocale != null)
                     {
-                        if (!UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Equals(selectedActiveLocal))
+                        if (!selectedActiveLocale.Equals(UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username)))
                         {
                             reloadUsersConsoles = true;
                         }
 
-                        UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, selectedActiveLocal);
+                        UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, selectedActiveLocale);
                     }
                     else if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any())
                     {
@@ -396,16 +366,27 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     DataFacade.AddNew(userUserGroupRelation);
                 }
 
-                LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+                LoggingService.LogEntry("UserManagement",
+                    $"C1 Console user '{user.Username}' updated by '{UserValidationFacade.GetUsername()}'.",
+                    LoggingService.Category.Audit,
+                    TraceEventType.Information);
 
                 transactionScope.Complete();
             }
 
-            if (reloadUsersConsoles)
+            if (UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username) == null)
             {
-                foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
+                this.ShowFieldMessage(BindingNames.ActiveContentLanguage, "The user doesn't have permissions to access the language you selected here. Assign permissions so the user may access this.");
+                this.ShowMessage(DialogType.Warning, "User missing permissions for language", "The user doesn't have permissions to access the language you selected as 'Active content language'.");
+            }
+            else
+            {
+                if (reloadUsersConsoles)
                 {
-                    ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), consoleId);
+                    foreach (string consoleId in GetConsoleIdsOpenedByUser(user.Username))
+                    {
+                        ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), consoleId);
+                    }
                 }
             }
 
@@ -434,7 +415,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             {
                 CultureInfo selectedActiveLocale = CultureInfo.CreateSpecificCulture(selectedActiveLocaleName);
 
-                if (!UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Equals(selectedActiveLocale))
+                if (!selectedActiveLocale.Equals(UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username)))
                 {
                     e.Result = ConsoleFacade.GetConsoleIdsByUsername(user.Username).Any();
                     return;

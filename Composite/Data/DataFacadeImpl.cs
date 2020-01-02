@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -298,7 +298,7 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        List<IData> newDataToUpdate = new List<IData>();
+                        var newDataToUpdate = new List<IData>();
 
                         foreach (IData d in interfaceTypePair.Value)
                         {
@@ -312,7 +312,7 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        DataCachingFacade.ClearCache(interfaceTypePair.Key);
+                        DataCachingFacade.UpdateCachedData(dataToUpdate);
                     }
                 }
             }
@@ -431,7 +431,7 @@ namespace Composite.Data
 
             List<T> addedDataset = DataProviderPluginFacade.AddNew<T>(providerName, dataset);
 
-            DataCachingFacade.ClearCache(typeof(T), DataScopeManager.MapByType(typeof(T)), LocalizationScopeManager.MapByType(typeof(T)));
+            DataCachingFacade.AddDataToCache(addedDataset);
 
             if (!suppressEventing)
             {
@@ -537,7 +537,7 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        DataCachingFacade.RemoveFromCache(interfaceTypePair.Value);
+                        DataCachingFacade.RemoveDataFromCache(interfaceTypePair.Value);
                     }
                 }
             }
@@ -720,11 +720,14 @@ namespace Composite.Data
             ICreationHistory data = dataEventArgs.Data as ICreationHistory;
             if (data != null)
             {
-                data.CreationDate = DateTime.Now;
+                if (data.CreationDate == DateTime.MinValue)
+                {
+                    data.CreationDate = DateTime.Now;
+                }
 
                 try
                 {
-                    if (UserValidationFacade.IsLoggedIn())
+                    if (string.IsNullOrEmpty(data.CreatedBy) && UserValidationFacade.IsLoggedIn())
                     {
                         data.CreatedBy = UserValidationFacade.GetUsername();
                     }

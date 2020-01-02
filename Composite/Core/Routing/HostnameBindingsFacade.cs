@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -8,6 +8,7 @@ using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Plugins.Routing.Pages;
 
 namespace Composite.Core.Routing
 {
@@ -67,14 +68,14 @@ namespace Composite.Core.Routing
 
         internal static IHostnameBinding GetBindingForCurrentRequest()
         {
-            var httpContext = HttpContext.Current;
-            if(httpContext == null)
-            {
-                return null;
-            }
+            return GetHostnameBinding(HttpContext.Current);
+        }
 
+        private static IHostnameBinding GetHostnameBinding(HttpContext httpContext)
+        {
+            if(httpContext == null) return null;
 
-            string host = HttpContext.Current.Request.Url.Host;
+            string host = httpContext.Request.Url.Host;
 
             // TODO: optimize?
             return DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
@@ -87,7 +88,7 @@ namespace Composite.Core.Routing
                 return null;
             }
 
-            string hostname = HttpContext.Current.Request.Url.Host.ToLowerInvariant();
+            string hostname = httpContext.Request.Url.Host.ToLowerInvariant();
 
             foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true).AsEnumerable())
             {
@@ -105,13 +106,13 @@ namespace Composite.Core.Routing
 
         internal static bool IsPageNotFoundRequest()
         {
-            HttpContext context = HttpContext.Current;
+            var context = HttpContext.Current;
             if(context == null)
             {
                 return false;
             }
 
-            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+            string customPageNotFoundUrl = GetCustomPageNotFoundUrl(context);
 
             if (customPageNotFoundUrl.IsNullOrEmpty())
             {
@@ -132,10 +133,15 @@ namespace Composite.Core.Routing
                     || request.Url.PathAndQuery.StartsWith(customPageNotFoundUrl + "?");
         }
 
-        internal static string GetCustomPageNotFoundUrl()
+        internal static string GetCustomPageNotFoundUrl() => GetCustomPageNotFoundUrl(HttpContext.Current);
+        
+
+        private static string GetCustomPageNotFoundUrl(HttpContext httpContext)
         {
-            var binding = GetBindingForCurrentRequest();
-            if(binding == null || string.IsNullOrEmpty(binding.PageNotFoundUrl))
+            if (httpContext == null) return null;
+
+            var binding = GetHostnameBinding(httpContext);
+            if(string.IsNullOrEmpty(binding?.PageNotFoundUrl))
             {
                 return null;
             }
@@ -144,10 +150,10 @@ namespace Composite.Core.Routing
 
             var defaultCulture = DataLocalizationFacade.DefaultLocalizationCulture;
 
-            var pageUrlData = C1PageRoute.PageUrlData;
-            CultureInfo localeFromRequest = pageUrlData != null 
-                ? pageUrlData.LocalizationScope
-                : defaultCulture;
+            CultureInfo localeFromRequest =
+                C1PageRoute.PageUrlData?.LocalizationScope
+                ?? DefaultPageUrlProvider.GetCultureInfo(httpContext.Request.FilePath, binding, out _)
+                ?? defaultCulture;
 
             using (new DataConnection(localeFromRequest))
             {
@@ -171,7 +177,7 @@ namespace Composite.Core.Routing
         {
             string rawUrl = httpContext.Request.RawUrl;
 
-            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+            string customPageNotFoundUrl = GetCustomPageNotFoundUrl(httpContext);
 
             if (string.IsNullOrEmpty(customPageNotFoundUrl))
             {
@@ -180,7 +186,7 @@ namespace Composite.Core.Routing
             
             if (rawUrl == customPageNotFoundUrl || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl)
             {
-                throw new HttpException(404, "'Page not found' wasn't handled. Url: '{0}'".FormatWith(rawUrl));
+                throw new HttpException(404, $"'Page not found' wasn't handled. Url: '{rawUrl}'");
             }
 
             if (HttpRuntime.UsingIntegratedPipeline && customPageNotFoundUrl.StartsWith("/"))

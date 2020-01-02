@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -7,10 +7,10 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Foundation.PluginFacades;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
-using Composite.C1Console.Elements.Security;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Logging;
 using Composite.Core.Instrumentation;
 using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
@@ -24,7 +24,7 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementFacade
     {
-        private static IEnumerable<EntityToken> _perspectiveEntityTokens = null;
+        private static IEnumerable<EntityToken> _perspectiveEntityTokens;
 
         /// <exclude />
         public static IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -159,8 +159,6 @@ namespace Composite.C1Console.Elements
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
 
-            if (elementHandle == null) throw new ArgumentNullException("elementHandle");
-
             SearchToken searchToken;
 
             if (ElementProviderPluginFacade.GetNewSearchToken(elementHandle.ProviderName, elementHandle.EntityToken, out searchToken) == false)
@@ -283,13 +281,30 @@ namespace Composite.C1Console.Elements
             if (providerName == null) throw new ArgumentNullException("providerName");
             
             IEnumerable<Element> roots;
-            if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName) == false))
+
+            try
             {
-                roots = ElementProviderPluginFacade.GetRoots(providerName, searchToken).ToList();
+                if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName))
+                {
+                    roots = ElementProviderPluginFacade.GetRoots(providerName, searchToken).ToList();
+                }
+                else
+                {
+                    roots = ElementProviderPluginFacade.GetForeignRoots(providerName, searchToken).ToList();
+                }
             }
-            else
+            catch (Exception ex) when (providerName != ElementProviderRegistry.RootElementProviderName)
             {
-                roots = ElementProviderPluginFacade.GetForeignRoots(providerName, searchToken).ToList();
+                Log.LogError(nameof(ElementFacade), $"Failed to get root elements for element provider '{providerName}'");
+                Log.LogError(nameof(ElementFacade), ex);
+
+                return Enumerable.Empty<Element>();
+            }
+            
+
+            if (performSecurityCheck)
+            {
+                roots = roots.FilterElements();
             }
 
             ElementActionProviderFacade.AddActions(roots, providerName);
@@ -298,52 +313,59 @@ namespace Composite.C1Console.Elements
             {
                 return roots.FilterActions();
             }
-            else
-            {
-                return roots;
-            }
+
+            return roots;
         }
 
+
+        private static IEnumerable<Element> GetChildrenFromProvider(ElementHandle elementHandle, SearchToken searchToken, bool useForeign)
+        {
+            if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName))
+            {
+                if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName))
+                {
+                    return ElementProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken);
+                }
+
+                return ElementProviderPluginFacade.GetForeignChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken);
+            }
+
+            if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName))
+            {
+                return ElementAttachingProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, elementHandle.Piggyback);
+            }
+
+            throw new InvalidOperationException($"No element provider named '{elementHandle.ProviderName}' found");
+        }
 
 
         private static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken, bool performSecurityCheck, bool useForeign)
         {
-            if (elementHandle == null) throw new ArgumentNullException("elementHandle");
+            Verify.ArgumentNotNull(elementHandle, nameof(elementHandle));
 
-            IPerformanceCounterToken performanceToken = PerformanceCounterFacade.BeginElementCreation();
+            var performanceToken = PerformanceCounterFacade.BeginElementCreation();
 
-            IEnumerable<Element> children;
-            if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName))
+            var children = GetChildrenFromProvider(elementHandle, searchToken, useForeign).Evaluate();
+
+            var originalChildren = children;
+
+            children = ElementAttachingProviderFacade.AttachElements(elementHandle.EntityToken, elementHandle.Piggyback, children).Evaluate();
+
+            int totalElementCount = children.Count;
+
+            if (performSecurityCheck)
             {
-                if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName) == false))
-                {
-                    children = ElementProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
-                }
-                else
-                {
-                    children = ElementProviderPluginFacade.GetForeignChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
-                }
-            }
-            else if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName))
-            {
-                children = ElementAttachingProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, elementHandle.Piggyback).Evaluate();
-            }
-            else
-            {
-                throw new InvalidOperationException(string.Format("No element provider named '{0}' found", elementHandle.ProviderName));
+                children = children.FilterElements().Evaluate();
             }
 
-            foreach (Element element in children)
+            // Evaluating HasChildren for not attached elements
+            foreach (Element element in originalChildren)
             {
-                if (element.VisualData.HasChildren == false)
+                if (children.Contains(element) && !element.VisualData.HasChildren)
                 {
                     element.VisualData.HasChildren = ElementAttachingProviderFacade.HaveCustomChildElements(element.ElementHandle.EntityToken, element.ElementHandle.Piggyback);
                 }
             }
-                        
-            children = ElementAttachingProviderFacade.AttachElements(elementHandle.EntityToken, elementHandle.Piggyback, children).Evaluate();
-
-            int totalElementCount = children.Count();
 
             ElementActionProviderFacade.AddActions(children, elementHandle.ProviderName);
 
@@ -352,7 +374,7 @@ namespace Composite.C1Console.Elements
                 children = children.FilterActions().Evaluate();
             }
 
-            PerformanceCounterFacade.EndElementCreation(performanceToken, children.Count(), totalElementCount);
+            PerformanceCounterFacade.EndElementCreation(performanceToken, children.Count, totalElementCount);
 
             return children;
         }

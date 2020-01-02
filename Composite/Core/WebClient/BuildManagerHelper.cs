@@ -1,4 +1,4 @@
-﻿using Composite.Core.IO;
+using Composite.Core.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,7 +41,7 @@ namespace Composite.Core.WebClient
             try
             {
                 const int waitSlice = 500;
-                for (int i = 0; i < InitializationDelay.Milliseconds / waitSlice; i++)
+                for (int i = 0; i < InitializationDelay.TotalMilliseconds / waitSlice; i++)
                 {
                     if(IsRestarting) return;
                     Thread.Sleep(waitSlice);
@@ -114,7 +114,8 @@ namespace Composite.Core.WebClient
                         {
                             using (new DisableUrlMedataScope())
                             {
-                                BuildManager.GetCompiledType(virtualPath);
+                                string compilePath = (virtualPath.StartsWith("~") ? "" : "~") + virtualPath;
+                                BuildManager.GetCompiledType(compilePath);
                             }
                         }
                         catch (ThreadAbortException)

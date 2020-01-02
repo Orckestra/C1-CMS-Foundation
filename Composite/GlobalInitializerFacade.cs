@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
@@ -25,21 +24,20 @@ using Composite.Core.Types;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
-using Composite.C1Console.Elements.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
 
 namespace Composite
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class GlobalInitializerFacade
     {
-        private static readonly string LogTitle = "RGB(194, 252, 131)GlobalInitializerFacade";
-        private static readonly string LogTitleNormal = "GlobalInitializerFacade";
+        private static readonly string LogTitle = "RGB(194, 252, 131)" + nameof(GlobalInitializerFacade);
+        private static readonly string LogTitleNormal = nameof(GlobalInitializerFacade);
 
         private static bool _coreInitialized;
         private static bool _initializing;
@@ -48,7 +46,7 @@ namespace Composite
         private static bool _preInitHandlersRunning;
         private static Exception _exceptionThrownDuringInitialization;
         private static DateTime _exceptionThrownDuringInitializationTimeStamp;
-        private static int _fatalErrorFlushCount = 0;
+        private static int _fatalErrorFlushCount;
         private static readonly ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
         private static Thread _hookingFacadeThread; // This is used to wait on the the thread if a reinitialize is issued
         private static Exception _hookingFacadeException; // This will hold the exception from the before the reinitialize was issued
@@ -57,13 +55,14 @@ namespace Composite
 
 
         /// <exclude />
-        public static bool DynamicTypesGenerated { get; private set; }
+        [Obsolete("Not used")]
+        public static bool DynamicTypesGenerated => false;
 
         /// <exclude />
-        public static bool SystemCoreInitializing { get { return _initializing; } }
+        public static bool SystemCoreInitializing => _initializing;
 
         /// <exclude />
-        public static bool SystemCoreInitialized { get { return _coreInitialized; } }
+        public static bool SystemCoreInitialized => _coreInitialized;
 
         /// <summary>
         /// This is true during a total flush of the system (re-initialize).
@@ -96,15 +95,12 @@ namespace Composite
         {
             Verify.That(!_preInitHandlersRunning, "DataFacade related methods should not be called in OnBeforeInitialize() method of a startup handler. Please move the code to OnInitialized() instead.");
 
-            // if (AppDomain.CurrentDomain.Id == 3) SimpleDebug.AddEntry(string.Format("INITIALIZING {0} {1} {2}", Thread.CurrentThread.ManagedThreadId, _initializing, _coreInitialized));
-            
-
             if (_exceptionThrownDuringInitialization != null)
             {
                 TimeSpan timeSpan = DateTime.Now - _exceptionThrownDuringInitializationTimeStamp;
                 if (timeSpan < TimeSpan.FromMinutes(5.0))
                 {
-                    Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan + " ago");
+                    Log.LogCritical(LogTitleNormal, $"Exception recorded: {timeSpan} ago");
 
                     throw new Exception("Failed to initialize the system", _exceptionThrownDuringInitialization);
                 }
@@ -114,7 +110,7 @@ namespace Composite
 
             if (!_initializing && !_coreInitialized)
             {
-                using (GlobalInitializerFacade.CoreLockScope)
+                using (CoreLockScope)
                 {
                     if (!_initializing && !_coreInitialized)
                     {
@@ -270,35 +266,15 @@ namespace Composite
             }
 
 
-            if (!RuntimeInformation.IsUnittest)
-            {
-                using (new LogExecutionTime(LogTitle, "Initializing flow system"))
-                {
-                    FlowControllerFacade.Initialize();
-                }
-
-                using (new LogExecutionTime(LogTitle, "Initializing console system"))
-                {
-                    ConsoleFacade.Initialize();
-                }
-            }
-
-
             using (new LogExecutionTime(LogTitle, "Auto installing packages"))
             {
                 DoAutoInstallPackages();
             }
 
 
-            using (new LogExecutionTime(LogTitle, "Loading element providers"))
-            {
-                ElementProviderLoader.LoadAllProviders();
-            }
-
-
             int executionTime = Environment.TickCount - startTime;
 
-            Log.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
+            Log.LogVerbose(LogTitle, $"Done initializing of the system core. ({executionTime} ms)");
         }
 
 
@@ -345,7 +321,7 @@ namespace Composite
                 }
             }
 
-            using (GlobalInitializerFacade.CoreLockScope)
+            using (CoreLockScope)
             {
                 IsReinitializingTheSystem = true;
 
@@ -359,22 +335,6 @@ namespace Composite
 
                 InitializeTheSystem();
 
-                if (!SystemSetupFacade.SetupIsRunning)
-                {
-                    // Updating "hooks" either in the same thread, or in another
-                    if (initializeHooksInTheSameThread)
-                    {
-                        object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
-                        EnsureHookingFacade(threadStartParameter);
-                    }
-                    else
-                    {
-                        _hookingFacadeThread = new Thread(EnsureHookingFacade) {Name = "EnsureHookingFacade"};
-                        _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
-                    }
-                }
-
-
                 IsReinitializingTheSystem = false;
             }
         }
@@ -384,7 +344,7 @@ namespace Composite
         private static void EnsureHookingFacade(object timeSpanToDelayStart)
         {
             // NOTE: Condition is  made for unit-testing
-            if (System.Web.Hosting.HostingEnvironment.IsHosted)
+            if (HostingEnvironment.IsHosted)
             {
                 var kvp = (KeyValuePair<TimeSpan, StackTrace>)timeSpanToDelayStart;
                 _hookingFacadeException = null;
@@ -393,7 +353,7 @@ namespace Composite
 
                 try
                 {
-                    using (GlobalInitializerFacade.CoreIsInitializedScope)
+                    using (CoreIsInitializedScope)
                     {
                         using (ThreadDataManager.EnsureInitialize())
                         {
@@ -417,11 +377,7 @@ namespace Composite
         {
             using (CoreIsInitializedScope)
             {
-                Thread hookingFacadeThread = _hookingFacadeThread;
-                if (hookingFacadeThread != null)
-                {
-                    hookingFacadeThread.Join();
-                }
+                _hookingFacadeThread?.Join();
             }
         }
 
@@ -432,7 +388,7 @@ namespace Composite
         {
             Log.LogWarning(LogTitle, "Unhandled error occurred, reinitializing the system!");
 
-            ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
+            ReinitializeTheSystem(delegate { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
         }
 
 
@@ -440,7 +396,7 @@ namespace Composite
         /// <exclude />
         public static void UninitializeTheSystem(RunInWriterLockScopeDelegate runInWriterLockScopeDelegate)
         {
-            using (GlobalInitializerFacade.CoreLockScope)
+            using (CoreLockScope)
             {
                 using (new LogExecutionTime(LogTitle, "Uninitializing the system"))
                 {
@@ -509,13 +465,14 @@ namespace Composite
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
                 if (C1Directory.Exists(directory))
                 {
-                    Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
+                    Log.LogVerbose(LogTitle, $"Installing packages from: {directory}");
                     zipFiles.AddRange(C1Directory.GetFiles(directory, "*.zip")
+                                      .OrderBy(f => f)
                                       .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = true }));
                 }
                 else
                 {
-                    Log.LogVerbose(LogTitle, string.Format("Auto install directory not found: {0}", directory));
+                    Log.LogVerbose(LogTitle, $"Auto install directory not found: {directory}");
                 }
 
                 if (RuntimeInformation.IsDebugBuild)
@@ -523,7 +480,7 @@ namespace Composite
                     string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
                     if (C1Directory.Exists(workflowTestDir))
                     {
-                        Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
+                        Log.LogVerbose(LogTitle, $"Installing packages from: {workflowTestDir}");
                         zipFiles.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip")
                                           .OrderBy(f => f)
                                           .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = false }));
@@ -537,7 +494,7 @@ namespace Composite
                     {
                         using (Stream zipFileStream = C1File.OpenRead(zipFile.FilePath))
                         {
-                            Log.LogVerbose(LogTitle, "Installing package: " + zipFile.FilePath);
+                            Log.LogVerbose(LogTitle, $"Installing package: {zipFile.FilePath}");
 
                             PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(zipFileStream, true);
 
@@ -601,7 +558,7 @@ namespace Composite
 
             if (methodInfo.DeclaringType != typeof(GlobalInitializerFacade))
             {
-                throw new SystemException(string.Format("The method {0} may only be called by the {1}", stackTrace.GetFrame(1).GetMethod(), typeof(GlobalInitializerFacade)));
+                throw new SystemException($"The method {methodInfo} may only be called by the {typeof(GlobalInitializerFacade)}");
             }
         }
 
@@ -624,7 +581,7 @@ namespace Composite
 
         private static void OnFlushEvent(FlushEventArgs args)
         {
-            using (GlobalInitializerFacade.CoreLockScope)
+            using (CoreLockScope)
             {
                 _coreInitialized = false;
             }
@@ -642,7 +599,7 @@ namespace Composite
         /// <exclude />
         public static void RunInWriterLockScope(RunInWriterLockScopeDelegate runInWriterLockScopeDelegate)
         {
-            using (GlobalInitializerFacade.CoreLockScope)
+            using (CoreLockScope)
             {
                 runInWriterLockScopeDelegate();
             }
@@ -657,9 +614,9 @@ namespace Composite
             get
             {
                 var stackTrace = new StackTrace();
-                StackFrame stackFrame = stackTrace.GetFrame(1);
-                string lockSource = string.Format("{0}.{1}", stackFrame.GetMethod().DeclaringType.Name, stackFrame.GetMethod().Name);
-                return new LockerToken(true, lockSource);
+                var method = stackTrace.GetFrame(1).GetMethod();
+
+                return new LockerToken(true, $"{method.DeclaringType.Name}.{method.Name}");
             }
         }
 
@@ -688,13 +645,7 @@ namespace Composite
         /// Using this in a using-statement will ensure that the code is 
         /// executed AFTER any existing locks has been released.
         /// </summary>
-        public static IDisposable CoreNotLockedScope
-        {
-            get
-            {
-                return new LockerToken();
-            }
-        }
+        public static IDisposable CoreNotLockedScope => new LockerToken();
 
 
         private static void AcquireReaderLock()
@@ -746,8 +697,8 @@ namespace Composite
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
-            if ((_threadLocking.WriterLocksPerThreadId[threadId] == 1) &&
-                (_threadLocking.LockCookiesPerThreadId.ContainsKey(threadId)))
+            if (_threadLocking.WriterLocksPerThreadId[threadId] == 1 &&
+                _threadLocking.LockCookiesPerThreadId.ContainsKey(threadId))
             {
                 LockCookie lockCookie = _threadLocking.LockCookiesPerThreadId[threadId];
 
@@ -802,7 +753,7 @@ namespace Composite
                     return;
                 }
 
-                Verify.ArgumentCondition(!lockSource.IsNullOrEmpty(), "lockSource", "Write locks must be obtained with a string identifying the source");
+                Verify.ArgumentCondition(!lockSource.IsNullOrEmpty(), nameof(lockSource), "Write locks must be obtained with a string identifying the source");
 
                 #region Logging the action
 
@@ -821,7 +772,7 @@ namespace Composite
                         methodInfo = ", Method:" + stackFrame.GetMethod().Name;
                     }
                 }
-                Log.LogVerbose(LogTitle, "Writer Lock Acquired (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, lockSource, methodInfo));
+                Log.LogVerbose(LogTitle, $"Writer Lock Acquired (Managed Thread ID: {Thread.CurrentThread.ManagedThreadId}, Source: {lockSource}{methodInfo})");
 
                 #endregion Logging the action
 
@@ -859,7 +810,7 @@ namespace Composite
                         methodInfo = ", Method: " + stackFrame.GetMethod().Name;
                     }
                 }
-                Log.LogVerbose(LogTitle, "Writer Lock Releasing (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, _lockSource, methodInfo));
+                Log.LogVerbose(LogTitle, $"Writer Lock Releasing (Managed Thread ID: {Thread.CurrentThread.ManagedThreadId}, Source: {_lockSource}{methodInfo})");
 
                 #endregion
 

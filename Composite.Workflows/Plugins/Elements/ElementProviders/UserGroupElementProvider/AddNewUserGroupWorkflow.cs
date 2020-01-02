@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Collections;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Workflow.ComponentModel.Compiler;
@@ -77,7 +78,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             this.CloseCurrentView();
 
-            LoggingService.LogVerbose("UserManagement", String.Format("New C1 Console user group '{0}' created by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+            LoggingService.LogEntry("UserManagement",
+                $"New C1 Console user group '{userGroup.Name}' created by '{UserValidationFacade.GetUsername()}'.", 
+                LoggingService.Category.Audit,
+                TraceEventType.Information);
 
             addNewTreeRefresher.PostRefreshMesseges(userGroup.GetDataEntityToken());
 

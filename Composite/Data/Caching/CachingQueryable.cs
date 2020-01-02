@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,14 +43,14 @@ namespace Composite.Data.Caching
     /// <summary>
     /// Used for optimizing execution of GetDataByUniqueKey method
     /// </summary>
-    internal interface CachingQueryable_CachedByKey
+    internal interface ICachingQueryable_CachedByKey
     {
         IData GetCachedValueByKey(object key);
         IEnumerable<IData> GetCachedVersionValuesByKey(object key);
     }
 
 
-    internal sealed class CachingQueryable<T> : ICachedQuery, IOrderedQueryable<T>, IQueryProvider, ICachingQueryable, CachingQueryable_CachedByKey
+    internal sealed class CachingQueryable<T> : ICachedQuery, IOrderedQueryable<T>, IQueryProvider, ICachingQueryable, ICachingQueryable_CachedByKey
     {
         private readonly IQueryable _source;
         private readonly Expression _currentExpression;

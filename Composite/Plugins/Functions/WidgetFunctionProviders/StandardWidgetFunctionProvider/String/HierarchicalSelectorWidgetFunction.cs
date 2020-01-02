@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +60,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(false),
                     StandardWidgetFunctions.GetBoolSelectorWidget("Yes, auto select parents.", "No, only one selection on click."),
                     null,
-                    "Auto select children", new HelpDefinition("When true a selection will automatically select all ancestor elements in the hierarchy.")));
+                    "Auto select parents", new HelpDefinition("When true a selection will automatically select all ancestor elements in the hierarchy.")));
 
         }
 

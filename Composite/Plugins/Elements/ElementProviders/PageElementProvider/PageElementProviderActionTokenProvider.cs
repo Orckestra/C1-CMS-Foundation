@@ -3,6 +3,7 @@ using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
+using Composite.Data.Types;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -14,7 +15,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             switch (actionTypeName)
             {
                 case GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges:
-                    return new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.UndoUnpublishedChangesWorkflow"), PageElementProvider.EditPermissionTypes);
+                    return data is IPage
+                        ? new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.UndoUnpublishedChangesWorkflow"), PageElementProvider.EditPermissionTypes)
+                        : null;
 
                 default:
                     return null;

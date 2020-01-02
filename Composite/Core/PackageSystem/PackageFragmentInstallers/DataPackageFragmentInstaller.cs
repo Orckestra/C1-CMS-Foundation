@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -31,15 +32,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<PackageFragmentValidationResult> _validationResult;
 
         private Dictionary<Type, TypeKeyInstallationData> _dataKeysToBeInstalled;
+        private Dictionary<Guid, TypeKeyInstallationData> _dataKeysToBeInstalledByTypeId;
+
         private Dictionary<Type, HashSet<KeyValuePair<string, object>>> _missingDataReferences;
 
-        private static Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
+        private static readonly Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             _validationResult = new List<PackageFragmentValidationResult>();
             _dataKeysToBeInstalled = new Dictionary<Type, TypeKeyInstallationData>();
+            _dataKeysToBeInstalledByTypeId = new Dictionary<Guid, TypeKeyInstallationData>();
             _missingDataReferences = new Dictionary<Type, HashSet<KeyValuePair<string, object>>>();
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
@@ -116,9 +120,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else if (dataType.AddToCurrentLocale)
                     {
-                        using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
+                        var currentLocale = DataLocalizationFacade.DefaultLocalizationCulture;
+                        if (UserValidationFacade.IsLoggedIn())
                         {
-                            XElement element = AddData(dataType, UserSettings.ActiveLocaleCultureInfo);
+                            currentLocale = UserSettings.ActiveLocaleCultureInfo;
+                        }
+
+                        using (new DataScope(currentLocale))
+                        {
+                            XElement element = AddData(dataType, currentLocale);
                             typeElement.Add(element);
                         }
                     }
@@ -135,7 +145,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else
                     {
-                        using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
+                        var locale = UserValidationFacade.IsLoggedIn()
+                            ? UserSettings.ActiveLocaleCultureInfo
+                            : DataLocalizationFacade.DefaultLocalizationCulture;
+                        
+                        using (new DataScope(locale))
                         {
                             XElement element = AddData(dataType, null);
                             typeElement.Add(element);
@@ -177,15 +191,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
 
-                var dataKey = CopyFieldValues(dataType, data, addElement);
+                var dataKey = PopulateAndReturnKeyPropertyValues(dataType, data, addElement);
 
                 if (dataType.AllowOverwrite || dataType.OnlyUpdate)
                 {
-                    IData existingData = DataFacade.TryGetDataByUniqueKey(interfaceType, dataKey);
+                    List<IData> existingDataList = DataFacade.TryGetDataByLookupKeys(interfaceType, dataKey).ToList();
+                    if (existingDataList.Count > 1) throw new InvalidOperationException("Got more than 1 existing data element when querying on key properties for " + addElement.ToString());
+
+                    IData existingData = existingDataList.FirstOrDefault();
 
                     if (existingData != null)
                     {
-                        CopyFieldValues(dataType, existingData, addElement);
+                        PopulateAndReturnKeyPropertyValues(dataType, existingData, addElement);
                         DataFacade.Update(existingData, false, true, false);
 
                         continue;
@@ -197,15 +214,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                 }
 
-                ILocalizedControlled localizedControlled = data as ILocalizedControlled;
-                if (localizedControlled != null)
+                if (data is ILocalizedControlled localizedControlled)
                 {
                     localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(interfaceType).Name;
                 }
 
-                if (data is IVersioned)
+                if (data is IVersioned versionedData)
                 {
-                    UpdateVersionId((IVersioned)data);
+                    UpdateVersionId(versionedData);
                 }
 
                 DataFacade.AddNew(data, false, true, false); // Ignore validation, this should have been done in the validation face
@@ -238,13 +254,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return;
             }
 
-            if (data is IPage)
+            if (data is IPage page)
             {
-                var page = (IPage)data;
-
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(page.Id, out versionId))
+                if (_pageVersionIds.TryGetValue(page.Id, out Guid versionId))
                 {
                     page.VersionId = versionId;
                 }
@@ -255,34 +267,31 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            else if (data is IPagePlaceholderContent)
+            else if (data is IPagePlaceholderContent pagePlaceholderContent)
             {
-                Guid pageId = ((IPagePlaceholderContent)data).PageId;
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                if (_pageVersionIds.TryGetValue(pagePlaceholderContent.PageId, out Guid versionId))
                 {
                     data.VersionId = versionId;
                 }
             }
-            else if (data is IPageData)
+            else if (data is IPageData pageData)
             {
-                Guid pageId = ((IPageData)data).PageId;
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                if (_pageVersionIds.TryGetValue(pageData.PageId, out Guid versionId))
                 {
                     data.VersionId = versionId;
                 }
             }
         }
 
-
-        private static DataKeyPropertyCollection CopyFieldValues(DataType dataType, IData data, XElement addElement)
+        
+        private static DataPropertyValueCollection PopulateAndReturnKeyPropertyValues(DataType dataType, IData dataToPopulate, XElement addElement)
         {
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataPropertyValueCollection();
 
             var properties = GetDataTypeProperties(dataType.InterfaceType);
+
+            var keyPropertyNames = dataType.InterfaceType.GetKeyPropertyNames();
+            var versionKeyPropertyNames = dataType.InterfaceType.GetVersionKeyPropertyNames();
 
             foreach (XAttribute attribute in addElement.Attributes())
             {
@@ -295,11 +304,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 PropertyInfo propertyInfo = properties[fieldName];
 
                 object fieldValue = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
-                propertyInfo.SetValue(data, fieldValue, null);
+                propertyInfo.SetValue(dataToPopulate, fieldValue, null);
 
-                if (dataType.InterfaceType.GetKeyPropertyNames().Contains(fieldName))
+                if (keyPropertyNames.Contains(fieldName) || versionKeyPropertyNames.Contains(fieldName))
                 {
-                    dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
+                    dataKeyPropertyCollection.AddKeyProperty(propertyInfo, fieldValue);
                 }
             }
 
@@ -589,7 +598,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
 
-                RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+                RegisterKeyToBeAdded(dataType, null, dataKeyPropertyCollection);
 
                 // Checking foreign key references
                 foreach (var foreignKeyProperty in DataAttributeFacade.GetDataReferenceProperties(dataType.InterfaceType))
@@ -598,7 +607,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     object propertyValue = fieldValues[foreignKeyProperty.SourcePropertyName];
                     
-                    if (propertyValue == null || propertyValue == foreignKeyProperty.NullReferenceValue)
+                    if (propertyValue == null || propertyValue.Equals(foreignKeyProperty.NullReferenceValue))
                     {
                         continue;
                     }
@@ -624,13 +633,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             // Checking key in the keys to be installed
             var keyValuePair = new KeyValuePair<string, object>(keyPropertyName, referenceKey);
 
-            if (_missingDataReferences.ContainsKey(referredType) && _missingDataReferences[referredType].Contains(keyValuePair))
+            if (_missingDataReferences.TryGetValue(referredType, out var refs) && refs.Contains(keyValuePair))
             {
                 return;
             }
 
-            if (_dataKeysToBeInstalled.ContainsKey(referredType) && _dataKeysToBeInstalled[referredType].KeyRegistered(refereeType, keyValuePair))
+            if (_dataKeysToBeInstalled.TryGetValue(referredType, out var keys)
+                && keys.KeyRegistered(refereeType, keyValuePair))
             {   
+                return;
+            }
+
+            var typeId = referredType.GetImmutableTypeId();
+            if (_dataKeysToBeInstalledByTypeId.TryGetValue(typeId, out var dynamicTypeKeys)
+                && dynamicTypeKeys.KeyRegistered(refereeType, keyValuePair))
+            {
                 return;
             }
 
@@ -662,7 +679,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private static bool IsObsoleteProperty(PropertyInfo propertyInfo)
         {
-            return propertyInfo.Name == "PageId" && propertyInfo.DeclaringType == typeof(IPageData);
+            return propertyInfo.Name == nameof(IPageData.PageId) && propertyInfo.DeclaringType == typeof(IPageData);
         }
 
         private static bool IsObsoleteField(DataTypeDescriptor dataTypeDescriptor, string fieldName)
@@ -675,11 +692,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
                 && ((string)key).StartsWith("MediaArchive:")
-                && propertyName == "KeyPath")
+                && propertyName == nameof(IMediaFile.KeyPath))
             {
                 referenceType = typeof(IMediaFileData);
                 referenceKey = new Guid(((string)key).Substring("MediaArchive:".Length));
-                keyPropertyName = "Id";
+                keyPropertyName = nameof(IMediaFileData.Id);
                 return;
             }
 
@@ -697,13 +714,26 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return new DataScope(dataType.DataScopeIdentifier, locale);
         }
 
-        private void RegisterKeyToBeAdded(DataType dataType, DataKeyPropertyCollection dataKeyPropertyCollection)
+
+
+        private void RegisterKeyToBeAdded(DataType dataType, DataTypeDescriptor dataTypeDescriptor, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (dataKeyPropertyCollection.Count != 1) return;
 
+            TypeKeyInstallationData typeKeyInstallationData;
 
-            var typeKeyInstallationData = _dataKeysToBeInstalled.GetOrAdd(dataType.InterfaceType,
+            if (dataType.InterfaceType != null)
+            {
+                // Static types
+                typeKeyInstallationData = _dataKeysToBeInstalled.GetOrAdd(dataType.InterfaceType,
                     () => new TypeKeyInstallationData(dataType.InterfaceType));
+            }
+            else
+            {
+                // Dynamic types
+                typeKeyInstallationData = _dataKeysToBeInstalledByTypeId.GetOrAdd(dataTypeDescriptor.DataTypeId,
+                    () => new TypeKeyInstallationData(dataTypeDescriptor));
+            }
 
             var keyValuePair = dataKeyPropertyCollection.KeyProperties.First();
 
@@ -783,17 +813,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     // TODO: implement check if the same key has already been added
                 }
 
-                // TODO: to be implemented for dynamic types
-                // RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+                RegisterKeyToBeAdded(dataType, dataTypeDescriptor, dataKeyPropertyCollection);
 
                 // Checking foreign key references
                 foreach (var referenceField in dataTypeDescriptor.Fields.Where(f => f.ForeignKeyReferenceTypeName != null))
                 {
-                    object propertyValue;
-                    if (!fieldValues.TryGetValue(referenceField.Name, out propertyValue) 
+                    if (!fieldValues.TryGetValue(referenceField.Name, out object propertyValue) 
                         || propertyValue == null
-                        || (propertyValue is Guid && (Guid)propertyValue == Guid.Empty) 
-                        || propertyValue is string && (string)propertyValue == "")
+                        || (propertyValue is Guid guid && guid == Guid.Empty) 
+                        || (propertyValue is string str && str == ""))
                     {
                         continue;
                     }
@@ -850,21 +878,29 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <summary>
         /// Information about data keys to be installed for a given data type
         /// </summary>
-        [DebuggerDisplay("TypeKeyInstallationData {_type.FullName} . DataScopes: {_dataScopes.Count}")]
+        [DebuggerDisplay("TypeKeyInstallationData {_typeName} . DataScopes: {_dataScopes.Count}")]
         private class TypeKeyInstallationData
         {
             private const string AllLocalesKey = "all";
 
             private readonly bool _isLocalized;
             private readonly bool _isPublishable;
-            private readonly Type _type;
+            private readonly string _typeName;
+
             private readonly Dictionary<string, HashSet<KeyValuePair<string, object>>> _dataScopes = new Dictionary<string, HashSet<KeyValuePair<string, object>>>();
 
             public TypeKeyInstallationData(Type type)
             {
                 _isLocalized = DataLocalizationFacade.IsLocalized(type);
                 _isPublishable = typeof(IPublishControlled).IsAssignableFrom(type);
-                _type = type;
+                _typeName = type.FullName;
+            }
+
+            public TypeKeyInstallationData(DataTypeDescriptor typeDescriptor)
+            {
+                _isLocalized = typeDescriptor.SuperInterfaces.Contains(typeof(ILocalizedControlled));
+                _isPublishable = typeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled));
+                _typeName = typeDescriptor.Name;
             }
 
             public void RegisterKeyUsage(DataType dataType, KeyValuePair<string, object> keyValuePair)
@@ -902,15 +938,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 string dataScopeKey = GetDataScopeKey(publicationScope, localeName);
 
-                if (!_dataScopes.ContainsKey(dataScopeKey))
-                {
-                    _dataScopes.Add(dataScopeKey, new HashSet<KeyValuePair<string, object>>());
-                }
-
-                var hashset = _dataScopes[dataScopeKey];
+                var hashset = _dataScopes.GetOrAdd(dataScopeKey, () => new HashSet<KeyValuePair<string, object>>());
 
                 Verify.That(!hashset.Contains(keyValuePair), "Item with the same key present twice. Data type: '{0}', field '{1}', value '{2}'",
-                    dataType.InterfaceTypeName ?? "null", keyValuePair.Key, keyValuePair.Value ?? "null");
+                    dataType.InterfaceTypeName ?? dataType.InterfaceTypeName ?? "null", keyValuePair.Key, keyValuePair.Value ?? "null");
 
                 hashset.Add(keyValuePair);
             }

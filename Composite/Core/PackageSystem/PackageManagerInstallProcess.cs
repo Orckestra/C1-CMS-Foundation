@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +8,7 @@ using Composite.Core.Serialization;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.Core.Application;
 
 
@@ -223,7 +224,9 @@ namespace Composite.Core.PackageSystem
             if (_validationResult.Count > 0) throw new InvalidOperationException("Installation did not validate");
             Verify.IsNull(_installationResult, "Install may only be called once");
 
-            Log.LogInformation(LogTitle, "Installing package: {0}, Version: {1}, Id = {2}", _packageName, _packageVersion, _packageId);
+            var userName = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "<system>";
+
+            Log.LogInformation(LogTitle, $"Installing package: {_packageName}, Version: {_packageVersion}, Id = {_packageId}; User name: '{userName}'");
 
             PackageFragmentValidationResult result = _packageInstaller.Install(_systemLockingType);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Users;
@@ -89,7 +89,7 @@ namespace Composite.Data.Types
 
                 var cultureInfo = UserSettings.CultureInfo;
 
-                int targetLocalOrdering = -1;
+                int targetLocalOrdering = pageStructures.Any() ? -1 : 0;
 
                 foreach (IPageStructure pageStructure in pageStructures)
                 {

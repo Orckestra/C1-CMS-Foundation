@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
@@ -18,13 +18,14 @@ namespace Composite.Data
     /// </summary>
     public static class PageRenderingHistory
     {
-        private static readonly string LogTitle = typeof(PageRenderingHistory).Name;
+        private static readonly string LogTitle = nameof(PageRenderingHistory);
 
-
+        private const int MaxRenderErrorsToLog = 10;
         private const int PageRenderingTimeout = 7000;
         private const int PageRenderingQueueWaitingTimeout = 15000;
-        private static readonly ConcurrentDictionary<string, object> _renderedPages = new ConcurrentDictionary<string, object>();
 
+        private static readonly ConcurrentDictionary<string, object> _renderedPages = new ConcurrentDictionary<string, object>();
+        private static int _errorCounter;
 
         private static readonly object _pageRenderingLock = new object();
 
@@ -128,7 +129,7 @@ namespace Composite.Data
                 return;
             }
 
-            var urlSpace = new UrlSpace(context) { ForceRelativeUrls = true };
+            var urlSpace = new UrlSpace(context) { ForceRelativeUrls = false };
             var url = PageUrls.BuildUrl(page, UrlKind.Public, urlSpace)
                 ?? PageUrls.BuildUrl(page, UrlKind.Renderer, urlSpace);
 
@@ -152,7 +153,10 @@ namespace Composite.Data
             string responseBody, errorMessage;
             var result = RenderPage(hostName, url, cookies, out responseBody, out errorMessage);
 
-            // TODO: log errors if any
+            if (result != PageRenderingResult.Successful && Interlocked.Increment(ref _errorCounter) <= MaxRenderErrorsToLog)
+            {
+                Log.LogWarning(LogTitle, $"Failed to render page '{url}' with the goal of collecting dymanic url providers. Result: {result}; Error: {errorMessage}");
+            }
         }
 
 
@@ -168,8 +172,6 @@ namespace Composite.Data
         {
             try
             {
-                url = url.Replace("://" + hostname + "/", "://127.0.0.1/");
-
                 var request = WebRequest.Create(url) as HttpWebRequest;
 
                 request.UserAgent = @"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5";

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
@@ -15,6 +15,8 @@ namespace Composite.C1Console.Trees
         public string ToolTip { get; internal set; }            // Defaults to Label
         public ResourceHandle Icon { get; internal set; }       // Defaults to 'folder'
         public ResourceHandle OpenIcon { get; internal set; }   // Defaults to 'open-folder' or if Icon is set, then, Icon
+        public string BrowserUrl { get; internal set; }         // Defaults to no URL, what will be shows in console browser on focus
+        public string BrowserImage { get; internal set; }         // Defaults to no (image) URL, what will be shows in console browser on focus / lists
 
         // Cached values
         internal DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
@@ -23,16 +25,9 @@ namespace Composite.C1Console.Trees
 
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            EntityToken possibleCurrentEntityToken;
-
-            TreeSimpleElementEntityToken treeSimpleElementEntityToken = childEntityToken as TreeSimpleElementEntityToken;
-            if (treeSimpleElementEntityToken != null) {
-                possibleCurrentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
-            }
-            else
-            {
-                possibleCurrentEntityToken = childEntityToken;
-            }
+            var possibleCurrentEntityToken = childEntityToken is TreeSimpleElementEntityToken seEntityToken
+                ? seEntityToken.ParentEntityToken 
+                : childEntityToken;
 
             foreach (EntityToken entityToken in this.ParentNode.GetEntityTokens(possibleCurrentEntityToken, dynamicContext))
             {
@@ -45,8 +40,8 @@ namespace Composite.C1Console.Trees
         {
             // Check below ensures that the parent EntityToken actually present in a tree and not been filtered out
 
-            TreeSimpleElementEntityToken treeSimpleElementEntityToken = (TreeSimpleElementEntityToken) selfEntityToken;
-            EntityToken parentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
+            var treeSimpleElementEntityToken = (TreeSimpleElementEntityToken) selfEntityToken;
+            var parentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
             foreach (EntityToken entityToken in parentGeneretedEntityTokens)
             {
                 if (parentEntityToken.Equals(entityToken))
@@ -54,15 +49,15 @@ namespace Composite.C1Console.Trees
                     return new[] { parentEntityToken };
                 }
 
-                TreeSimpleElementEntityToken castedEntityToken = entityToken as TreeSimpleElementEntityToken;
-                if ((castedEntityToken != null) &&
-                    (parentEntityToken.Equals(castedEntityToken.ParentEntityToken)))
+                var castedEntityToken = entityToken as TreeSimpleElementEntityToken;
+                if (castedEntityToken != null &&
+                    parentEntityToken.Equals(castedEntityToken.ParentEntityToken))
                 {
                     return new [] { parentEntityToken };
                 }
             }
 
-            return new EntityToken[0];
+            return Array.Empty<EntityToken>();
         }
 
 
@@ -78,13 +73,45 @@ namespace Composite.C1Console.Trees
             var entityToken = new TreeSimpleElementEntityToken(
                 this.Id, 
                 this.Tree.TreeId, 
-                EntityTokenSerializer.Serialize(parentEntityToken));                
+                EntityTokenSerializer.Serialize(parentEntityToken));
 
-            Element element = new Element(new ElementHandle(
+            var element = new Element(new ElementHandle(
                 dynamicContext.ElementProviderName,
                 entityToken,
                 dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
                 ));
+
+
+            if (this.BrowserUrl != null)
+            {
+                var url = this.BrowserUrl;
+
+                if (!url.Contains("//"))
+                {
+                    url = Core.WebClient.UrlUtils.ResolvePublicUrl(url);
+                }
+
+                element.PropertyBag.Add("BrowserUrl", url);
+                element.PropertyBag.Add("BrowserToolingOn", "false");
+            }
+
+
+            if (this.BrowserImage != null)
+            {
+                var url = this.BrowserImage;
+
+                if (!url.Contains("//"))
+                {
+                    url = Core.WebClient.UrlUtils.ResolvePublicUrl(url);
+                }
+
+                element.PropertyBag.Add("ListViewImage", url);
+
+                if (this.BrowserUrl == null)
+                {
+                    element.PropertyBag.Add("DetailViewImage", url);
+                }
+            }
 
 
             if (parentEntityToken is TreePerspectiveEntityToken)
@@ -117,10 +144,6 @@ namespace Composite.C1Console.Trees
         }
 
 
-        public override string ToString()
-        {
-
-            return string.Format("SimpleElementTreeNode, Id = {0}, Label = {1}", this.Id, this.Label);
-        }
+        public override string ToString() => $"SimpleElementTreeNode, Id = {Id}, Label = {Label}";
     }
 }

@@ -5,6 +5,7 @@
     "codemirror": "5.9.0",
     "autobahnjs": "autobahn#^0.10.1",
     "babel-polyfill": "^0.0.1",
-    "tinymce": "4.5.7"
+    "tinymce": "4.5.7",
+    "promise-polyfill": "^6.0.2"
   }
 }

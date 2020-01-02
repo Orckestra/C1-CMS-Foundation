@@ -41,10 +41,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             DataEntityToken dataEntityToken = piggybag.GetParentEntityTokens().FindDataEntityToken(typeof(IPageType));
             IPageType parentPageType = (IPageType)dataEntityToken.Data;
 
-            defaultPageContent.PageTypeId = parentPageType.Id;
-            defaultPageContent.Content = " ";
+            var duplicate = DataFacade.GetData<IPageTypeDefaultPageContent>(f => f.PageTypeId == parentPageType.Id && f.PlaceHolderId == defaultPageContent.PlaceHolderId).FirstOrDefault();
 
-            defaultPageContent = DataFacade.AddNew<IPageTypeDefaultPageContent>(defaultPageContent);
+            if (duplicate == null)
+            {
+                defaultPageContent.PageTypeId = parentPageType.Id;
+                defaultPageContent.Content = " ";
+
+                defaultPageContent = DataFacade.AddNew<IPageTypeDefaultPageContent>(defaultPageContent);
+            }
+            else
+            {
+                defaultPageContent = duplicate;
+            }
 
             this.CloseCurrentView();
             this.RefreshCurrentEntityToken();

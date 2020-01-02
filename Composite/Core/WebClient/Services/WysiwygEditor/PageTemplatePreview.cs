@@ -60,7 +60,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             if (result.Status != RenderingResultStatus.Success)
             {
                 Log.LogWarning("PageTemplatePreview", "Failed to build preview for page template '{0}'. Reason: {1}; Output:\r\n{2}",
-                    templateId, result.Status, result.Output);
+                    templateId, result.Status, string.Join(Environment.NewLine, result.Output));
 
                 imageFilePath = null;
                 placeholders = null;

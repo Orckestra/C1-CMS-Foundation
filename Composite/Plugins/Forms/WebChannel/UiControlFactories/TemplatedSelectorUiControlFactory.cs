@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -359,7 +359,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
                 Verify.IsNotNull(lastUsedPropertyInfo, "Malformed Selection configuration. The Selected binding type '{0}' does not have a property named '{1}", @object.GetType().FullName, propertyName);
             }
 
-            return lastUsedPropertyInfo.GetValue(@object, null).ToString();
+            return (lastUsedPropertyInfo.GetValue(@object, null) ?? "(null)").ToString();
         }
 
         /// <exclude />

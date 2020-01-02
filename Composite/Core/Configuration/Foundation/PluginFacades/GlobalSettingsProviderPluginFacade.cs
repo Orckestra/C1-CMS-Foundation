@@ -214,16 +214,6 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
                 return UseReaderLock(provider => provider.PackageLicenseDirectory);
             }
         }
-        
-
-
-        public static IResourceCacheSettings ResourceCacheSettings
-        {
-            get
-            {
-                return UseReaderLock(provider => provider.ResourceCacheSettings);
-            }
-        }
 
 
 

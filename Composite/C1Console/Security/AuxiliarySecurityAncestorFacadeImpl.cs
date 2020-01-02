@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.Extensions;
-using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Security
@@ -15,7 +14,7 @@ namespace Composite.C1Console.Security
 
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
 
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
@@ -32,20 +31,11 @@ namespace Composite.C1Console.Security
             IEnumerable<EntityToken> totalResult = null;
             foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in resultSecurityAncestorProviders)
             {
-                Dictionary<EntityToken, IEnumerable<EntityToken>> result = auxiliarySecurityAncestorProvider.GetParents(new EntityToken[] { entityToken });
+                var result = auxiliarySecurityAncestorProvider.GetParents(new [] { entityToken });
 
                 if (result.Count > 0)
                 {
-                    var firstValue = result.Values.First();
-
-                    if (totalResult == null)
-                    {
-                        totalResult = firstValue;
-                    }
-                    else
-                    {
-                        totalResult = totalResult.Concat(firstValue);
-                    }
+                    totalResult = totalResult.ConcatOrDefault(result.Values.First());
                 }
             }
 
@@ -56,19 +46,13 @@ namespace Composite.C1Console.Security
 
         public void AddAuxiliaryAncestorProvider(Type entityTokenType, IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider, bool flushPersistent)
         {
-            Dictionary<Type, List<IAuxiliarySecurityAncestorProvider>> providers;
-            if (!flushPersistent)
-            {
-                providers = _auxiliarySecurityAncestorProviders;
-            }
-            else
-            {
-                providers = _flushPersistentAuxiliarySecurityAncestorProviders;
-            }
+            var providers = !flushPersistent 
+                ? _auxiliarySecurityAncestorProviders 
+                : _flushPersistentAuxiliarySecurityAncestorProviders;
 
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
 
-            if (providers.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == false)
+            if (!providers.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders))
             {
                 auxiliarySecurityAncestorProviders = new List<IAuxiliarySecurityAncestorProvider>();
                 providers.Add(entityTokenType, auxiliarySecurityAncestorProviders);
@@ -76,7 +60,7 @@ namespace Composite.C1Console.Security
 
             if (auxiliarySecurityAncestorProviders.Contains(auxiliarySecurityAncestorProvider))
             {
-                throw new ArgumentNullException("The given auxiliarySecurityAncestorProvider has already been added with the given entity token");
+                throw new ArgumentException("The given provider has already been added with the given entity token", nameof(auxiliarySecurityAncestorProvider));
             }
 
             auxiliarySecurityAncestorProviders.Add(auxiliarySecurityAncestorProvider);
@@ -121,8 +105,6 @@ namespace Composite.C1Console.Security
                     yield return auxiliarySecurityAncestorProvider;
                 }
             }
-
-            yield break;
         }
 
 

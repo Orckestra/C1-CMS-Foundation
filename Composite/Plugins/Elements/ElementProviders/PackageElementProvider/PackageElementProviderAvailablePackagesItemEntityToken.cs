@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
@@ -18,21 +20,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     }
 
 
-
-
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(PackageElementProviderAvailablePackagesItemEntityTokenAncestorProvider))]
     public sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
     {
-        private readonly string _id;
-
         /// <exclude />
+        [JsonConstructor]
         public PackageElementProviderAvailablePackagesItemEntityToken(string id, string groupName)
         {
-            _id = id;
+            Id = id;
             this.GroupName = groupName;
         }
 
@@ -40,40 +37,41 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         public string GroupName { get; private set; }
 
         /// <exclude />
-        public Guid PackageId { get { return new Guid(this.Id); } }
+        public Guid PackageId => new Guid(this.Id);
 
         /// <exclude />
-        public override string Type
-        {
-            get { return ""; }
-        }
+        public override string Type => "";
 
         /// <exclude />
-        public override string Source
-        {
-            get { return ""; }
-        }
+        public override string Source => "";
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _id; }
-        }
+        public override string Id { get; }
 
         /// <exclude />
         public override string Serialize()
         {
-            var sb = new StringBuilder();
-
-            StringConversionServices.SerializeKeyValuePair(sb, "_GroupName_", this.GroupName);
-
-            DoSerialize(sb);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken = CompositeJsonSerializer.Deserialize<PackageElementProviderAvailablePackagesItemEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(PackageElementProviderAvailablePackagesItemEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
         {
             string type, source, id;
             Dictionary<string, string> dic;

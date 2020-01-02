@@ -387,21 +387,30 @@ _Application.prototype = {
 	},
 
 	/**
-	 * Log out. Notice that LogoutService currently returns true no matter what...
-	 * @return {boolean}
+	 * Log out.
+     * @return {Promise}
 	 */
-	logout : function () {
-
-		var result = false;
-		if ( this.isLoggedIn ) {
-			this.isLoggedIn = false;
-			this.isLoggedOut = true;
-			result = LoginService.Logout ( true );
-			if ( !result ) {
-				alert ( "Logout failed." );
+	logout: function () {
+		var self = this;
+		var promise = new Promise(function (resolve, reject) {
+			if (self.isLoggedIn) {
+				self.isLoggedIn = false;
+				self.isLoggedOut = true;
+				LoginService.Logout(true, function (result, fault) {
+					if (fault) {
+						self.isLoggedIn = true;
+						self.isLoggedOut = false;
+						alert("Logout failed.");
+						reject();
+					} else {
+						resolve(result);
+					}
+				});
+				
 			}
-		}
-		return result;
+		});
+
+		return promise;
 	},
 
 	/**
@@ -920,10 +929,14 @@ _Application.prototype = {
 		if ( FlowControllerService != null ) {
 			FlowControllerService.ReleaseAllConsoleResources ( Application.CONSOLE_ID );
 		}
-		if ( this.logout ()) {
-			top.close();
-			location.reload();
-		}
+
+		this.logout().then(function (redirectLocation) {
+			if (redirectLocation) {
+				location = redirectLocation;
+			} else {
+				location.reload();
+			}
+		});
 	},
 
 	/**

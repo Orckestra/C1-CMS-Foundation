@@ -114,6 +114,12 @@ function SystemTreeBinding() {
 	 * @type {string}
 	 */
 	this._restorableFocusHandle = null;
+
+	/**
+	 * Points to the parent of last treenode that was blurred
+	 * @type {string}
+	 */
+	this._restorableFocusParentHandle = null;
 }
 
 
@@ -217,7 +223,7 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 		case TreeNodeBinding.ACTION_ONFOCUS:
 		case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 			this._restorableFocusHandle = null;
-			//this._handleSystemTreeFocus();  //Dublicate with parent
+			this._restorableFocusParentHandle = null;
 			break;
 
 			/**
@@ -257,6 +263,10 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 			*/
 			if (action.type == TreeNodeBinding.ACTION_BLUR) {
 				this._restorableFocusHandle = binding.getHandle();
+				var parent = binding.getParent();
+				if (parent) {
+					this._restorableFocusParentHandle = parent.getHandle();
+				}
 			}
 			break;
 
@@ -314,8 +324,12 @@ SystemTreeBinding.prototype._attemptRestorableFocus = function () {
 	if (this._treeNodeBindings.has(this._restorableFocusHandle)) {
 		var treenode = this._treeNodeBindings.get(this._restorableFocusHandle);
 		this.focusSingleTreeNodeBinding(treenode);
+	} else if (this._treeNodeBindings.has(this._restorableFocusParentHandle)) { // focused item removed
+		var treenode = this._treeNodeBindings.get(this._restorableFocusParentHandle);
+		this.focusSingleTreeNodeBinding(treenode);
 	}
 	this._restorableFocusHandle = null;
+	this._restorableFocusParentHandle = null;
 }
 
 /**
@@ -923,6 +937,14 @@ SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
 			}, 0);
 		}
 	}
+}
+
+/**
+ * @param {string} token
+ */
+SystemTreeBinding.prototype.hasToken = function (token) {
+
+	return this._entityTokenRegistry.has(token)
 }
 
 

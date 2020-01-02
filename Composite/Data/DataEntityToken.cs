@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
 using Composite.Core.Types;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace Composite.Data
@@ -14,6 +16,7 @@ namespace Composite.Data
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
+    [JsonObject(MemberSerialization.OptIn)]
     public sealed class DataEntityToken : EntityToken
     {
         private IData _data;
@@ -40,7 +43,6 @@ namespace Composite.Data
         }
 
 
-
         private DataEntityToken(string serializedDataSourceId)
         {
             _data = null;
@@ -49,7 +51,14 @@ namespace Composite.Data
             _dataSourceId = null;
         }
 
-
+        [JsonConstructor]
+        private DataEntityToken(JRaw dataSourceId)
+        {
+            _data = null;
+            _dataInitialized = false;
+            _serializedDataSourceId = dataSourceId.Value.ToString();
+            _dataSourceId = null;
+        }
 
         /// <exclude />
         public override string Type
@@ -183,14 +192,15 @@ namespace Composite.Data
 
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
                 {
-                    sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
+                    sb.Append($"<b>{propertyInfo.Name}:</b> {propertyInfo.GetValue(dataId, null)}<br />");
                 }
 
                 helper.AddFullRow(new [] { "<b>Id</b>", sb.ToString() });
             };
         }
 
-
+        [JsonProperty(PropertyName = "dataSourceId")]
+        private JRaw rawSerializedDataSourceId => new JRaw(_serializedDataSourceId);
 
         private string SerializedDataSourceId
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -195,7 +195,6 @@ namespace Composite.Search.DocumentSources
                 var entityToken = GetConsoleEntityToken(data);
                 if (entityToken == null)
                 {
-                    Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
                     return null;
                 }
 
@@ -212,7 +211,13 @@ namespace Composite.Search.DocumentSources
             }
 
             var administratedData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Administrated).FirstOrDefault();
-            return administratedData?.GetDataEntityToken();
+            if (administratedData == null)
+            {
+                Log.LogWarning(LogTitle, $"The following data item exists in published scope, but doesn't exist in unpublished scope '{data.DataSourceId.Serialize()}'.");
+                return null;
+            }
+
+            return administratedData.GetDataEntityToken();
         }
 
         private string GetDocumentId(IData data)

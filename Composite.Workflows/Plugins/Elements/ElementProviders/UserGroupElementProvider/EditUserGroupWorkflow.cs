@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Users;
+using Composite.Core.Logging;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
@@ -21,7 +24,6 @@ using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
-using Composite.Core.Logging;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
@@ -65,6 +67,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             UpdateFormDefinitionWithActivePerspectives(userGroup, bindingsElement, placeHolderElement);
             UpdateFormDefinitionWithGlobalPermissions(userGroup, bindingsElement, placeHolderElement);
+            UpdateFormDefinitionWithActiveLocalePermissions(userGroup, bindingsElement, placeHolderElement);
 
             var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
             clientValidationRules.Add("Name", ClientValidationRuleFacade.GetClientValidationRules(userGroup, "Name"));
@@ -138,9 +141,30 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             UserGroupPerspectiveFacade.SetSerializedEntityTokens(userGroup.Id, newUserGroupEntityTokens);
 
+            List<CultureInfo> selectedUserGroupActiveLocales = ActiveLocalesFormsHelper.GetSelectedLocalesTypes(this.Bindings).ToList();
+
+            using (var connection = new DataConnection())
+            {
+                var existingLocales = connection.Get<IUserGroupActiveLocale>().Where(f=> f.UserGroupId == userGroup.Id).ToList();
+                var toDelete = existingLocales.Where(f => !selectedUserGroupActiveLocales.Contains(new CultureInfo(f.CultureName)));
+                connection.Delete<IUserGroupActiveLocale>(toDelete);
+
+                foreach (var localeToAdd in selectedUserGroupActiveLocales.Where(f => !existingLocales.Any(g => g.CultureName == f.Name)))
+                {
+                    var toAdd = connection.CreateNew<IUserGroupActiveLocale>();
+                    toAdd.Id = Guid.NewGuid();
+                    toAdd.UserGroupId = userGroup.Id;
+                    toAdd.CultureName = localeToAdd.Name;
+                    connection.Add(toAdd);
+                }
+            }
+
             SetSaveStatus(true);
 
-            LoggingService.LogVerbose("UserManagement", $"C1 Console user group '{userGroup.Name}' updated by '{UserValidationFacade.GetUsername()}'.", LoggingService.Category.Audit);
+            LoggingService.LogEntry("UserManagement", 
+                $"C1 Console user group '{userGroup.Name}' updated by '{UserValidationFacade.GetUsername()}'.", 
+                LoggingService.Category.Audit,
+                TraceEventType.Information);
 
             if (userGroup.Name != this.GetBinding<string>("OldName"))
             {
@@ -200,6 +224,28 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             IEnumerable<PermissionType> permissionTypes = PermissionTypeFacade.GetLocallyDefinedUserGroupPermissionTypes(userGroup.Id, rootEntityToken).ToList();
 
             helper.UpdateWithNewBindings(this.Bindings, permissionTypes);
+        }
+
+        private void UpdateFormDefinitionWithActiveLocalePermissions(IUserGroup userGroup, XElement bindingsElement, XElement placeHolderElement)
+        {
+            var helper = new ActiveLocalesFormsHelper(
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActiveLocalesFieldLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectHelp")
+                );
+
+            bindingsElement.Add(helper.GetBindingsMarkup());
+            placeHolderElement.Add(helper.GetFormMarkup());
+
+            EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
+
+            using (var connection = new DataConnection())
+            {
+                IEnumerable<CultureInfo> activeCultures = null;
+                activeCultures = connection.Get<IUserGroupActiveLocale>().Where(f => f.UserGroupId == userGroup.Id).Select(f => new CultureInfo(f.CultureName));
+                helper.UpdateWithNewBindings(this.Bindings, activeCultures);
+            }
+
         }
 
 

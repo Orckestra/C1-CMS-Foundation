@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -9,7 +9,6 @@ using Composite.Core.Linq;
 using Composite.Data.Types;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using Composite.Core.Logging;
 
 
 namespace Composite.C1Console.Tasks
@@ -107,24 +106,41 @@ namespace Composite.C1Console.Tasks
             using (ThreadDataManager.EnsureInitialize())
             {
                 IEnumerable<ITaskItem> taskItems = DataFacade.GetData<ITaskItem>().Evaluate();
+
+                var toDelete = new List<ITaskItem>();
+
                 foreach (ITaskItem taskItem in taskItems)
                 {
                     Type type = TypeManager.TryGetType(taskItem.TaskManagerType);
                     if (type == null)
                     {
-                        LoggingService.LogWarning("TaskManagerFacade", string.Format("Could not get the type '{0}'", taskItem.TaskManagerType));
-                        LoggingService.LogWarning("TaskManagerFacade", string.Format("Removing task item with id '{0}'. The Task Manager Type can not be found.", taskItem.TaskId));
-                        DataFacade.Delete<ITaskItem>(taskItem);
+                        Log.LogWarning(nameof(TaskManagerFacade),
+                            $"Removing task item with id '{taskItem.TaskId}'. The Task Manager Type '{taskItem.TaskManagerType}' can not be found.");
+
+                        toDelete.Add(taskItem);
+
+                        if (toDelete.Count >= 100)
+                        {
+                            DataFacade.Delete<ITaskItem>(toDelete);
+                            toDelete.Clear();
+                        }
                         continue;
                     }
 
-                    Task task = new Task(taskItem.TaskId, type);
-                    task.StartTime = taskItem.StartTime;
-                    task.FlowToken = taskItem.SerializedFlowToken;
+                    Task task = new Task(taskItem.TaskId, type)
+                    {
+                        StartTime = taskItem.StartTime,
+                        FlowToken = taskItem.SerializedFlowToken
+                    };
 
                     _tasks.Add(task);
                 }
+
+                if (toDelete.Count > 0)
+                {
+                    DataFacade.Delete<ITaskItem>(toDelete);
+                }
             }
-        }        
+        }
     }
 }

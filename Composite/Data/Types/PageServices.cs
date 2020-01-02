@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Trees;
@@ -90,6 +91,14 @@ namespace Composite.Data.Types
             }
         }
 
+        /// <exclude />
+        public static ReadOnlyCollection<Guid> GetChildrenIDs(Guid parentId)
+        {
+            using (new DataScope(DataScopeIdentifier.Administrated))
+            {
+                return PageManager.GetChildrenIDs(parentId);
+            }
+        }
 
         /// <exclude />
         public static bool IsChildrenAlphabeticOrdered(Guid parentId)

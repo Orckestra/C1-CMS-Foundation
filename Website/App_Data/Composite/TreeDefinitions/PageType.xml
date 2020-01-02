@@ -2,7 +2,7 @@
 <ElementStructure xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0" xmlns:f="http://www.composite.net/ns/function/1.0">
   
   <ElementStructure.AutoAttachments>
-    <NamedParent Name="Layout" Position="Top" />
+    <NamedParent Name="Layout" Position="Bottom" />
   </ElementStructure.AutoAttachments>
 
   <ElementRoot>

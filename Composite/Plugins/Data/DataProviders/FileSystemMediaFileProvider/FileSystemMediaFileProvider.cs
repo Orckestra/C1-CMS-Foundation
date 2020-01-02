@@ -17,11 +17,11 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
     [ConfigurationElementType(typeof(MediaArchiveDataProviderData))]
     internal sealed class FileSystemMediaFileProvider : IWritableDataProvider
     {
-        private string _storeId;
-        private string _storeDescription;
-        private string _storeTitle;
-        private string _rootDir;
-        private string[] _excludedDirs;
+        private readonly string _storeId;
+        private readonly string _storeDescription;
+        private readonly string _storeTitle;
+        private readonly string _rootDir;
+        private readonly string[] _excludedDirs;
         private MediaArchiveStore _store;
         private DataProviderContext _context;
         private static readonly int _folderType = 1;
@@ -45,7 +45,8 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             {
                 if (_store == null)
                 {
-                    _store = new MediaArchiveStore(_storeId, _storeTitle, _storeDescription,  _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType }, typeof(IMediaFileStore)));
+                    _store = new MediaArchiveStore(_storeId, _storeTitle, _storeDescription, 
+                        _context.CreateDataSourceId(new MediaDataId(_storeType), typeof(IMediaFileStore)));
                 }
                 return _store;
             }
@@ -62,7 +63,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            return new List<Type>() { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
+            return new List<Type> { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
         }
 
 
@@ -133,7 +134,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         public List<T> AddNew<T>(IEnumerable<T> datas) where T : class, IData
         {
-            List<T> result = new List<T>();
+            var result = new List<T>();
 
             foreach (IData data in datas)
             {
@@ -214,36 +215,35 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         {
             CheckInterface(typeof(T));
 
-             if (typeof(T) == typeof(IMediaFile))
-             {
-                 var excludePaths =
-                     (from dir in _excludedDirs
-                      select PathUtil.Resolve(_rootDir + dir.Replace('/', '\\')) + @"\").ToList();
+            if (typeof(T) == typeof(IMediaFile))
+            {
+                var excludePaths =
+                    (from dir in _excludedDirs
+                     select PathUtil.Resolve(_rootDir + dir.Replace('/', '\\')) + @"\").ToList();
 
-                 var matches =
-                     from filePath in C1Directory.GetFiles( _rootDir, "*", SearchOption.AllDirectories)
-                     where excludePaths.Where( f=> filePath.StartsWith(f) ).Count()== 0
-                     select CreateFile( filePath );
+                var matches =
+                    from filePath in C1Directory.GetFiles( _rootDir, "*", SearchOption.AllDirectories)
+                    where !excludePaths.Where( filePath.StartsWith ).Any()
+                    select CreateFile( filePath );
 
-                 return matches.Cast<T>().AsQueryable();
-             }
-             else if (typeof(T) == typeof(IMediaFileFolder))
-             {
-                 var excludePaths =
-                     (from dir in _excludedDirs
-                      select PathUtil.Resolve(_rootDir + dir.Replace('/','\\')) + @"\").ToList();
+                return matches.Cast<T>().AsQueryable();
+            }
 
-                 var matches =
-                     from dirPath in C1Directory.GetDirectories(_rootDir, "*", SearchOption.AllDirectories)
-                     where excludePaths.Where(f => (dirPath+@"\").StartsWith(f)).Count() == 0
-                     select CreateFolder(dirPath);
+            if (typeof(T) == typeof(IMediaFileFolder))
+            {
+                var excludePaths =
+                    (from dir in _excludedDirs
+                     select PathUtil.Resolve(_rootDir + dir.Replace('/','\\')) + @"\").ToList();
 
-                 return matches.Cast<T>().AsQueryable();
-             }
-             else
-             {
-                 return new List<T>() { Store as T}.AsQueryable<T>();
-             }
+                var matches =
+                    from dirPath in C1Directory.GetDirectories(_rootDir, "*", SearchOption.AllDirectories)
+                    where !excludePaths.Any(f => (dirPath + @"\").StartsWith(f))
+                    select CreateFolder(dirPath);
+
+                return matches.Cast<T>().AsQueryable();
+            }
+
+            return new List<T> { Store as T}.AsQueryable<T>();
         }
 
 
@@ -273,7 +273,8 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
                                                     select CreateFolder(dirInfo)).FirstOrDefault();
                 return folder as T;
             }
-            else if (mediaDataId.MediaType == _fileType)
+
+            if (mediaDataId.MediaType == _fileType)
             {
                 if (typeof(T) != typeof(IMediaFile))
                 {
@@ -286,19 +287,26 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
                 return file as T;
             }
-            else
-            {
-                 return Store as T;
-            }
+
+            return Store as T;
         }
 
 
 
         internal sealed class MediaDataId : IDataId
         {
-            public int MediaType { get; set; }
-            public string Path { get; set; }
-            public string FileName { get; set; }
+            public MediaDataId(int type, string path = null, string fileName = null)
+            {
+                MediaType = type;
+                Path = path;
+                FileName = fileName;
+            }
+
+            public int MediaType { get; }
+            public string Path { get; }
+            public string FileName { get; }
+
+            public override int GetHashCode() => MediaType ^ (Path ?? "").GetHashCode() ^ (FileName ?? "").GetHashCode();
         }
 
 
@@ -319,14 +327,14 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         private string GetAbsolutePath(MediaDataId mediaData)
         {
+            string folderPath = Path.Combine(_rootDir, mediaData.Path.Remove(0, 1));
+
             if (mediaData.MediaType == _fileType)
             {
-                return Path.Combine(Path.Combine(_rootDir, mediaData.Path.Remove(0, 1)), mediaData.FileName);
+                return Path.Combine(folderPath, mediaData.FileName);
             }
-            else
-            {
-                return Path.Combine(_rootDir, mediaData.Path.Remove(0, 1));
-            }
+
+            return folderPath;
         }
         
         
@@ -336,7 +344,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             var folders = from item in _excludedDirs
                           where folder == item || (item.StartsWith(folder) && item[folder.Length] == '/')
                           select item;
-            return folders.Count() > 0;
+            return folders.Any();
         }
 
 
@@ -346,7 +354,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             var folders = from item in _excludedDirs
                           where folder == item || (folder.StartsWith(item) && folder[item.Length] == '/')
                           select item;
-            return folders.Count() > 0;
+            return folders.Any();
         }
 
 
@@ -354,11 +362,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         private string GetRelativePath(string path)
         {
             string result = path.Substring(_rootDir.Length).Replace("\\", @"/");
-            if (result == string.Empty)
-            {
-                return "/";
-            }
-            return result;
+            return result == string.Empty ? "/" : result;
         }
 
 
@@ -366,8 +370,8 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
         private FileSystemMediaFileFolder CreateFolder(string dir)
         {
             string relativeDir = GetRelativePath(dir);
-            FileSystemMediaFileFolder folder = new FileSystemMediaFileFolder(relativeDir, Store.Id,
-                _context.CreateDataSourceId(new MediaDataId() { Path = relativeDir, MediaType = _folderType }, typeof(IMediaFileFolder)));
+            var folder = new FileSystemMediaFileFolder(relativeDir, Store.Id,
+                _context.CreateDataSourceId(new MediaDataId(_folderType, relativeDir), typeof(IMediaFileFolder)));
             folder.IsReadOnly = IsReadOnlyFolder(folder.Path);
             return folder;
         }
@@ -378,21 +382,19 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             string relativeDir = GetRelativePath(Path.GetDirectoryName(filePath));
             string fileName = Path.GetFileName(filePath);
 
-            DataSourceId dataSourceId = _context.CreateDataSourceId(new MediaDataId() { Path = relativeDir, FileName = fileName, MediaType = _fileType }, typeof(IMediaFile));
-            FileSystemMediaFile file = new FileSystemMediaFile(filePath, fileName, relativeDir, this.Store.Id, dataSourceId);
-
-            return file;
+            DataSourceId dataSourceId = _context.CreateDataSourceId(new MediaDataId (_fileType , relativeDir, fileName), typeof(IMediaFile));
+            return new FileSystemMediaFile(filePath, fileName, relativeDir, this.Store.Id, dataSourceId);
         }
 
 
 
         private void CheckInterface(Type interfaceType)
         {
-            if (typeof(IMediaFile).IsAssignableFrom(interfaceType) == false &&
-                typeof(IMediaFileFolder).IsAssignableFrom(interfaceType) == false &&
-                typeof(IMediaFileStore).IsAssignableFrom(interfaceType) == false)
+            if (!typeof(IMediaFile).IsAssignableFrom(interfaceType) &&
+                !typeof(IMediaFileFolder).IsAssignableFrom(interfaceType) &&
+                !typeof(IMediaFileStore).IsAssignableFrom(interfaceType))
             {
-                throw new ArgumentException(string.Format("Unexpected interface '{0}' - only '{1}, {2} and {3}' are supported", interfaceType, typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore)));
+                throw new ArgumentException($"Unexpected interface '{interfaceType}' - only '{typeof(IMediaFile)}, {typeof(IMediaFileFolder)} and {typeof(IMediaFileStore)}' are supported");
             }
         }
 
@@ -400,68 +402,27 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         private sealed class MediaArchiveStore : IMediaFileStore
         {
-            private DataSourceId _dataSourceId;
-
-
-
-            public MediaArchiveStore(string id, string title, string description,DataSourceId dataSourceId)
+            public MediaArchiveStore(string id, string title, string description, DataSourceId dataSourceId)
             {
                 Id = id;
                 Title = title;
                 Description = description;
-                _dataSourceId = dataSourceId;
+                DataSourceId = dataSourceId;
             }
 
+            public string Id { get; }
 
+            public string Title { get; }
 
-            public string Id
-            {
-                get;
-                set;
-            }
+            public string Description { get; }
 
+            //public string Tags { get; set; }
 
+            public bool IsReadOnly => false;
 
-            public string Title
-            {
-                get;
-                set;
-            }
+            public bool ProvidesMetadata => false;
 
-
-
-            public string Description
-            {
-                get;
-                set;
-            }
-
-            public string Tags
-            {
-                get;
-                set;
-            }
-
-
-
-            public bool IsReadOnly
-            {
-                get { return false; }
-            }
-
-
-
-            public bool ProvidesMetadata
-            {
-                get { return false; }
-            }
-
-
-
-            public DataSourceId DataSourceId
-            {
-                get { return _dataSourceId; }
-            }
+            public DataSourceId DataSourceId { get; }
         }
     }
 
@@ -529,9 +490,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             if (configuration == null) throw new ArgumentException("Expected configuration to be of type MediaFileDataProviderData", "objectConfiguration");
 
             string resolvedRootDirectory = PathUtil.Resolve(configuration.RootDirectory);
-            if (C1Directory.Exists(resolvedRootDirectory) == false)
+            if (!C1Directory.Exists(resolvedRootDirectory))
             {
-                string directoryNotFoundMsg = string.Format("Directory '{0}' not found", configuration.RootDirectory);
+                string directoryNotFoundMsg = $"Directory '{configuration.RootDirectory}' not found";
                 throw new ConfigurationErrorsException(directoryNotFoundMsg, configuration.ElementInformation.Source, configuration.ElementInformation.LineNumber);
             }
             if (resolvedRootDirectory.EndsWith("\\"))
@@ -542,7 +503,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             string[] excludedDirs;
             if (configuration.ExcludedDirectories == null)
             {
-                excludedDirs = new string[0];
+                excludedDirs = Array.Empty<string>();
             }
             else
             {

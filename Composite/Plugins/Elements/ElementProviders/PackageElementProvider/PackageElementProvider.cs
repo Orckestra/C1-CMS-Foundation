@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
@@ -12,7 +12,6 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
-using Composite.Core.Extensions;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
@@ -50,7 +49,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private static ResourceHandle AddPackageSourceIcon = GetIconHandle("package-add-source");
         private static ResourceHandle DeletePackageSourceIcon = GetIconHandle("package-delete-source");
 
-        private static PermissionType[] ActionPermissions = new PermissionType[] { PermissionType.Administrate, PermissionType.Configure };
+        private static PermissionType[] ActionPermissions = { PermissionType.Administrate, PermissionType.Configure };
         
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
@@ -113,37 +112,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken seachToken)
         {
-            if ((entityToken is PackageElementProviderRootEntityToken))
+            if (entityToken is PackageElementProviderRootEntityToken)
             {
                 return GetRootChildren(seachToken);
             }
-            if ((entityToken is PackageElementProviderAvailablePackagesFolderEntityToken))
+            if (entityToken is PackageElementProviderAvailablePackagesFolderEntityToken)
             {
                 return GetAvailablePackagesFolderChildren(seachToken);
             }
-            if ((entityToken is PackageElementProviderAvailablePackagesGroupFolderEntityToken))
+            if (entityToken is PackageElementProviderAvailablePackagesGroupFolderEntityToken availableGroupEntityToken)
             {
-                var castedToken = entityToken as PackageElementProviderAvailablePackagesGroupFolderEntityToken;
-
-                return GetAvailablePackageGroupFolderChildren(castedToken.GroupName, seachToken);
+                return GetAvailablePackageGroupFolderChildren(availableGroupEntityToken.GroupName, seachToken);
             }
-            if ((entityToken is PackageElementProviderInstalledPackageFolderEntityToken))
+            if (entityToken is PackageElementProviderInstalledPackageFolderEntityToken)
             {
                 return GetInstalledPackageFolderChildren(seachToken);
             }
-            if ((entityToken is PackageElementProviderPackageSourcesFolderEntityToken))
+            if (entityToken is PackageElementProviderPackageSourcesFolderEntityToken)
             {
                 return GetPackageSourcesFolderChildren(seachToken);
             }
-            if ((entityToken is PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken))
+            if (entityToken is PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken)
             {
                 return GetInstalledLocalPackagesFolderChildren(seachToken);
             }
-            if ((entityToken is PackageElementProviderInstalledPackageGroupFolderEntityToken))
+            if (entityToken is PackageElementProviderInstalledPackageGroupFolderEntityToken installedGroupEntityToken)
             {
-                var castedToken = entityToken as PackageElementProviderInstalledPackageGroupFolderEntityToken;
-
-                return GetInstalledPackageGroupFolderChildren(castedToken.GroupName, seachToken);
+                return GetInstalledPackageGroupFolderChildren(installedGroupEntityToken.GroupName, seachToken);
             }
 
             throw new InvalidOperationException("Unexpected entity token type: " + entityToken.GetType());
@@ -153,16 +148,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = (DataEntityToken) entityToken ;
 
                 Type type = dataEntityToken.InterfaceType;
                 if (type != typeof(IPackageServerSource)) continue;
 
-                PackageElementProviderPackageSourcesFolderEntityToken newEntityToken = new PackageElementProviderPackageSourcesFolderEntityToken();
+                var newEntityToken = new PackageElementProviderPackageSourcesFolderEntityToken();
 
                 result.Add(entityToken, new EntityToken[] { newEntityToken });
             }
@@ -222,7 +217,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             {
                 Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "PackageSourcesFolderLabel"),
                 ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "PackageSourcesFolderToolTip"),
-                HasChildren = DataFacade.GetData<IPackageServerSource>().Count() > 0,
+                HasChildren = DataFacade.GetData<IPackageServerSource>().Any(),
                 Icon = PackageSourcesClosedIcon,
                 OpenedIcon = PackageSourcesOpenedIcon
             };
@@ -309,7 +304,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     {
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationLabel"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationToolTip"),
-                        Icon = ViewInstalledInformationIcon,
+                        Icon = ViewAvailableInformationIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
                         {
@@ -402,13 +397,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             foreach (IPackageServerSource packageServerSource in packageServerSources)
             {
-                Element element = new Element(_context.CreateElementHandle(packageServerSource.GetDataEntityToken()));
-                element.VisualData = new ElementVisualizedData
+                var element = new Element(_context.CreateElementHandle(packageServerSource.GetDataEntityToken()))
                 {
-                    Label = packageServerSource.Url,
-                    ToolTip = packageServerSource.Url,
-                    HasChildren = false,
-                    Icon = PackageSourceItemClosedIcon
+                    VisualData = new ElementVisualizedData
+                    {
+                        Label = packageServerSource.Url,
+                        ToolTip = packageServerSource.Url,
+                        HasChildren = false,
+                        Icon = PackageSourceItemClosedIcon
+                    }
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.DeletePackageSourceWorkflow"), new PermissionType[] { PermissionType.Administrate })))
@@ -435,30 +432,41 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
-
         private IEnumerable<Element> GetInstalledLocalPackagesFolderChildren(SearchToken seachToken)
+        {
+            return GetInstalledPackagesElements(package => package.IsLocalInstalled);
+        }
+
+        private IEnumerable<Element> GetInstalledPackageGroupFolderChildren(string groupName, SearchToken seachToken)
+        {
+            return GetInstalledPackagesElements(package => package.GroupName == groupName && !package.IsLocalInstalled);
+        }
+
+
+        private IEnumerable<Element> GetInstalledPackagesElements(Predicate<InstalledPackageInformation> filter)
         {
             IEnumerable<InstalledPackageInformation> installedPackageInformations =
                 from info in PackageManager.GetInstalledPackages()
-                where info.IsLocalInstalled 
+                where filter(info)
                 orderby info.Name
                 select info;
 
-            var allServerPackages = PackageSystemServices.GetAllAvailablePackages();
+            var serverPackagesPreviewUrls = PackageSystemServices.GetAllAvailablePackages()
+                .Where(p => !string.IsNullOrEmpty(p.ConsoleBrowserUrl))
+                .GroupBy(p => p.Id)
+                .ToDictionary(group => group.Key, group => group.First().ConsoleBrowserUrl);
 
-            foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
+            foreach (var installedPackageInformation in installedPackageInformations)
             {
-                Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
+                var element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
                     installedPackageInformation.Id,
                     installedPackageInformation.GroupName,
                     installedPackageInformation.IsLocalInstalled,
                     installedPackageInformation.CanBeUninstalled)));
 
-                PackageDescription serverPackageDescription = allServerPackages.Where(f => f.Id == installedPackageInformation.Id).FirstOrDefault();
-
-                if (serverPackageDescription != null && !string.IsNullOrEmpty(serverPackageDescription.ConsoleBrowserUrl))
+                if (serverPackagesPreviewUrls.TryGetValue(installedPackageInformation.Id, out var previewUrl))
                 {
-                    element.PropertyBag.Add("BrowserUrl", serverPackageDescription.ConsoleBrowserUrl);
+                    element.PropertyBag.Add("BrowserUrl", previewUrl);
                     element.PropertyBag.Add("BrowserToolingOn", "false");
                 }
 
@@ -506,63 +514,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
-        private IEnumerable<Element> GetInstalledPackageGroupFolderChildren(string groupName, SearchToken seachToken)
-        {
-            IEnumerable<InstalledPackageInformation> installedPackageInformations =
-                from info in PackageManager.GetInstalledPackages()
-                where info.GroupName == groupName &&
-                      info.IsLocalInstalled == false
-                orderby info.Name
-                select info;
-
-            var allServerPackages = PackageSystemServices.GetAllAvailablePackages();
-
-            foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
-            {
-                Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
-                    installedPackageInformation.Id,
-                    installedPackageInformation.GroupName,
-                    installedPackageInformation.IsLocalInstalled,
-                    installedPackageInformation.CanBeUninstalled)));
-
-                PackageDescription serverPackageDescription = allServerPackages.Where(f => f.Id == installedPackageInformation.Id).FirstOrDefault();
-
-                if (serverPackageDescription != null && !string.IsNullOrEmpty(serverPackageDescription.ConsoleBrowserUrl))
-                {
-                    element.PropertyBag.Add("BrowserUrl", serverPackageDescription.ConsoleBrowserUrl);
-                    element.PropertyBag.Add("BrowserToolingOn", "false");
-                }
-
-                element.VisualData = new ElementVisualizedData
-                {
-                    Label = installedPackageInformation.Name,
-                    ToolTip = installedPackageInformation.Name,
-                    HasChildren = false,
-                    Icon = GetIconForPackageItem(installedPackageInformation.Id),
-                };
-
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), ActionPermissions)))
-                {
-                    VisualData = new ActionVisualizedData
-                    {
-                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewInstalledInformationToolTip"),
-                        Icon = ViewInstalledInformationIcon,
-                        Disabled = false,
-                        ActionLocation = new ActionLocation
-                        {
-                            ActionType = ActionType.Edit,
-                            IsInFolder = false,
-                            IsInToolbar = true,
-                            ActionGroup = PrimaryActionGroup
-                        }
-
-                    }
-                });
-
-                yield return element;
-            }
-        }
 
 
 

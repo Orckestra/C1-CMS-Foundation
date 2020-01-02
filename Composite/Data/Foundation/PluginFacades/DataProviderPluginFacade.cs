@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -19,8 +19,6 @@ namespace Composite.Data.Foundation.PluginFacades
 {
     internal static class DataProviderPluginFacade
     {
-        internal static string UnittestDataProviderName { get { return "FallbackUnittestMemoryDataProvider"; } }
-
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
         internal static Func<IDataProviderFactory> DataProviderFactoryCreationDelegate = () => new ConfigurationDataProviderFactory();
@@ -35,8 +33,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static bool HasConfiguration()
         {
-            return ConfigurationServices.ConfigurationSource != null &&
-                   ConfigurationServices.ConfigurationSource.GetSection(DataProviderSettings.SectionName) != null;
+            return ConfigurationServices.ConfigurationSource?.GetSection(DataProviderSettings.SectionName) != null;
         }
 
 
@@ -67,7 +64,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
                     if (knownInterfaces.Contains(null))
                     {
-                        Log.LogWarning("DataProviderPluginFacade", "Data Provider '{0}' returned (null) as a known interface type. Value is ignored.", providerName);
+                        Log.LogWarning(nameof(DataProviderPluginFacade), $"Data Provider '{providerName}' returned (null) as a known interface type. Value is ignored.");
                         knownInterfaces.RemoveAll(f => f == null);
                     }
 
@@ -96,7 +93,7 @@ namespace Composite.Data.Foundation.PluginFacades
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                return SyncronizedCall<IDataProvider, IQueryable<T>>(providerName, provider => provider.GetData<T>());
+                return Call<IDataProvider, IQueryable<T>>(providerName, provider => provider.GetData<T>());
             }
         }
 
@@ -109,7 +106,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                return SyncronizedCall<IDataProvider, T>(providerName, provider => provider.GetData<T>(dataId));
+                return Call<IDataProvider, T>(providerName, provider => provider.GetData<T>(dataId));
             }
         }
 
@@ -121,9 +118,6 @@ namespace Composite.Data.Foundation.PluginFacades
 
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                IData firstData = dataset.FirstOrDefault();
-                if (firstData == null) return;
-
                 SyncronizedCall<IWritableDataProvider>(providerName, provider => provider.Update(dataset));
             }
         }
@@ -149,9 +143,6 @@ namespace Composite.Data.Foundation.PluginFacades
 
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                DataSourceId firstDataSourceId = dataSourceIds.FirstOrDefault();
-                if (firstDataSourceId == null) return;
-
                 SyncronizedCall<IWritableDataProvider>(providerName, provider => provider.Delete(dataSourceIds));
             }
         }
@@ -175,7 +166,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
-            CreateStores(providerName, new[] {typeDescriptor});
+            CreateStores(providerName, new[] { typeDescriptor });
         }
 
         public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors)
@@ -194,7 +185,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
         }
 
-        
+
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
@@ -212,7 +203,7 @@ namespace Composite.Data.Foundation.PluginFacades
         public static void DropStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
             Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
-   
+
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
@@ -251,27 +242,31 @@ namespace Composite.Data.Foundation.PluginFacades
             }
         }
 
-        private delegate void SyncronizedCallDelegate<T>(T provider) where T : class, IDataProvider;
-        private delegate TResult SyncronizedCallDelegate<T, TResult>(T provider)
-            where T : class, IDataProvider
-            where TResult : class;
-
-        private static void SyncronizedCall<TProvider>(string providerName, SyncronizedCallDelegate<TProvider> func) where TProvider : class, IDataProvider
-        {
-            SyncronizedCall<TProvider, object>(providerName, provider =>
-                                                               {
-                                                                   func(provider);
-                                                                   return null;
-                                                               });
-        }
-
-        private static TResult SyncronizedCall<TProvider, TResult>(string providerName, SyncronizedCallDelegate<TProvider, TResult> func)
+        private static TResult Call<TProvider, TResult>(string providerName, Func<TProvider, TResult> func)
             where TProvider : class, IDataProvider
             where TResult : class
         {
-            IDataProvider provider = GetDataProvider(providerName);
+            var provider = GetDataProvider(providerName) as TProvider
+                ?? throw new InvalidOperationException($"The data provider '{providerName}' does not implement the interface '{typeof(TProvider).FullName}'");
 
-            Verify.That(provider is TProvider, "The data provider {0} does not implement the interface {1}", providerName, typeof(TProvider).FullName);
+            return func(provider);
+        }
+
+        private static void SyncronizedCall<TProvider>(string providerName, Action<TProvider> func) where TProvider : class, IDataProvider
+        {
+            SyncronizedCall<TProvider, object>(providerName, provider =>
+            {
+                func(provider);
+                return null;
+            });
+        }
+
+        private static TResult SyncronizedCall<TProvider, TResult>(string providerName, Func<TProvider, TResult> func)
+            where TProvider : class, IDataProvider
+            where TResult : class
+        {
+            var provider = GetDataProvider(providerName) as TProvider
+                ?? throw new InvalidOperationException($"The data provider '{providerName}' does not implement the interface '{typeof(TProvider).FullName}'");
 
             // DDZ: hardcoded for now, to be fixed
             bool syncDisabled = provider is SqlDataProvider;
@@ -284,58 +279,35 @@ namespace Composite.Data.Foundation.PluginFacades
                     scope = _resourceLocker.Locker;
                 }
 
-                return (TResult)func(provider as TProvider);
+                return func(provider);
             }
             finally
             {
-                if (scope != null)
-                {
-                    scope.Dispose();
-                }
+                scope?.Dispose();
             }
         }
 
         public static bool IsWriteableProvider(string providerName)
         {
-            var dataProvider = GetDataProvider(providerName);
-
-            return (dataProvider is IWritableDataProvider);
+            return GetDataProvider(providerName) is IWritableDataProvider;
         }
 
 
         public static bool IsDynamicProvider(string providerName)
         {
-            var dataProvider = GetDataProvider(providerName);
-
-            return (dataProvider is IDynamicDataProvider);
+            return GetDataProvider(providerName) is IDynamicDataProvider;
         }
 
 
         public static bool IsGeneratedTypesProvider(string providerName)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                using (_resourceLocker.Locker)
-                {
-                    var dataProvider = GetDataProvider(providerName);
-
-                    return (dataProvider is IGeneratedTypesDataProvider);
-                }
-            }
+            return GetDataProvider(providerName) is IGeneratedTypesDataProvider;
         }
 
 
         public static bool IsLocalizedDataProvider(string providerName)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                using (_resourceLocker.Locker)
-                {
-                    var dataProvider = GetDataProvider(providerName);
-
-                    return (dataProvider is ILocalizedDataProvider);
-                }
-            }
+            return GetDataProvider(providerName) is ILocalizedDataProvider;
         }
 
         /// <summary>
@@ -346,22 +318,15 @@ namespace Composite.Data.Foundation.PluginFacades
         {
             var dataProvider = GetDataProvider(providerName);
 
-            return dataProvider != null 
-                && (!(dataProvider is ISupportCachingDataProvider)
-                     || (dataProvider as ISupportCachingDataProvider).AllowResultsWrapping);
+            return (dataProvider as ISupportCachingDataProvider)?.AllowResultsWrapping ?? true;
         }
 
 
-        private static T GetDataProvider<T>(string providerName) where T: class, IDataProvider
+        private static T GetDataProvider<T>(string providerName) where T : class, IDataProvider
         {
             var provider = GetDataProvider(providerName) as T;
 
-            if (provider == null)
-            {
-                throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(T)));
-            }
-
-            return provider;
+            return provider ?? throw new InvalidOperationException($"The data provider '{providerName}' does not implement the interface '{typeof(T)}'"); ;
         }
 
 
@@ -391,11 +356,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
                     _resourceLocker.Resources.ProviderCache.Add(providerName, dataProvider);
                 }
-                catch (ArgumentException ex)
-                {
-                    HandleConfigurationError(ex);
-                }
-                catch (ConfigurationErrorsException ex)
+                catch (Exception ex) when (ex is ArgumentException || ex is ConfigurationErrorsException)
                 {
                     HandleConfigurationError(ex);
                 }
@@ -415,15 +376,15 @@ namespace Composite.Data.Foundation.PluginFacades
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", DataProviderSettings.SectionName), ex);
-        }        
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{DataProviderSettings.SectionName}' from the configuration.", ex);
+        }
 
 
 
         private sealed class Resources
         {
-            public IDataProviderFactory Factory { get; set; }
-            public Hashtable<string, IDataProvider> ProviderCache { get; set; }
+            public IDataProviderFactory Factory { get; private set; }
+            public Hashtable<string, IDataProvider> ProviderCache { get; private set; }
 
             public static void Initialize(Resources resources)
             {
@@ -431,11 +392,7 @@ namespace Composite.Data.Foundation.PluginFacades
                 {
                     resources.Factory = DataProviderFactoryCreationDelegate();
                 }
-                catch (NullReferenceException ex)
-                {
-                    HandleConfigurationError(ex);
-                }
-                catch (ConfigurationErrorsException ex)
+                catch (Exception ex) when (ex is NullReferenceException || ex is ConfigurationErrorsException)
                 {
                     HandleConfigurationError(ex);
                 }

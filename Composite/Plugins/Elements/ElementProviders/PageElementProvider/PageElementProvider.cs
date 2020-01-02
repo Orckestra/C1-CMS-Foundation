@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -106,13 +106,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
         {
-            int pages;
-            using (new DataScope(DataScopeIdentifier.Administrated))
+            EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
+
+            if (UserValidationFacade.IsLoggedIn() 
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
             {
-                pages = PageServices.GetChildrenCount(Guid.Empty);
+                yield return new Element(_context.CreateElementHandle(entityToken))
+                {
+                    VisualData = new ElementVisualizedData
+                    {
+                        Label = "No website access: Missing permissions to any Data Language",
+                        Icon = PageElementProvider.DeactivateLocalization
+                    }
+                };
+                yield break;
             }
 
-            EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
+            ICollection<Guid> pageIds = PageServices.GetChildrenIDs(Guid.Empty);
+            
+            var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
+            if (homePageIdFilter != Guid.Empty)
+            {
+                pageIds = pageIds.Where(p => p == homePageIdFilter).ToList();
+            }
 
             var dragAndDropInfo = new ElementDragAndDropInfo();
             dragAndDropInfo.AddDropType(typeof(IPage));
@@ -124,7 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabelToolTip"),
-                    HasChildren = pages != 0,
+                    HasChildren = pageIds.Count != 0,
                     Icon = PageElementProvider.RootClosed,
                     OpenedIcon = PageElementProvider.RootOpen
                 }
@@ -168,7 +184,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 VisualData = new ActionVisualizedData
                 {
-                    //Label = "List unpublished Pages and Folder Data",
+                    //Label = "List unpublished Content",
                     //ToolTip = "Get an overview of pages and page folder data that haven't been published yet.",
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItemsToolTip"),
@@ -268,6 +284,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
+            if (UserValidationFacade.IsLoggedIn() 
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) 
+            {
+                return Enumerable.Empty<Element>();
+            }
+
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
                 return _pageAssociatedHelper.GetChildren(associatedData, false);
@@ -301,6 +323,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
             if (entityToken is DataEntityToken dataEntityToken && dataEntityToken.Data == null) return Array.Empty<Element>();
+            if (UserValidationFacade.IsLoggedIn()
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
+            {
+                return Enumerable.Empty<Element>();
+            }
 
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
@@ -457,18 +484,38 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private IEnumerable<IPage> GetChildrenPages(EntityToken entityToken, SearchToken searchToken)
         {
-            Guid? itemId = GetParentPageId(entityToken);
+            var itemId = GetParentPageId(entityToken);
 
-            if (!itemId.HasValue) return new IPage[] { };
+            if (!itemId.HasValue)
+                return Enumerable.Empty<IPage>();
 
+            var parentPageId = itemId.Value;
 
-            if (!searchToken.IsValidKeyword())
+            ICollection<IPage> pages;
+            if (searchToken.IsValidKeyword())
             {
-                return OrderByVersions(PageServices.GetChildren(itemId.Value).Evaluate());
+                var keyword = searchToken.Keyword.ToLowerInvariant();
+                pages = GetPagesByKeyword(keyword, parentPageId);
+            }
+            else
+            {
+                pages = PageServices.GetChildren(parentPageId).Evaluate();
             }
 
-            string keyword = searchToken.Keyword.ToLowerInvariant();
+            if (parentPageId == Guid.Empty)
+            {
+                var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
+                if (homePageIdFilter != Guid.Empty)
+                {
+                    pages = pages.Where(p => p.Id == homePageIdFilter).ToList();
+                }
+            }
 
+            return OrderByVersions(pages);
+        }
+
+        private ICollection<IPage> GetPagesByKeyword(string keyword, Guid parentId)
+        {
             var predicateItems =
                 from page in DataFacade.GetData<IPage>()
                 where (page.Description != null && page.Description.ToLowerInvariant().Contains(keyword)) ||
@@ -485,7 +532,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 nodes = nodes.Concat(GetAncestorPath(node, keyTree)).ToList();
             }
 
-            List<Guid> pageIds = nodes.Where(x => x.ParentKey == itemId).Select(x => x.Key).Distinct().ToList();
+            List<Guid> pageIds = nodes.Where(x => x.ParentKey == parentId).Select(x => x.Key).Distinct().ToList();
 
             var pages = new List<IPage>();
 
@@ -497,7 +544,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            return OrderByVersions(pages);
+            return pages;
         }
 
         private IEnumerable<IPage> OrderByVersions(IEnumerable<IPage> pages)
@@ -550,7 +597,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
             else if (newParentEntityToken is DataEntityToken dataEntityToken)
             {
-                IPage newParentPage = dataEntityToken.Data as IPage;
+                IPage newParentPage = (IPage)dataEntityToken.Data;
                 newParentPageId = newParentPage.Id;
             }
             else
@@ -595,7 +642,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     draggedPage.MoveTo(newParentPageId, realDropIndex, false);
                     
-                    DataFacade.Update(draggedPage);
+                    DataFacade.Update(draggedPage, false, false, true);
 
                     EntityTokenCacheFacade.ClearCache(draggedPage.GetDataEntityToken());
 

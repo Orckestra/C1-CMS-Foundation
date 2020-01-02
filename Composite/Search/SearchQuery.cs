@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,6 +6,7 @@ using Composite.Search.Crawling;
 using Composite.C1Console.Security;
 using Composite.Core.Threading;
 using Composite.Data;
+using Composite.Data.Types;
 
 namespace Composite.Search
 {
@@ -144,6 +145,22 @@ namespace Composite.Search
                 FieldName = DocumentFieldNames.DataType,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
+            });
+        }
+
+        /// <summary>
+        /// Filters search results by page types.
+        /// </summary>
+        /// <param name="pageTypes"></param>
+        public void FilterByPageTypes(params string[] pageTypes)
+        {
+            Verify.ArgumentNotNull(pageTypes, nameof(pageTypes));
+
+            Selection.Add(new SearchQuerySelection
+            {
+                FieldName = DocumentFieldNames.GetFieldName(typeof(IPage), nameof(IPage.PageTypeId)),
+                Operation = SearchQuerySelectionOperation.Or,
+                Values = pageTypes
             });
         }
 

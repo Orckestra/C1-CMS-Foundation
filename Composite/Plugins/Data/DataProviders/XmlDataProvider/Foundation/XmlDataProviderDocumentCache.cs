@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,10 +47,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         }
 
 
-        public static object SyncRoot
-        {
-            get { return _documentEditingSyncRoot; }
-        }
+        public static object SyncRoot => _documentEditingSyncRoot;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
@@ -132,7 +129,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             xDocument.Root.RemoveNodes();
 
-            return result;  
+            return result;
         }
 
 
@@ -157,13 +154,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         /// <returns></returns>
         private static IList<C1FileInfo> GetCandidateFiles(string filePath)
         {
-            List<C1FileInfo> files = new List<C1FileInfo>();
+            var files = new List<C1FileInfo>();
             if (C1File.Exists(filePath))
             {
                 files.Add(new C1FileInfo(filePath));
             }
 
-            var tmpFilePaths = C1Directory.GetFiles(Path.GetDirectoryName(filePath), string.Format("{0}.*.tmp", Path.GetFileName(filePath)));
+            var tmpFilePaths = C1Directory.GetFiles(
+                Path.GetDirectoryName(filePath), 
+                $"{Path.GetFileName(filePath)}.*.tmp");
 
             foreach (string tmpFilePath in tmpFilePaths)
             {
@@ -270,24 +269,28 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             IList<C1FileInfo> candidateFiles = GetCandidateFiles(filePath);
 
+            string errorCause = "";
+
             foreach (C1FileInfo candidateFile in candidateFiles)
             {
                 bool tryLoad = true;
+                bool retriedLoad = false;
 
                 while (tryLoad && dataDocument == null)
                 {
-                    dataDocument = TryLoad(candidateFile);
+                    dataDocument = TryLoad(candidateFile, ref errorCause);
 
                     if (dataDocument == null)
                     {
-                        if ((DateTime.Now - candidateFile.LastWriteTime).TotalSeconds > 30)
+                        if (retriedLoad && (DateTime.Now - candidateFile.LastWriteTime).TotalSeconds > 30)
                         {
-                            tryLoad = false;
+                            tryLoad = false; 
                         }
                         else
                         {
                             Thread.Sleep(250); // other processes/servers may be writing to this file at the moment. Patience young padawan!
                         }
+                        retriedLoad = true;
                     }
                 }
 
@@ -301,7 +304,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             if (dataDocument == null)
             {
                 dataDocument = new XDocument(new XElement("fallback"));
-                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store.", filePath);
+                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store. {1}", filePath, errorCause);
             }
 
             List<XElement> elements = ExtractElements(dataDocument);
@@ -331,19 +334,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        Log.LogWarning(LogTitle, "Failed to clean up ghost file '{0}'.", filePath);
+                        Log.LogWarning(LogTitle, $"Failed to clean up ghost file '{filePath}'.");
                     }
                 }
             }
 
-            DateTime lastModifiedFileDate = usedFile != null ? usedFile.LastWriteTime : DateTime.Now;
+            DateTime lastModifiedFileDate = usedFile?.LastWriteTime ?? DateTime.Now;
 
             return new FileRecord
             {
                 FilePath = filePath,
                 ElementName = elementName,
                 RecordSet = new RecordSet { Index = index },
-                ReadOnlyElementsList = new List<XElement>(elements),
+                ReadOnlyElementsList = elements,
                 LastModified = DateTime.Now,
                 FileModificationDate = lastModifiedFileDate
             };
@@ -351,21 +354,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        private static XDocument TryLoad(C1FileInfo candidateFile)
+        private static XDocument TryLoad(C1FileInfo candidateFile, ref string errorCause)
         {
             XDocument dataDocument = null;
             try
             {
-                XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-                xmlReaderSettings.CheckCharacters = false;
+                var xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
 
                 using (XmlReader xmlReader = XmlReaderUtils.Create(candidateFile.FullName, xmlReaderSettings))
                 {
                     dataDocument = XDocument.Load(xmlReader);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                errorCause = ex.Message;
                 // broken file - should not stop us...
             }
 

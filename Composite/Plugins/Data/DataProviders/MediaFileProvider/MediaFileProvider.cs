@@ -19,7 +19,7 @@ using Microsoft.Practices.ObjectBuilder;
 
 namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [ConfigurationElementType(typeof(MediaFileDataProviderData))]
@@ -113,7 +113,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 }
                 else
                 {
-                    throw new InvalidOperationException("Unexpected media type '{0}'".FormatWith(dataId.MediaType));
+                    throw new InvalidOperationException($"Unexpected media type '{dataId.MediaType}'");
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 Verify.IsNotNull(readStream, "GetReadStream returned null for type '{0}'", mediaFile.GetType());
                 fileData.Length = (int)readStream.Length;
             
-                string internalPath = Path.Combine(_workingDirectory, fileData.Id.ToString());
+                string internalPath = GetFilePath(fileData.Id);
                 internalMediaFile = new MediaFile(fileData, Store.Id, _context.CreateDataSourceId(
                     new MediaDataId
                     {
@@ -287,7 +287,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 }
                 else
                 {
-                    throw new InvalidOperationException("Unexpected media type '{0}'".FormatWith(dataId.MediaType));
+                    throw new InvalidOperationException($"Unexpected media type '{dataId.MediaType}'");
                 }
             }
         }
@@ -298,19 +298,16 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>(x => x.Id == mediaFolderId).First();
 
             string folderPath = folder.Path;
-            string innerElementsPathPrefix = string.Format("{0}/", folderPath);
+            string innerElementsPathPrefix = $"{folderPath}/";
 
             var files = (from item in DataFacade.GetData<IMediaFileData>()
                          where item.FolderPath.StartsWith(innerElementsPathPrefix) || item.FolderPath == folderPath
                          select item).ToList();
 
+            DeleteMediaFiles(files);
+
             DataFacade.Delete<IMediaFolderData>(x => x.Path.StartsWith(innerElementsPathPrefix));
             DataFacade.Delete(folder);
-
-            foreach (IMediaFileData file in files)
-            {
-                DeleteMediaFile(file.Id);
-            }
         }
 
 
@@ -362,7 +359,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                         var publicDataScope = DataScopeIdentifier.Public;
                         foreach (IMediaFileData file in files)
                         {
-                            string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
+                            string internalPath = GetFilePath(file.Id);
                             fileItems.Add(new MediaFile(file, Store.Id, _context.CreateDataSourceId(
                                 new MediaDataId
                                 {
@@ -411,10 +408,8 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         /// <exclude />
         public T GetData<T>(IDataId dataId) where T : class, IData
         {
-            if (dataId == null)
-            {
-                throw new ArgumentNullException("dataId");
-            }
+            Verify.ArgumentNotNull(dataId, nameof(dataId));
+
             CheckInterface(typeof(T));
 
             MediaDataId mediaDataId = dataId as MediaDataId;
@@ -431,7 +426,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     throw new ArgumentException("The dataId specifies a IMediaFileFolder, but the generic method was invoked with different type");
                 }
 
-                IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>().FirstOrDefault(x => x.Id == mediaDataId.Id);
+                var folder = DataFacade.GetData<IMediaFolderData>().FirstOrDefault(x => x.Id == mediaDataId.Id);
                 if (folder == null)
                 {
                     return null;
@@ -453,7 +448,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     return null;
                 }
 
-                string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
+                string internalPath = GetFilePath(file.Id);
                 return new MediaFile(file, Store.Id,
                        _context.CreateDataSourceId(new MediaDataId { MediaType = MediaElementType.File, Id = file.Id }, typeof(IMediaFile)), internalPath) as T;
 
@@ -485,7 +480,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 !typeof(IMediaFileFolder).IsAssignableFrom(interfaceType) &&
                 !typeof(IMediaFileStore).IsAssignableFrom(interfaceType))
             {
-                throw new ArgumentException(string.Format("Unexpected interface '{0}' - only '{1}, {2} and {3}' are supported", interfaceType, typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore)));
+                throw new ArgumentException($"Unexpected interface '{interfaceType}' - only '{typeof(IMediaFile)}, {typeof(IMediaFileFolder)} and {typeof(IMediaFileStore)}' are supported");
             }
         }
 
@@ -493,7 +488,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         private void DeleteMediaFile(Guid id)
         {
-            string fullPath = Path.Combine(_workingDirectory, id.ToString());
+            string fullPath = GetFilePath(id);
             if (C1File.Exists(fullPath))
             {
                 C1File.Delete(fullPath);
@@ -503,15 +498,25 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         }
 
 
+        private void DeleteMediaFiles(IList<IMediaFileData> mediaFiles)
+        {
+            foreach (var mediaFile in mediaFiles)
+            {
+                string fullPath = GetFilePath(mediaFile.Id);
+                if (C1File.Exists(fullPath))
+                {
+                    C1File.Delete(fullPath);
+                }
+            }
+
+            DataFacade.Delete<IMediaFileData>(mediaFiles);
+        }
+
+
 
         private bool DoesFolderExists(string path)
         {
-            if (path == "/")
-            {
-                return true;
-            }
-
-            return GetData<IMediaFileFolder>().Any(item => item.Path == path);
+            return path == "/" || GetData<IMediaFileFolder>().Any(item => item.Path == path);
         }
 
 
@@ -581,8 +586,10 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         }
 
 
+        private string GetFilePath(Guid mediaId) => Path.Combine(_workingDirectory, mediaId.ToString());
 
-        /// <summary>    
+
+        /// <summary>
         /// </summary>
         /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -593,6 +600,12 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
             /// <exclude />
             public Guid Id { get; set; }
+
+            /// <exclude />
+            public override bool Equals(object obj) => obj is MediaDataId mediaId && mediaId.Id == Id;
+
+            /// <exclude />
+            public override int GetHashCode() => Id.GetHashCode();
         }
 
 
@@ -613,30 +626,17 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
 
-            public string Id { get; set; }
+            public string Id { get; }
 
-            public string Title { get; set; }
+            public string Title { get;  }
 
-            public string Description { get; set; }
+            public string Description { get; }
 
-            public bool IsReadOnly
-            {
-                get { return false; }
-            }
+            public bool IsReadOnly => false;
 
+            public bool ProvidesMetadata => true;
 
-
-            public bool ProvidesMetadata
-            {
-                get { return true; }
-            }
-
-
-
-            public DataSourceId DataSourceId
-            {
-                get { return _dataSourceId; }
-            }
+            public DataSourceId DataSourceId => _dataSourceId;
         }
     }
 

@@ -1,7 +1,12 @@
-﻿<%@ WebHandler Language="C#" Class="DownloadFile" %>
+<%@ WebHandler Language="C#" Class="DownloadFile" %>
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.Versioning;
+using System.Runtime.InteropServices;
 using System.Web;
 using Composite;
 using Composite.Core.IO;
@@ -53,13 +58,25 @@ public class DownloadFile : IHttpHandler
 
         if (isPreview)
         {
-            var extension = Path.GetExtension(fullFilePath);
-            string mimeType = MimeTypeInfo.GetCanonicalFromExtension(extension);
+            var fileInfo = new FileInfo(fullFilePath);
+            string mimeType = MimeTypeInfo.GetCanonicalFromExtension(fileInfo.Extension);
 
             if (!MimeTypeInfo.IsBrowserPreviewableFile(mimeType))
             {
+                if (fileInfo.Extension.Equals(".dll", StringComparison.OrdinalIgnoreCase))
+                {
+                    OutputDllPreviewInformation(context, fullFilePath);
+                    return;
+                }
+
                 if (!MimeTypeInfo.IsTextFile(mimeType))
                 {
+                    return;
+                }
+
+                if (fileInfo.Length < 100*1024 && mimeType != "text/plain")
+                {
+                    PreviewWithCodeHighlight(context, fullFilePath);
                     return;
                 }
 
@@ -77,6 +94,148 @@ public class DownloadFile : IHttpHandler
         context.Response.TransmitFile(fullFilePath);
         context.ApplicationInstance.CompleteRequest();
     }
+
+    private void OutputDllPreviewInformation(HttpContext context, string fullFilePath)
+    {
+        FileVersionInfo fileVersion = null;
+        try
+        {
+            fileVersion = FileVersionInfo.GetVersionInfo(fullFilePath);
+        }
+        catch(Exception)
+        {
+        }
+
+        var assemblyInfo = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(asm =>
+        {
+            try
+            {
+                return !asm.IsDynamic
+                       && !string.IsNullOrEmpty(asm.CodeBase)
+                       && ("file:///" + fullFilePath).Replace("\\", "/")
+                          .Equals(asm.CodeBase, StringComparison.InvariantCultureIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        });
+
+        var fileInfo = new FileInfo(fullFilePath);
+
+        var lines = new List<string>();
+
+        if (assemblyInfo != null)
+        {
+            var attributes = assemblyInfo.CustomAttributes;
+
+            lines.AddRange(new []
+            {
+                "--------- Version and metadata ---------",
+                "",
+                "Assembly Name       : " + assemblyInfo.GetName().Name,
+                "Version             : " + assemblyInfo.GetName().Version,
+                "Is Debug Dll        : " + attributes.Any(
+                    a => a.AttributeType == typeof(DebuggableAttribute)
+                         && a.ConstructorArguments.Any(
+                             attr => attr.ArgumentType == typeof(DebuggableAttribute.DebuggingModes)
+                                     && ((DebuggableAttribute.DebuggingModes)attr.Value & DebuggableAttribute.DebuggingModes.DisableOptimizations) > 0)
+                ),
+                "ImageRuntimeVersion : " + assemblyInfo.ImageRuntimeVersion,
+                "Full Name           : " + assemblyInfo.FullName
+            });
+
+            var guidAttribute = attributes.FirstOrDefault(attr => attr.AttributeType == typeof(GuidAttribute));
+            if (guidAttribute != null)
+            {
+                lines.Add("Guid                : " + (string) guidAttribute.ConstructorArguments.First().Value);
+            }
+
+            var targetFrameworkAttr = attributes.FirstOrDefault(attr => attr.AttributeType == typeof(TargetFrameworkAttribute));
+            if (targetFrameworkAttr != null)
+            {
+                lines.Add("Target Framework    : " + (string) targetFrameworkAttr.ConstructorArguments.First().Value);
+            }
+        }
+        else
+        {
+            lines.Add("The dll file is not loaded in the current AppDomain or is not a managed assembly");
+        }
+
+        lines.Add("");
+        lines.Add("------------- File version -------------");
+        lines.Add("");
+
+        if (fileVersion != null)
+        {
+            if (!string.IsNullOrWhiteSpace(fileVersion.ProductName))
+            {
+                lines.Add("Product Name        : " + fileVersion.ProductName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(fileVersion.CompanyName))
+            {
+                lines.Add("Company Name        : " + fileVersion.CompanyName);
+            }
+
+            lines.AddRange(new[]
+            {
+                "Product Version     : " + fileVersion.ProductVersion,
+                "File    Version     : " + fileVersion.FileVersion
+            });
+
+            if (!string.IsNullOrWhiteSpace(fileVersion.Comments))
+            {
+                lines.Add("");
+                lines.Add(fileVersion.Comments);
+            }
+        }
+        else
+        {
+            lines.Add("Failed to get extract FileVersionInfo");
+        }
+
+
+        lines.AddRange(new[]
+        {
+            "",
+            "----------------------------------------",
+            "",
+            "Last Modified       : " + fileInfo.LastWriteTime.ToString("O"),
+            "Last Modified, UTC  : " + fileInfo.LastWriteTimeUtc.ToString("O"),
+            "Creation Time       : " + fileInfo.CreationTime.ToString("O"),
+            "Creation Time, UTC  : " + fileInfo.CreationTimeUtc.ToString("O")
+        });
+
+
+
+        var text = string.Join(Environment.NewLine, lines);
+
+        context.Response.ContentType = "text/plain";
+        context.Response.Write(text);
+    }
+
+    private void PreviewWithCodeHighlight(HttpContext context, string fullFilePath)
+    {
+        context.Response.ContentType = "text/html";
+        context.Response.Write(@"
+<html>
+ <head>
+  <link rel=""stylesheet"" href=""highlightjs/vs.css"" />
+  <script src=""highlightjs/highlight.pack.js""></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body><pre><code style=""overflow-x: inherit"">");
+
+        var lines = File.ReadAllLines(fullFilePath);
+        foreach (var line in lines)
+        {
+            context.Response.Write(context.Server.HtmlEncode(line));
+            context.Response.Write(Environment.NewLine);
+        }
+
+        context.Response.Write(@"</body></pre></code></html>");}
+
 
     private bool UserHasRightToDownload(EntityToken file)
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Composite.Data.Hierarchy;
 using Composite.Core.WebClient.Renderings.Data;
 
@@ -58,7 +58,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [ImmutableFieldId("{016372B5-9692-4C2D-B64D-8FC6594BBCFF}")]
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
-        [SearchableField(true, true, false)]
+        [SearchableField(true, true, true)]
         string Tags { get; set; }
 
 

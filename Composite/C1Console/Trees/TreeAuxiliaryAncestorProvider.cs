@@ -14,11 +14,11 @@ namespace Composite.C1Console.Trees
     {
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                TreeNodeDynamicContext dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Up)
+                var dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Up)
                 {
                     CurrentEntityToken = entityToken
                 };
@@ -37,37 +37,36 @@ namespace Composite.C1Console.Trees
                     {
                         string treeId;
 
-                        if (entityToken is TreeSimpleElementEntityToken)
+                        if (entityToken is TreeSimpleElementEntityToken simpleElementEntityToken)
                         {
-                            treeId = (entityToken as TreeSimpleElementEntityToken).TreeNodeId;
+                            treeId = simpleElementEntityToken.TreeNodeId;
                         }
-                        else if (entityToken is TreeFunctionElementGeneratorEntityToken)
+                        else if (entityToken is TreeFunctionElementGeneratorEntityToken functionGenEntityToken)
                         {
-                            treeId = (entityToken as TreeFunctionElementGeneratorEntityToken).TreeNodeId;
+                            treeId = functionGenEntityToken.TreeNodeId;
                         }
                         else
                         {
                             throw new InvalidOperationException("This code should not be reachable.");
                         }
 
-                        Log.LogError("TreeFacade", "The tree '{0}' failed to return parent entity tokens and are ignored", treeId);
+                        Log.LogError("TreeFacade", $"The tree '{treeId}' failed to return parent entity tokens and are ignored");
                         Log.LogError("TreeFacade", ex);
                     }
                 }
-                else if (entityToken is TreeDataFieldGroupingElementEntityToken)
+                else if (entityToken is TreeDataFieldGroupingElementEntityToken dataFieldGroupingEntityToken)
                 {
-                    TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = entityToken as TreeDataFieldGroupingElementEntityToken;
                     string treeId = entityToken.Source;
 
                     try
                     {
                         Tree tree = TreeFacade.GetTree(treeId);
 
-                        string treeNodeId = treeDataFieldGroupingElementEntityToken.TreeNodeId;
+                        string treeNodeId = dataFieldGroupingEntityToken.TreeNodeId;
                         TreeNode treeNode = tree.GetTreeNode(treeNodeId);
 
-                        dynamicContext.FieldGroupingValues = treeDataFieldGroupingElementEntityToken.GroupingValues;
-                        dynamicContext.FieldFolderRangeValues = treeDataFieldGroupingElementEntityToken.FolderRangeValues;
+                        dynamicContext.FieldGroupingValues = dataFieldGroupingEntityToken.GroupingValues;
+                        dynamicContext.FieldFolderRangeValues = dataFieldGroupingEntityToken.FolderRangeValues;
                         dynamicContext.CurrentTreeNode = treeNode;
 
                         result.Add(entityToken, treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext));
@@ -78,10 +77,8 @@ namespace Composite.C1Console.Trees
                         Log.LogError("TreeFacade", ex);
                     }
                 }
-                else if (entityToken is DataEntityToken)
+                else if (entityToken is DataEntityToken dataEntityToken)
                 {
-                    DataEntityToken dataEntityToken = entityToken as DataEntityToken;
-
                     Type interfaceType = dataEntityToken.InterfaceType;
 
                     foreach (Tree tree in TreeFacade.AllTrees)
@@ -89,12 +86,12 @@ namespace Composite.C1Console.Trees
                         List<TreeNode> treeNodes;
                         if (!tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes)) continue;
                         
-                        IEnumerable<EntityToken> concatList = null;                        
+                        IEnumerable<EntityToken> concatList = null;
 
                         foreach (TreeNode treeNode in treeNodes)
                         {
                             try
-                            {                              
+                            {
                                 dynamicContext.CurrentTreeNode = treeNode;
 
                                 concatList = concatList.ConcatOrDefault(treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext));

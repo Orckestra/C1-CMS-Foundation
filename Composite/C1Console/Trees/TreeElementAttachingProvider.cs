@@ -17,7 +17,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.C1Console.Trees
 {
     [ConfigurationElementType(typeof(NonConfigurableElementAttachingProvider))]
-    internal class TreeElementAttachingProvider : IMultibleResultElementAttachingProvider
+    internal class TreeElementAttachingProvider : IMultipleResultElementAttachingProvider
     {
         public ElementProviderContext Context
         {
@@ -79,7 +79,7 @@ namespace Composite.C1Console.Trees
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TreeFacade", string.Format("Getting elements from the three '{0}' failed", tree.TreeId));
+                        LoggingService.LogError("TreeFacade", string.Format("Getting elements from the tree '{0}' failed", tree.TreeId));
                         LoggingService.LogError("TreeFacade", ex);
 
                         Element errorElement = ShowErrorElementHelper.CreateErrorElement(
