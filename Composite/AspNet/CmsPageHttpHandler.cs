@@ -1,4 +1,4 @@
-﻿using System.Web;
+using System.Web;
 using System.Xml.Linq;
 using Composite.AspNet.Caching;
 using Composite.Core.Configuration;
@@ -11,7 +11,7 @@ using Composite.Core.Xml;
 namespace Composite.AspNet
 {
     /// <summary>
-    /// Renders page tempates without building a Web Form's control tree.
+    /// Renders page templates without building a Web Form's control tree.
     /// Contains a custom implementation of "donut caching".
     /// </summary>
     internal class CmsPageHttpHandler: IHttpHandler
@@ -98,6 +98,7 @@ namespace Composite.AspNet
                     var xhtmlDocument = new XhtmlDocument(document);
 
                     PageRenderer.ProcessXhtmlDocument(xhtmlDocument, renderingContext.Page);
+                    PageRenderer.ProcessDocumentHead(xhtmlDocument);
 
                     xhtml = xhtmlDocument.ToString();
                 }
@@ -125,7 +126,7 @@ namespace Composite.AspNet
                     context.Response.Cache.SetNoServerCaching();
                 }
 
-                // Inserting perfomance profiling information
+                // Inserting performance profiling information
                 if (renderingContext.ProfilingEnabled)
                 {
                     xhtml = renderingContext.BuildProfilerReport();

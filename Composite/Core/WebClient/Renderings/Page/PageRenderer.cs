@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -31,6 +32,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
         private static readonly XName XName_function = Namespaces.Function10 + "function";
+        private static readonly XName XName_Id = "id";
+        private static readonly XName XName_Name = "name";
 
         /// <exclude />
         public static FunctionContextContainer GetPageRenderFunctionContextContainer()
@@ -55,7 +58,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             Verify.ArgumentNotNull(page, "page");
             Verify.ArgumentNotNull(functionContextContainer, "functionContextContainer");
             Verify.ArgumentCondition(functionContextContainer.XEmbedableMapper is XEmbeddedControlMapper,
-                "functionContextContainer", $"Unknown or missing XEmbedable mapper on context container. Use {nameof(GetPageRenderFunctionContextContainer)}().");
+                "functionContextContainer", $"Unknown or missing XEmbedableMapper on context container. Use {nameof(GetPageRenderFunctionContextContainer)}().");
 
             CurrentPage = page;
 
@@ -275,6 +278,80 @@ namespace Composite.Core.WebClient.Renderings.Page
                 using (Profiler.Measure("Executing custom filters"))
                 {
                     filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                }
+            }
+        }
+
+        private static bool IsMetaTag(XElement e) => e.Name.LocalName.Equals("meta", StringComparison.OrdinalIgnoreCase);
+
+        private static bool CheckForDuplication(HashSet<string> values, string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                if (values.Contains(value)) return true;
+
+                values.Add(value);
+            }
+            
+            return false;
+        }
+
+        private static string AttributesAsString(this XElement e)
+        {
+            var str = new StringBuilder();
+            foreach (var attr in e.Attributes().OrderBy(a => a.Name.NamespaceName).ThenBy(a => a.Name.LocalName))
+            {
+                str.Append(attr.Name.LocalName);
+                str.Append("=\"");
+                str.Append(attr.Value);
+                str.Append("\" ");
+            }
+
+            return str.ToString();
+        }
+
+        /// <exclude />
+        public static void ProcessDocumentHead(XhtmlDocument xhtmlDocument)
+        {
+            var head = xhtmlDocument.Head;
+
+            var uniqueIdValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueMetaNameValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueScriptAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueLinkAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var priorityOrderedElements = new List<XElement>();
+
+            priorityOrderedElements.AddRange(head.Elements().Where(IsMetaTag));
+            priorityOrderedElements.Reverse();
+            priorityOrderedElements.AddRange(head.Elements().Where(e => !IsMetaTag(e)));
+
+            foreach (var e in priorityOrderedElements)
+            {
+                var id = (string) e.Attribute(XName_Id);
+
+                bool toBeRemoved = CheckForDuplication(uniqueIdValues, id);
+
+                if (!toBeRemoved && !e.Nodes().Any())
+                {
+                    switch (e.Name.LocalName.ToLowerInvariant())
+                    {
+                        case "meta":
+                            var name = (string) e.Attribute(XName_Name);
+                            toBeRemoved = CheckForDuplication(uniqueMetaNameValues, name);
+                            break;
+                        case "script":
+                            toBeRemoved = CheckForDuplication(uniqueScriptAttributes, e.AttributesAsString());
+                            break;
+                        case "link":
+                            toBeRemoved = CheckForDuplication(uniqueLinkAttributes, e.AttributesAsString());
+                            break;
+                    }
+                }
+
+                if (toBeRemoved)
+                {
+                    e.Remove();
                 }
             }
         }
