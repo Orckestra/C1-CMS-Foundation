@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Web.UI;
 using System.Xml.Linq;
 using Composite.AspNet;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.PageTemplates;
@@ -19,6 +20,9 @@ namespace Composite.Core.Routing.Pages
 {
     internal class C1PageRouteHandler : IRouteHandler
     {
+        private const string PageHandlerPath = "Renderers/Page.aspx";
+        private const string PageHandlerVirtualPath = "~/" + PageHandlerPath;
+
         private readonly PageUrlData _pageUrlData;
 
         private static readonly Type _handlerType;
@@ -43,9 +47,8 @@ namespace Composite.Core.Routing.Pages
 
                 var handler = handlers
                     .Elements("add")
-                    .Where(e => e.Attribute("path") != null
-                          && e.Attribute("path").Value.Equals("Renderers/Page.aspx", StringComparison.OrdinalIgnoreCase))
-                    .SingleOrDefaultOrException("Multiple handlers for 'Renderers/Page.aspx' were found'");
+                    .Where(e => e.Attribute("path")?.Value.Equals(PageHandlerPath, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .SingleOrDefaultOrException($"Multiple handlers for '{PageHandlerPath}' were found'");
 
                 if (handler != null)
                 {
@@ -94,17 +97,17 @@ namespace Composite.Core.Routing.Pages
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             }
 
-            if (IsSlimPageRenderer(_pageUrlData.GetPage().TemplateId))
-            {
-                return new CmsPageHttpHandler();
-            }
-
             if (_handlerType != null)
             {
                 return (IHttpHandler)Activator.CreateInstance(_handlerType);
             }
-            
-            return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath("~/Renderers/Page.aspx", typeof(Page));
+
+            if (GlobalSettingsFacade.OmitAspNetWebFormsSupport && IsSlimPageRenderer(_pageUrlData.GetPage().TemplateId))
+            {
+                return new CmsPageHttpHandler();
+            }
+
+            return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath(PageHandlerVirtualPath, typeof(Page));
         }
 
         private static readonly ConcurrentDictionary<Guid, bool> _pageRendererTypCache

@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.PageTemplates;
+using Composite.Plugins.PageTemplates.Razor;
 
 
 namespace Composite.Core.Configuration
@@ -247,6 +249,13 @@ namespace Composite.Core.Configuration
         /// <exclude />
         public static bool InheritGlobalReadPermissionOnHiddenPerspectives
             => _globalSettingsFacade.InheritGlobalReadPermissionOnHiddenPerspectives;
+
+        /// <summary>
+        /// When <value>true</value>, a page request handler that doesn't support UserControl functions will be used.
+        /// Applicable for <see cref="IPageTemplateProvider" />-s, that return renderer-s implementing <see cref="ISlimPageRenderer"/> interface
+        /// (f.e. <see cref="RazorPageTemplateProvider"/>).
+        /// </summary>
+        public static bool OmitAspNetWebFormsSupport => _globalSettingsFacade.OmitAspNetWebFormsSupport;
 
         // Overload
         /// <exclude />

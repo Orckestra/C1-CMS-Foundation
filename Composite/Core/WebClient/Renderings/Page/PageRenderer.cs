@@ -252,14 +252,14 @@ namespace Composite.Core.WebClient.Renderings.Page
                 ResolveRelativePaths(xhtmlDocument);
             }
 
-            using (Profiler.Measure("Sorting <head> elements"))
-            {
-                PrioritizeHeadNodes(xhtmlDocument);
-            }
-
             using (Profiler.Measure("Appending C1 meta tags"))
             {
                 AppendC1MetaTags(page, xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Sorting <head> elements"))
+            {
+                PrioritizeHeadNodes(xhtmlDocument);
             }
 
             using (Profiler.Measure("Parsing localization strings"))
@@ -313,8 +313,11 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static void ProcessDocumentHead(XhtmlDocument xhtmlDocument)
         {
-            var head = xhtmlDocument.Head;
+            RemoveDuplicates(xhtmlDocument.Head);
+        }
 
+        private static void RemoveDuplicates(XElement head)
+        {
             var uniqueIdValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var uniqueMetaNameValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var uniqueScriptAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -328,7 +331,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             foreach (var e in priorityOrderedElements)
             {
-                var id = (string) e.Attribute(XName_Id);
+                var id = (string)e.Attribute(XName_Id);
 
                 bool toBeRemoved = CheckForDuplication(uniqueIdValues, id);
 
@@ -337,7 +340,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     switch (e.Name.LocalName.ToLowerInvariant())
                     {
                         case "meta":
-                            var name = (string) e.Attribute(XName_Name);
+                            var name = (string)e.Attribute(XName_Name);
                             toBeRemoved = CheckForDuplication(uniqueMetaNameValues, name);
                             break;
                         case "script":
