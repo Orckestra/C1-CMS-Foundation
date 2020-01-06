@@ -65,16 +65,19 @@ namespace Composite.AspNet
                     {
                         document = slimRenderer.Render(renderingContext.PageContentToRender, functionContext);
                     }
-
+                    
                     allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext);
 
                     if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCachebale(context))
                     {
                         preventResponseCaching = true;
 
-                        using (Profiler.Measure("Adding to cache"))
+                        if (!functionContext.ExceptionsSuppressed)
                         {
-                            OutputCacheHelper.AddToCache(context, cacheKey, new DonutCacheEntry(context, document));
+                            using (Profiler.Measure("Adding to cache"))
+                            {
+                                OutputCacheHelper.AddToCache(context, cacheKey, new DonutCacheEntry(context, document));
+                            }
                         }
                     }
                 }
