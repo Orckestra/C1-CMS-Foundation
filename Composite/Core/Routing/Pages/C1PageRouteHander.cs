@@ -102,9 +102,15 @@ namespace Composite.Core.Routing.Pages
                 return (IHttpHandler)Activator.CreateInstance(_handlerType);
             }
 
-            if (GlobalSettingsFacade.OmitAspNetWebFormsSupport && IsSlimPageRenderer(_pageUrlData.GetPage().TemplateId))
+            if (GlobalSettingsFacade.OmitAspNetWebFormsSupport)
             {
-                return new CmsPageHttpHandler();
+                var page = _pageUrlData.GetPage()
+                    ?? throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
+
+                if (IsSlimPageRenderer(page.TemplateId))
+                {
+                    return new CmsPageHttpHandler();
+                }
             }
 
             return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath(PageHandlerVirtualPath, typeof(Page));

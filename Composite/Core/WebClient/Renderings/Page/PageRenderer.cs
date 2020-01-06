@@ -125,15 +125,6 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     XhtmlDocument xhtmlDocument = ParsePlaceholderContent(placeHolderContent);
                     placeholder.Element.ReplaceWith(xhtmlDocument.Root);
-
-                    //try
-                    //{
-                    //    placeholder.Element.Add(new XAttribute(RenderingElementNames.PlaceHolderIdAttribute, placeHolderId));
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    throw new InvalidOperationException($"Failed to set id '{placeHolderId}' on element", ex);
-                    //}
                 }
             }
         }
@@ -149,18 +140,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        public static Guid CurrentPageId
-        {
-            get
-            {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return Guid.Empty;
-                }
-
-                return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").Id;
-            }
-        }
+        public static Guid CurrentPageId => CurrentPage?.Id ?? Guid.Empty;
 
 
         /// <summary>
@@ -183,11 +163,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return null;
-                }
-
                 return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
             }
             set
@@ -207,20 +182,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        public static CultureInfo CurrentPageCulture
-        {
-            get
-            {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return null;
-                }
-
-                var page = RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
-                return page.DataSourceId.LocaleScope;
-            }
-        }
-
+        public static CultureInfo CurrentPageCulture => CurrentPage?.DataSourceId.LocaleScope;
 
 
         /// <exclude />
@@ -645,7 +607,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
             catch (Exception ex)
             {
-                using (Profiler.Measure("PageRenderer. Logging an exception"))
+                using (Profiler.Measure("PageRenderer. Logging exception: " + ex.Message))
                 {
                     XElement errorBoxHtml;
 
