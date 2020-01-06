@@ -430,7 +430,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     if (headElement.Attribute("name") != null) return 20;
 
-                    if (headElement.Attribute("property") != null) return 30;
+                    if (headElement.Attribute("property") != null) return 25;
 
                     return 20;
                 }
@@ -670,18 +670,18 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
         /// <summary>
-        /// Executes all cacheble (not dynamic) functions and returs <value>True</value> 
-        /// if all of the functions were cacheble.
+        /// Executes all cacheable (not dynamic) functions and returns <value>True</value> 
+        /// if all of the functions were cacheable.
         /// </summary>
         /// <param name="element"></param>
         /// <param name="functionContext"></param>
         /// <returns></returns>
-        internal static bool ExecuteCachebleFuctions(XElement element, FunctionContextContainer functionContext)
+        internal static bool ExecuteCacheableFunctions(XElement element, FunctionContextContainer functionContext)
         {
             return ExecuteFunctionsRec(element, functionContext, name =>
             {
-                var function = FunctionFacade.GetFunction(name) as IDynamicFunction;
-                return function == null || !function.PreventFunctionOutputCaching;
+                var function = FunctionFacade.GetFunction(name);
+                return !(function is IDynamicFunction df && df.PreventFunctionOutputCaching);
             });
         }
 

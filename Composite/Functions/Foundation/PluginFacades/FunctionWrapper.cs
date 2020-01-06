@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web;
@@ -157,14 +157,6 @@ namespace Composite.Functions.Foundation.PluginFacades
             }
         }
 
-        public bool PreventFunctionOutputCaching
-        {
-            get
-            {
-                var dynamicFunction = _functionToWrap as IDynamicFunction;
-                return dynamicFunction != null && dynamicFunction.PreventFunctionOutputCaching;
-            }
-        }
-        
+        public bool PreventFunctionOutputCaching => _functionToWrap is IDynamicFunction df && df.PreventFunctionOutputCaching;
     }
 }

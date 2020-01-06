@@ -66,7 +66,7 @@ namespace Composite.AspNet
                         document = slimRenderer.Render(renderingContext.PageContentToRender, functionContext);
                     }
 
-                    allFunctionsExecuted = PageRenderer.ExecuteCachebleFuctions(document.Root, functionContext);
+                    allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext);
 
                     if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCachebale(context))
                     {
