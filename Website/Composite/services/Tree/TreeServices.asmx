@@ -286,7 +286,7 @@ namespace Composite.Services
             catch (Exception ex)
             {
                 Log.LogCritical(LogTitle, ex);
-                throw;
+                return new List<ClientElement>();
             }
         }
 
