@@ -256,6 +256,7 @@
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\Serialization\CompositeSerializationBinder.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
+    <Compile Include="Core\WebClient\Renderings\Page\PagePreviewContext.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />
     <Compile Include="Core\WebClient\Renderings\INonCachebleRequestHostnameMapper.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
@@ -263,7 +264,7 @@
     <Compile Include="Data\Types\IUserGroupActiveLocale.cs" />
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
     <Compile Include="Functions\IDynamicFunction.cs" />
-	<Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageSearchToken.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageSearchToken.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
@@ -2694,7 +2695,7 @@
   </Target>
   -->
   <Target Name="BeforeBuild">
-  <PropertyGroup>
+    <PropertyGroup>
       <GitBranchFile>$(ProjectDir)git_branch.txt</GitBranchFile>
       <GitCommitHashFile>$(ProjectDir)git_commithash.txt</GitCommitHashFile>
     </PropertyGroup>
