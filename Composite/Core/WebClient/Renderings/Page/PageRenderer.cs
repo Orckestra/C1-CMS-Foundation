@@ -19,6 +19,7 @@ using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
+using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -105,7 +106,13 @@ namespace Composite.Core.WebClient.Renderings.Page
             return XhtmlDocument.Parse($"<html xmlns='{Namespaces.Xhtml}'><head/><body>{placeholderContent.Content}</body></html>");
         }
 
-        private static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
+
+        /// <summary>
+        /// Replaces &lt;rendering:placeholder  ... /&gt; tags with provided placeholder contents. Used by <see cref="XmlPageRenderer"/>.
+        /// </summary>
+        /// <param name="document">The document to be updated.</param>
+        /// <param name="placeholderContents">The placeholder content to be used.</param>
+        internal static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {

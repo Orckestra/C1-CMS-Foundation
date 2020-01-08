@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -30,9 +30,9 @@ namespace Composite.Plugins.PageTemplates.Razor
         private Page _aspnetPage;
         private PageContentToRender _job;
 
-        public void AttachToPage(Page renderTaget, PageContentToRender contentToRender)
+        public void AttachToPage(Page renderTarget, PageContentToRender contentToRender)
         {
-            _aspnetPage = renderTaget;
+            _aspnetPage = renderTarget;
             _job = contentToRender;
 
             _aspnetPage.Init += RendererPage;
