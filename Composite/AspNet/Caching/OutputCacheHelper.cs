@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -24,17 +24,13 @@ namespace Composite.AspNet.Caching
         {
             CacheabilityFieldInfo = typeof(HttpCachePolicy).GetField("_cacheability", BindingFlags.Instance | BindingFlags.NonPublic);
 
-            _outputCacheProfiles = new Dictionary<string, OutputCacheProfile>();
+            var section = WebConfigurationManager.OpenWebConfiguration(HostingEnvironment.ApplicationVirtualPath)
+                                                 .GetSection("system.web/caching/outputCacheSettings");
 
-            var settings = WebConfigurationManager.OpenWebConfiguration(HostingEnvironment.ApplicationVirtualPath)
-                .GetSection("system.web/caching/outputCacheSettings") as OutputCacheSettingsSection;
-
-            if (settings != null)
+            if (section is OutputCacheSettingsSection settings)
             {
-                foreach (OutputCacheProfile profile in settings.OutputCacheProfiles)
-                {
-                    _outputCacheProfiles[profile.Name] = profile;
-                }
+                _outputCacheProfiles = settings.OutputCacheProfiles.OfType<OutputCacheProfile>()
+                                               .ToDictionary(_ => _.Name);
             }
         }
 
@@ -153,37 +149,34 @@ namespace Composite.AspNet.Caching
         }
 
 
-        public static bool ResponseCachebale(HttpContext context)
+        public static bool ResponseCacheable(HttpContext context)
         {
             if (context.Response.StatusCode != 200)
             {
                 return false;
             }
 
-#if !DEBUG
-            var cacheability = GetPageCacheablity(context);
+            var cacheability = GetPageCacheability(context);
 
             return cacheability > HttpCacheability.NoCache;
-#endif
-            return true;
         }
 
 
-        private static HttpCacheability GetPageCacheablity(HttpContext context)
+        private static HttpCacheability GetPageCacheability(HttpContext context)
             => (HttpCacheability)CacheabilityFieldInfo.GetValue(context.Response.Cache);
 
 
 
         public static void InitializeFullPageCaching(HttpContext context)
         {
-            using (var page = new CachableEmptyPage())
+            using (var page = new CacheableEmptyPage())
             {
                 page.ProcessRequest(context);
             }
         }
 
 
-        private class CachableEmptyPage : Page
+        private class CacheableEmptyPage : Page
         {
             protected override void FrameworkInitialize()
             {

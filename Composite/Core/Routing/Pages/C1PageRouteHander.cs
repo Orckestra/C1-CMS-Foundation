@@ -91,6 +91,17 @@ namespace Composite.Core.Routing.Pages
                 context.RewritePath(filePath, pathInfo, queryString);
             }
 
+            if (_handlerType == null && GlobalSettingsFacade.OmitAspNetWebFormsSupport)
+            {
+                var page = _pageUrlData.GetPage()
+                    ?? throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
+
+                if (IsSlimPageRenderer(page.TemplateId))
+                {
+                    return new CmsPageHttpHandler();
+                }
+            }
+
             // Disabling ASP.NET cache if there's a logged-in user
             if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
             {
@@ -100,17 +111,6 @@ namespace Composite.Core.Routing.Pages
             if (_handlerType != null)
             {
                 return (IHttpHandler)Activator.CreateInstance(_handlerType);
-            }
-
-            if (GlobalSettingsFacade.OmitAspNetWebFormsSupport)
-            {
-                var page = _pageUrlData.GetPage()
-                    ?? throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
-
-                if (IsSlimPageRenderer(page.TemplateId))
-                {
-                    return new CmsPageHttpHandler();
-                }
             }
 
             return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath(PageHandlerVirtualPath, typeof(Page));

@@ -20,21 +20,27 @@ namespace Composite.AspNet
         {
             OutputCacheHelper.InitializeFullPageCaching(context);
 
-            bool cachingEnabled = OutputCacheHelper.TryGetCacheKey(context, out string cacheKey);
-
             using (var renderingContext = RenderingContext.InitializeFromHttpContext())
             {
-                var functionContext = PageRenderer.GetPageRenderFunctionContextContainer();
-
-                XDocument document;
+                bool cachingEnabled = false;
+                string cacheKey = null;
                 DonutCacheEntry cacheEntry = null;
-                if (cachingEnabled)
+
+                bool consoleUserLoggedIn = Composite.C1Console.Security.UserValidationFacade.IsLoggedIn();
+
+                // "Donut caching" is enabled for logged in users, only if profiling is enabled as well.
+                if (!renderingContext.CachingDisabled
+                    && (!consoleUserLoggedIn || renderingContext.ProfilingEnabled))
                 {
+                    cachingEnabled = OutputCacheHelper.TryGetCacheKey(context, out cacheKey);
                     using (Profiler.Measure("Cache lookup"))
                     {
                         cacheEntry = OutputCacheHelper.GetFromCache(context, cacheKey);
                     }
                 }
+
+                XDocument document;
+                var functionContext = PageRenderer.GetPageRenderFunctionContextContainer();
 
                 bool allFunctionsExecuted = false;
                 bool preventResponseCaching = false;
@@ -65,10 +71,10 @@ namespace Composite.AspNet
                     {
                         document = slimRenderer.Render(renderingContext.PageContentToRender, functionContext);
                     }
-                    
+
                     allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext);
 
-                    if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCachebale(context))
+                    if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCacheable(context))
                     {
                         preventResponseCaching = true;
 
@@ -127,6 +133,12 @@ namespace Composite.AspNet
                 if (preventResponseCaching)
                 {
                     context.Response.Cache.SetNoServerCaching();
+                }
+
+                // Disabling ASP.NET cache if there's a logged-in user
+                if (consoleUserLoggedIn)
+                {
+                    context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 }
 
                 // Inserting performance profiling information
