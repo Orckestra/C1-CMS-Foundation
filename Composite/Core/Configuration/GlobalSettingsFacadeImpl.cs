@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite.Core.Configuration.Foundation.PluginFacades;
@@ -166,5 +166,7 @@ namespace Composite.Core.Configuration
 
         public bool InheritGlobalReadPermissionOnHiddenPerspectives =>
             GlobalSettingsProviderPluginFacade.InheritGlobalReadPermissionOnHiddenPerspectives;
+
+        public bool OmitAspNetWebFormsSupport => GlobalSettingsProviderPluginFacade.OmitAspNetWebFormsSupport;
     }
 }

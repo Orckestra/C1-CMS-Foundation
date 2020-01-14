@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -58,7 +58,7 @@ namespace Composite.Core.PageTemplates
                     var placeholderAttributes = property.GetCustomAttributes(typeof(PlaceholderAttribute), true);
                     if (placeholderAttributes.Length == 0) continue;
 
-                    Verify.That(placeholderAttributes.Length == 1, "Multiple '{0}' attributes defined on property", typeof(PlaceholderAttribute), property.Name);
+                    Verify.That(placeholderAttributes.Length == 1, $"Multiple '{typeof(PlaceholderAttribute)}' attributes defined on property '{property.Name}'");
 
                     var placeholderAttribute = (PlaceholderAttribute)placeholderAttributes[0];
 
@@ -125,14 +125,19 @@ namespace Composite.Core.PageTemplates
 
                 if (functionContextContainer != null)
                 {
+                    bool allFunctionsExecuted;
+
                     using (Profiler.Measure($"Evaluating placeholder '{placeholderId}'"))
                     {
-                        PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
+                        allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(placeholderXhtml.Root, functionContextContainer);
                     }
 
-                    using (Profiler.Measure("Normalizing XHTML document"))
+                    if (allFunctionsExecuted)
                     {
-                        PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                        using (Profiler.Measure("Normalizing XHTML document"))
+                        {
+                            PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                        }
                     }
                 }
 
@@ -147,7 +152,7 @@ namespace Composite.Core.PageTemplates
                     Verify.IsNotNull(property, "Failed to find placeholder property '{0}'", propertyName);
                 }
 
-                property.SetValue(template, placeholderXhtml, new object[0]);
+                property.SetValue(template, placeholderXhtml);
             }
         }
     }

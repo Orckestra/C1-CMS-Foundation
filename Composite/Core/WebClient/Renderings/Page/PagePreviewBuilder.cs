@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.Caching;
 using Composite.Data.Types;
 
 namespace Composite.Core.WebClient.Renderings.Page
@@ -13,8 +12,6 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
-        private static readonly TimeSpan PreviewExpirationTimeSpan = new TimeSpan(0, 20, 0);
-
         /// <summary>
         /// Execute an 'im mem' preview request of the provided page and content. Requires IIS to run in "Integrated" pipeline mode.
         /// </summary>
@@ -41,18 +38,13 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// </returns>
         public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents, RenderingReason renderingReason)
         {
-            HttpContext ctx = HttpContext.Current;
-            string key = Guid.NewGuid().ToString();
-            string query = "previewKey=" + key;
-
-            ctx.Cache.Add(key + "_SelectedPage", selectedPage, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
-            ctx.Cache.Add(key + "_SelectedContents", contents, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
-            ctx.Cache.Add(key + "_RenderingReason", renderingReason, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
-
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
                 throw new InvalidOperationException("IIS classic mode not supported");
             }
+
+            var previewKey = Guid.NewGuid();
+            PagePreviewContext.Save(previewKey, selectedPage, contents, renderingReason);
 
             // The header trick here is to work around (what seems to be) a bug in .net 4.5, where preserveForm=false is ignored
             // asp.net 4.5 request validation will see the 'page edit http post' data and start bitching. It really should not.
@@ -61,13 +53,15 @@ namespace Composite.Core.WebClient.Renderings.Page
                 {"Content-Length", "0"}
             };
 
+            var ctx = HttpContext.Current;
             string cookieHeader = ctx.Request.Headers["Cookie"];
             if (!string.IsNullOrEmpty(cookieHeader))
             {
                 headers.Add("Cookie", cookieHeader);
             }
 
-            ctx.Server.TransferRequest("~/Renderers/Page.aspx?" + query, false, "GET", headers);
+            string previewPath = $"~/Renderers/PagePreview?{PagePreviewContext.PreviewKeyUrlParameter}={previewKey}";
+            ctx.Server.TransferRequest(previewPath, false, "GET", headers);
 
             return String.Empty;
         }

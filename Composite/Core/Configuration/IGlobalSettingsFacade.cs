@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -44,5 +44,6 @@ namespace Composite.Core.Configuration
         bool FunctionPreviewEnabled { get; }
         TimeZoneInfo TimeZone { get; }
         bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
+        bool OmitAspNetWebFormsSupport { get; }
     }
 }

@@ -23,6 +23,8 @@ namespace Composite.Functions
         private readonly ParameterList _parameterList;
         private readonly Dictionary<string, object> _parameterDictionary;
 
+        internal bool ExceptionsSuppressed { get; private set; }
+
         #region constructors
         /// <exclude />
         public FunctionContextContainer()
@@ -59,7 +61,7 @@ namespace Composite.Functions
 
 
         /// <summary>
-        /// Used for embeding ASP.NET controls into xhtml markup.
+        /// Used for embedding ASP.NET controls into xhtml markup.
         /// </summary>
         public IFunctionResultToXEmbedableMapper XEmbedableMapper { get; set; }
 
@@ -143,6 +145,7 @@ namespace Composite.Functions
             Log.LogError("Function: " + functionName, exception);
 
             errorBoxHtml = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(exception, functionName);
+            ExceptionsSuppressed = true;
 
             return true;
         }

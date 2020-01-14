@@ -49,14 +49,16 @@ namespace Composite.Functions
         /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler(this.GetNamespace() + "." + this.GetName()))
-            {
-                if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
 
+            string functionName = _function.CompositeName() ?? "<unknown function>";
+
+            using (TimerProfilerFacade.CreateTimerProfiler(functionName))
+            {
                 ValidateNotSelfCalling();
 
                 try
-                {                    
+                {
                     var parameters = new ParameterList(contextContainer);
 
                     foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
@@ -98,7 +100,7 @@ namespace Composite.Functions
                         }
                         catch (Exception ex)
                         {
-                            throw new InvalidOperationException(string.Format("Failed to get value for parameter '{0}' in function '{1}'.", parameterProfile.Name, _function.CompositeName()), ex);
+                            throw new InvalidOperationException($"Failed to get value for parameter '{parameterProfile.Name}' in function '{functionName}'.", ex);
                         }
                         parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
                     }
@@ -108,20 +110,23 @@ namespace Composite.Functions
                     IDisposable measurement = null;
                     try
                     {
-                        string functionName = _function.CompositeName();
                         if (functionName != "Composite.Utils.GetInputParameter")
                         {
-                            measurement = Profiler.Measure(functionName ?? "<unknown function>", () => _function.EntityToken);
+                            var nodeToLog = functionName;
+
+                            if (_function is IDynamicFunction df && df.PreventFunctionOutputCaching)
+                            {
+                                nodeToLog += " (PreventCaching)";
+                            }
+
+                            measurement = Profiler.Measure(nodeToLog, () => _function.EntityToken);
                         }
 
                         result = _function.Execute(parameters, contextContainer);
                     }
                     finally
                     {
-                        if (measurement != null)
-                        {
-                            measurement.Dispose();
-                        }
+                        measurement?.Dispose();
                     }
 
                     return result;
@@ -132,7 +137,7 @@ namespace Composite.Functions
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException("Failed to get value for function '{0}'".FormatWith(_function.CompositeName()), ex);
+                    throw new InvalidOperationException($"Failed to get value for function '{functionName}'", ex);
                 }
             }
         }

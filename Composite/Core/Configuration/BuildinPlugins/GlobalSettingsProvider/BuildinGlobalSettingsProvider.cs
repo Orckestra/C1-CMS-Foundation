@@ -139,5 +139,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public TimeZoneInfo TimeZone => _timezone;
 
         public bool InheritGlobalReadPermissionOnHiddenPerspectives => false;
+
+        public bool OmitAspNetWebFormsSupport => false;
     }
 }

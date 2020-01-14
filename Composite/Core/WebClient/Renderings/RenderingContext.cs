@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -53,7 +54,7 @@ namespace Composite.Core.WebClient.Renderings
         private static readonly List<string> _prettifyErrorUrls = new List<string>();
         private static int _prettifyErrorCount;
 
-        private string _previewKey;
+        private Guid _previewKey;
         private IDisposable _pagePerfMeasuring;
         private string _cachedUrl;
         private IDisposable _dataScope;
@@ -114,7 +115,7 @@ namespace Composite.Core.WebClient.Renderings
         /// <exclude />
         public IEnumerable<IPagePlaceholderContent> GetPagePlaceholderContents()
         {
-            return PreviewMode ? (IEnumerable<IPagePlaceholderContent>)HttpRuntime.Cache.Get(_previewKey + "_SelectedContents")
+            return PreviewMode ? PagePreviewContext.GetPageContents(_previewKey)
                                : PageManager.GetPlaceholderContent(Page.Id, Page.VersionId);
         }
 
@@ -203,15 +204,13 @@ namespace Composite.Core.WebClient.Renderings
                 _pagePerfMeasuring = Profiler.Measure("C1 Page");
             }
 
-            _previewKey = request.QueryString["previewKey"];
-            PreviewMode = !_previewKey.IsNullOrEmpty();
+            PreviewMode = PagePreviewContext.TryGetPreviewKey(request, out _previewKey);
 
             if (PreviewMode)
             {
-                Page = (IPage)HttpRuntime.Cache.Get(_previewKey + "_SelectedPage");
+                Page = PagePreviewContext.GetPage(_previewKey);
                 C1PageRoute.PageUrlData = new PageUrlData(Page);
-
-                PageRenderer.RenderingReason = (RenderingReason) HttpRuntime.Cache.Get(_previewKey + "_RenderingReason");
+                PageRenderer.RenderingReason = PagePreviewContext.GetRenderingReason(_previewKey);
             }
             else
             {
@@ -240,7 +239,11 @@ namespace Composite.Core.WebClient.Renderings
 
             PageRenderer.CurrentPage = Page;
 
-            _dataScope = new DataScope(Page.DataSourceId.PublicationScope, Page.DataSourceId.LocaleScope);
+            var culture = Page.DataSourceId.LocaleScope;
+
+            _dataScope = new DataScope(Page.DataSourceId.PublicationScope, culture);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
             PageContentToRender = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
@@ -321,10 +324,7 @@ namespace Composite.Core.WebClient.Renderings
 
             if (PreviewMode)
             {
-                var cache = HttpRuntime.Cache;
-
-                cache.Remove(_previewKey + "_SelectedPage");
-                cache.Remove(_previewKey + "_SelectedContents");
+                PagePreviewContext.Remove(_previewKey);
             }
         }
     }

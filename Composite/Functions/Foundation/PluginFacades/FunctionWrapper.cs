@@ -14,7 +14,7 @@ namespace Composite.Functions.Foundation.PluginFacades
     /// This class is used for catching exceptions from plugins and handling them correctly
     /// </summary>
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
-    internal sealed class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo
+    internal sealed class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo, IDynamicFunction
     {
         private static readonly string LogTitle = typeof (FunctionWrapper).Name;
         private readonly IFunction _functionToWrap;
@@ -139,8 +139,8 @@ namespace Composite.Functions.Foundation.PluginFacades
         {
             get
             {
-                return _functionToWrap is ICompoundFunction
-                    && (_functionToWrap as ICompoundFunction).AllowRecursiveCall;
+                return _functionToWrap is ICompoundFunction compoundFunction
+                     && compoundFunction.AllowRecursiveCall;
             }
         }
 
@@ -156,5 +156,7 @@ namespace Composite.Functions.Foundation.PluginFacades
                 return ((IFunctionInitializationInfo) _functionToWrap).FunctionInitializedCorrectly;
             }
         }
+
+        public bool PreventFunctionOutputCaching => _functionToWrap is IDynamicFunction df && df.PreventFunctionOutputCaching;
     }
 }
