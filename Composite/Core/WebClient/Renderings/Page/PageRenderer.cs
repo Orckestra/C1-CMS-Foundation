@@ -244,9 +244,15 @@ namespace Composite.Core.WebClient.Renderings.Page
             var filters = ServiceLocator.GetServices<IPageContentFilter>().OrderBy(f => f.Order).ToList();
             if (filters.Any())
             {
-                using (Profiler.Measure("Executing custom filters"))
+                using (Profiler.Measure("Executing page content filters"))
                 {
-                    filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                    filters.ForEach(filter =>
+                    {
+                        using (Profiler.Measure($"Filter: {filter.GetType().FullName}"))
+                        {
+                            filter.Filter(xhtmlDocument, page);
+                        }
+                    });
                 }
             }
         }
