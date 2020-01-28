@@ -25,6 +25,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly XName XName_Title = Namespaces.Xhtml + "title";
         private static readonly XName XName_Meta = Namespaces.Xhtml + "meta";
 
+        private static readonly HashSet<string> VoidElements = new HashSet<string>
+        {
+            "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param",
+            "source", "track", "wbr"
+        };
+
         /// <exclude />
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument)
         {
@@ -169,23 +175,10 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static bool IsHtmlControlElement(XElement element)
         {
             var name = element.Name;
-            string xnamespace = element.Name.Namespace.NamespaceName;
-            if (xnamespace == Namespaces.Xhtml.NamespaceName || xnamespace == string.Empty)
-            {
-                switch (name.LocalName)
-                {
-                    case "input":
-                    case "base":
-                    case "param":
-                    case "img":
-                    case "br":
-                    case "hr":
-                        return false;
-                    default:
-                        return true;
-                }
-            }
-            return false;
+            string xNamespace = element.Name.Namespace.NamespaceName;
+
+            return (xNamespace == Namespaces.Xhtml.NamespaceName || xNamespace == string.Empty)
+                   && !VoidElements.Contains(name.LocalName);
         }
 
 

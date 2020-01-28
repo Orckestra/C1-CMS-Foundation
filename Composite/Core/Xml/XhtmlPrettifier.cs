@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -95,18 +95,26 @@ namespace Composite.Core.Xml
 
         private static readonly HashSet<NamespaceName> SelfClosingElements = new HashSet<NamespaceName>(new []
             {
-                new NamespaceName { Name = "br", Namespace = "" }, 
-                new NamespaceName { Name = "hr", Namespace = "" }, 
-                new NamespaceName { Name = "input", Namespace = "" }, 
-                new NamespaceName { Name = "frame", Namespace = "" }, 
-                new NamespaceName { Name = "img", Namespace = "" }, 
-                new NamespaceName { Name = "area", Namespace = "" }, 
-                new NamespaceName { Name = "meta", Namespace = "" }, 
-                new NamespaceName { Name = "link", Namespace = "" }, 
-                new NamespaceName { Name = "col", Namespace = "" }, 
-                new NamespaceName { Name = "base", Namespace = "" }, 
+                // "Void elements" defined in HTML5
+                new NamespaceName { Name = "area", Namespace = "" },
+                new NamespaceName { Name = "base", Namespace = "" },
+                new NamespaceName { Name = "br", Namespace = "" },
+                new NamespaceName { Name = "col", Namespace = "" },
+                new NamespaceName { Name = "command", Namespace = "" },
+                new NamespaceName { Name = "embed", Namespace = "" },
+                new NamespaceName { Name = "hr", Namespace = "" },
+                new NamespaceName { Name = "img", Namespace = "" },
+                new NamespaceName { Name = "input", Namespace = "" },
+                new NamespaceName { Name = "keygen", Namespace = "" },
+                new NamespaceName { Name = "link", Namespace = "" },
+                new NamespaceName { Name = "meta", Namespace = "" },
+                new NamespaceName { Name = "param", Namespace = "" },
+                new NamespaceName { Name = "source", Namespace = "" },
+                new NamespaceName { Name = "track", Namespace = "" },
+                new NamespaceName { Name = "wbr", Namespace = "" },
+                // Obsolete element types
                 new NamespaceName { Name = "basefont", Namespace = "" }, 
-                new NamespaceName { Name = "param", Namespace = "" }
+                new NamespaceName { Name = "frame", Namespace = "" }
             });
 
 
