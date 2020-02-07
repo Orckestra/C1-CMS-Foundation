@@ -296,8 +296,7 @@ namespace Composite.Core.WebClient.Renderings
                     return true;
                 }
 
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.End();
+                throw new HttpException(404, $"Page not found");
             }
 
             // Setting 404 response code if it is a request to a custom "Page not found" page
