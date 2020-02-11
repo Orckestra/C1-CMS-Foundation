@@ -33,9 +33,12 @@ namespace Composite.AspNet
                     && (!consoleUserLoggedIn || renderingContext.ProfilingEnabled))
                 {
                     cachingEnabled = OutputCacheHelper.TryGetCacheKey(context, out cacheKey);
-                    using (Profiler.Measure("Cache lookup"))
+                    if (cachingEnabled)
                     {
-                        cacheEntry = OutputCacheHelper.GetFromCache(context, cacheKey);
+                        using (Profiler.Measure("Cache lookup"))
+                        {
+                            cacheEntry = OutputCacheHelper.GetFromCache(context, cacheKey);
+                        }
                     }
                 }
 
