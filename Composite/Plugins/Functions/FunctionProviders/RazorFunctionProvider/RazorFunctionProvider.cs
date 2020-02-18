@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Web.Hosting;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
 using Composite.Core;
@@ -22,6 +23,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
         protected override IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
         {
+            if (!HostingEnvironment.IsHosted)
+            {
+                return null;
+            }
+
             WebPageBase razorPage;
             using (BuildManagerHelper.DisableUrlMetadataCachingScope())
             {

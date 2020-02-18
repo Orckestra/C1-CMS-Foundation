@@ -402,8 +402,10 @@ namespace Composite.Core.WebClient
                                                                        System.Reflection.BindingFlags.GetField,
                                                                        null, runtime, null);
 
+            shutDownMessage = (shutDownMessage ?? "null").Replace("\n", "   \n");
+
             Log.LogVerbose("RGB(250,50,50)ASP.NET Shut Down",
-                $"_shutDownMessage=\n{shutDownMessage.Replace("\n", "   \n")}\n\n_shutDownStack=\n{shutDownStack}");
+                $"_shutDownMessage=\n{shutDownMessage}\n\n_shutDownStack=\n{shutDownStack}");
 
         }
     }
