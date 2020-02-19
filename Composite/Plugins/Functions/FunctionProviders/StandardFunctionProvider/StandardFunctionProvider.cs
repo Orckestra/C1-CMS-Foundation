@@ -245,7 +245,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             // pages
             _standardDynamicTypeFunctions.Add(new Pages.SitemapXmlFunction(_entityTokenFactory));
             _standardDynamicTypeFunctions.Add(new Pages.SitemapFunction(_entityTokenFactory));
-            _standardDynamicTypeFunctions.Add(new Pages.GetPageIdFunction(_entityTokenFactory));
+            _standardDynamicTypeFunctions.Add(new Pages.GetHomePageIdFunction(_entityTokenFactory));
             _standardDynamicTypeFunctions.Add(new Pages.GetForeignPageInfoFunction(_entityTokenFactory));
 
             // data.filter
