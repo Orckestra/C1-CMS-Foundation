@@ -270,6 +270,7 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\HomePageSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunctionBase.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TreeSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\HierarchicalSelectorWidgetFunction.cs" />
@@ -1884,7 +1885,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\CompoundFilter.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\DataReferenceFilter.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\IDataGenerated\Filter\Foundation\ListPropertyNamesHelper.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\GetHomePageIdFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Pages\GetPageIdFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\BoolEqualsPredicateFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\StringEndsWithPredicateFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Predicates\GuidEqualsPredicateFunction.cs" />
