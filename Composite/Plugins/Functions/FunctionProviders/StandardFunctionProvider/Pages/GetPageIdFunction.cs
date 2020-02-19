@@ -11,6 +11,7 @@ using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.C1Console.Security;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
@@ -70,7 +71,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         private Guid? GetCurrentPageIdFromHttpContext()
         {
             var entityToken = HttpContext.Current?.Items[ActionExecutorFacade.HttpContextItem_EntityToken];
-            return GetPageIdFromDataToken(entityToken as DataEntityToken);
+            return GetPageIdFromDataToken(entityToken);
         }
 
         private Guid? GetCurrentPageIdFromFormFlow()
@@ -78,22 +79,37 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             var currentFormTreeCompiler = FormFlowUiDefinitionRenderer.CurrentFormTreeCompiler;
             if (currentFormTreeCompiler.BindingObjects.TryGetValue(FormsWorkflow.EntityTokenKey, out var entityToken))
             {
-                return GetPageIdFromDataToken(entityToken as DataEntityToken);
+                return GetPageIdFromDataToken(entityToken);
             }
 
             return null;
         }
 
-        private Guid? GetPageIdFromDataToken(DataEntityToken entityToken)
+        private Guid? GetPageIdFromDataToken(object entityTokenObj)
         {
-            if (entityToken == null)
+            if (entityTokenObj is null || !(entityTokenObj is EntityToken entityToken))
+            {
                 return null;
+            }
 
-            if (Type.GetType(entityToken.Type, throwOnError: false) != typeof(IPage))
-                return null;
+            Guid? pageId = null;
 
-            var data = entityToken.Data as IPage;
-            var pageId = data?.Id;
+            if (entityTokenObj is DataEntityToken dataEntityToken)
+            {
+                if (dataEntityToken.Data is IPage cPage)
+                {
+                    pageId = cPage?.Id;
+                }
+                else if (dataEntityToken.Data is IPageRelatedData cPagerelatedDate)
+                {
+                    pageId = cPagerelatedDate?.PageId;
+                }
+            }
+            else if (typeof(IPage).IsAssignableFrom(Type.GetType(entityToken.Type, throwOnError: false)))
+            {
+                Guid.TryParse(entityToken?.Id, out Guid parcedId);
+                pageId = parcedId;
+            }
             return pageId == Guid.Empty ? null : pageId;
         }
 
