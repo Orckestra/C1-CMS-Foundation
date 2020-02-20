@@ -477,12 +477,16 @@ TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
 
 	TreeSelectorDialogPageBinding.superclass.onAfterPageInitialize.call(this);
 
-	this._treeBinding.focus();
-
-	if (this._selectedToken)
-		this._treeBinding._focusTreeNodeByEntityToken(this._selectedToken);
-	else
-		this._treeBinding.selectDefault();
+	var treeBinding = this._treeBinding;
+	var token = this._selectedToken;
+	
+	setTimeout(function () {
+		treeBinding.focus();
+		if (token)
+			treeBinding._focusTreeNodeByEntityToken(token);
+		else
+			treeBinding.selectDefault();
+	}, 0);
 }
 
 /**
