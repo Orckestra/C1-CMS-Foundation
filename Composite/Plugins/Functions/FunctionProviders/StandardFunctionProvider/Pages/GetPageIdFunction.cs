@@ -24,7 +24,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            if (parameters.TryGetParameter<SitemapScope>(nameof(SitemapScope), out var sitemapScope) == false)
+            if (!parameters.TryGetParameter<SitemapScope>(nameof(SitemapScope), out var sitemapScope))
             {
                 sitemapScope = SitemapScope.Current;
             }
@@ -99,12 +99,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 //appears while adding a metadata element
                 if (dataEntityToken.Data is IPage page)
                 {
-                    pageId = page?.Id;
+                    pageId = page.Id;
                 }
                 //appears while editing a datafolder element
                 else if (dataEntityToken.Data is IPageRelatedData pageRelatedData)
                 {
-                    pageId = pageRelatedData?.PageId;
+                    pageId = pageRelatedData.PageId;
                 }
             }
             //appears while adding a datafolder element
