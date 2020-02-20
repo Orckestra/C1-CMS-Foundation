@@ -66,7 +66,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                         new XElement(ft + "function",
                             new XAttribute("name", "Composite.Pages.GetPageId"),
                             new XElement(ft + "param",
-                                new XAttribute("name", "SitemapScope"),
+                                new XAttribute("name", nameof(SitemapScope)),
                                 new XAttribute("value", SitemapScope.Level1))))));
 
             return element;

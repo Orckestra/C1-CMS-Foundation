@@ -24,7 +24,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            if (parameters.TryGetParameter<SitemapScope>("SitemapScope", out var sitemapScope) == false)
+            if (parameters.TryGetParameter<SitemapScope>(nameof(SitemapScope), out var sitemapScope) == false)
             {
                 sitemapScope = SitemapScope.Current;
             }
@@ -71,7 +71,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         private Guid? GetCurrentPageIdFromHttpContext()
         {
             var entityToken = HttpContext.Current?.Items[ActionExecutorFacade.HttpContextItem_EntityToken];
-            return GetPageIdFromDataToken(entityToken);
+            return GetPageIdFromEntityToken(entityToken as EntityToken);
         }
 
         private Guid? GetCurrentPageIdFromFormFlow()
@@ -79,32 +79,35 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             var currentFormTreeCompiler = FormFlowUiDefinitionRenderer.CurrentFormTreeCompiler;
             if (currentFormTreeCompiler.BindingObjects.TryGetValue(FormsWorkflow.EntityTokenKey, out var entityToken))
             {
-                return GetPageIdFromDataToken(entityToken);
+                return GetPageIdFromEntityToken(entityToken as EntityToken);
             }
 
             return null;
         }
 
-        private Guid? GetPageIdFromDataToken(object entityTokenObj)
+        private Guid? GetPageIdFromEntityToken(EntityToken entityToken)
         {
-            if (entityTokenObj is null || !(entityTokenObj is EntityToken entityToken))
+            if (entityToken is null)
             {
                 return null;
             }
 
             Guid? pageId = null;
 
-            if (entityTokenObj is DataEntityToken dataEntityToken)
+            if (entityToken is DataEntityToken dataEntityToken)
             {
-                if (dataEntityToken.Data is IPage cPage)
+                //appears while adding a metadata element
+                if (dataEntityToken.Data is IPage page)
                 {
-                    pageId = cPage?.Id;
+                    pageId = page?.Id;
                 }
-                else if (dataEntityToken.Data is IPageRelatedData cPagerelatedDate)
+                //appears while editing a datafolder element
+                else if (dataEntityToken.Data is IPageRelatedData pageRelatedData)
                 {
-                    pageId = cPagerelatedDate?.PageId;
+                    pageId = pageRelatedData?.PageId;
                 }
             }
+            //appears while adding a datafolder element
             else if (typeof(IPage).IsAssignableFrom(Type.GetType(entityToken.Type, throwOnError: false)))
             {
                 Guid.TryParse(entityToken?.Id, out Guid parcedId);
@@ -122,7 +125,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     this.GetType(), "PageAssociationRestrictions", "Key", "Value", false, true);
 
                 yield return new StandardFunctionParameterProfile(
-                    "SitemapScope",
+                    nameof(SitemapScope),
                     typeof(SitemapScope),
                     false,
                     new ConstantValueProvider(SitemapScope.Current),
