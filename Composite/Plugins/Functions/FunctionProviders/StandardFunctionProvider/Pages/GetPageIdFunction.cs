@@ -92,7 +92,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 return null;
             }
 
-            Guid? pageId = null;
+            Guid pageId = Guid.Empty;
 
             if (entityToken is DataEntityToken dataEntityToken)
             {
@@ -110,10 +110,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             //appears while adding a datafolder element
             else if (typeof(IPage).IsAssignableFrom(Type.GetType(entityToken.Type, throwOnError: false)))
             {
-                Guid.TryParse(entityToken?.Id, out Guid parcedId);
-                pageId = parcedId;
+                Guid.TryParse(entityToken?.Id, out pageId);
             }
-            return pageId == Guid.Empty ? null : pageId;
+            return pageId == Guid.Empty ? null : (Guid?)pageId;
         }
 
 
