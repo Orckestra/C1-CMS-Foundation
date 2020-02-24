@@ -1,12 +1,11 @@
-using System;
-using System.Xml.Linq;
-using Composite.C1Console.Elements;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
+using System;
+using System.Xml.Linq;
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.DataReference
 {
