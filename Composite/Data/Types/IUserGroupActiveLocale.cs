@@ -36,6 +36,7 @@ namespace Composite.Data.Types
         [StringSizeValidator(2, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
         [ImmutableFieldId("{ddc38768-16e8-444c-a982-80f2a55b0b75}")]
+        [ForeignKey(typeof(ISystemActiveLocale), nameof(ISystemActiveLocale.CultureName), AllowCascadeDeletes = true)]
         string CultureName { get; set; }
 	}
 }
