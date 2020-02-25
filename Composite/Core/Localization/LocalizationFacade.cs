@@ -367,15 +367,6 @@ namespace Composite.Core.Localization
                     UserSettings.RemoveActiveLocaleCultureInfo(username, cultureInfo);
                 }
 
-                IEnumerable<IUserGroupActiveLocale> userGroupsLocales = DataFacade.GetData<IUserGroupActiveLocale>();
-                foreach(IUserGroupActiveLocale el in userGroupsLocales)
-                {
-                    if (el.CultureName == cultureName)
-                    {
-                        DataFacade.Delete(el);
-                    }
-                }
-
                 DataFacade.Delete<ISystemActiveLocale>(systemActiveLocale);
 
                 transactionScope.Complete();
