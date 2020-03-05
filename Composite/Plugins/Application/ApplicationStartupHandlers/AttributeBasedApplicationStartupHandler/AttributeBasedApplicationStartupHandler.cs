@@ -94,17 +94,24 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 var methodInfo = startupHandler.ConfigureServicesMethod;
 
-                if (methodInfo != null)
+                try
                 {
-                    if (methodInfo.IsStatic)
+                    if (methodInfo != null)
                     {
-                        methodInfo.Invoke(null, serviceCollectionParameter);
+                        if (methodInfo.IsStatic)
+                        {
+                            methodInfo.Invoke(null, serviceCollectionParameter);
+                        }
+                        else
+                        {
+                            var instance = Activator.CreateInstance(methodInfo.DeclaringType);
+                            methodInfo.Invoke(instance, serviceCollectionParameter);
+                        }
                     }
-                    else
-                    {
-                        var instance = Activator.CreateInstance(methodInfo.DeclaringType);
-                        methodInfo.Invoke(instance, serviceCollectionParameter);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    ProcessHandlerException(startupHandler, methodInfo, ex);
                 }
             }
         }
@@ -493,19 +500,24 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 }
                 catch (Exception ex)
                 {
-                    var type = methodInfo.DeclaringType;
-                    var message = $"Failed to execute startup handler. Type: '{type.FullName}', Assembly: '{type.Assembly.FullName}'";
-
-                    if (startupHandler.Attribute.AbortStartupOnException)
-                    {
-                        throw new InvalidOperationException(message, ex);
-                    }
-
-                    Log.LogError(LogTitle, message);
-
-                    Log.LogError(LogTitle, ex is TargetInvocationException ? ex.InnerException : ex);
+                    ProcessHandlerException(startupHandler, methodInfo, ex);
                 }
             }
+        }
+
+        private void ProcessHandlerException(StartupHandlerInfo startupHandler, MethodInfo methodInfo, Exception ex)
+        {
+            var type = methodInfo.DeclaringType;
+            var message = $"Failed to execute startup handler. Type: '{type.FullName}', Assembly: '{type.Assembly.FullName}'";
+
+            if (startupHandler.Attribute.AbortStartupOnException)
+            {
+                throw new InvalidOperationException(message, ex);
+            }
+
+            Log.LogError(LogTitle, message);
+
+            Log.LogError(LogTitle, ex is TargetInvocationException ? ex.InnerException : ex);
         }
 
 
