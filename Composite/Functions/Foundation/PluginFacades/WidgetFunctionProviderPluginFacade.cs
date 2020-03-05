@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
+using Composite.Core.Extensions;
 using Composite.Functions.Plugins.WidgetFunctionProvider;
 using Composite.Functions.Plugins.WidgetFunctionProvider.Runtime;
 
@@ -26,14 +27,11 @@ namespace Composite.Functions.Foundation.PluginFacades
         {
             using (_resourceLocker.Locker)
             {
-                List<IWidgetFunction> widgetFunctions = new List<IWidgetFunction>();
+                var widgetFunctions = new List<IWidgetFunction>();
 
-                IWidgetFunctionProvider provider = GetFunctionProvider(providerName);
+                var provider = GetFunctionProvider(providerName);
 
-                foreach (IWidgetFunction widgetFunction in provider.Functions)
-                {
-                    widgetFunctions.Add(new WidgetFunctionWrapper(widgetFunction));
-                }
+                provider.Functions?.ForEach(func => widgetFunctions.Add(new WidgetFunctionWrapper(func)));
 
                 return widgetFunctions;
             }
@@ -45,16 +43,13 @@ namespace Composite.Functions.Foundation.PluginFacades
         {
             using (_resourceLocker.Locker)
             {
-                List<IWidgetFunction> widgetFunctions = new List<IWidgetFunction>();
+                var widgetFunctions = new List<IWidgetFunction>();
 
-                IDynamicTypeWidgetFunctionProvider provider = GetFunctionProvider(providerName) as IDynamicTypeWidgetFunctionProvider;
+                var provider = GetFunctionProvider(providerName);
 
-                if (provider != null)
+                if (provider is IDynamicTypeWidgetFunctionProvider dtProvider)
                 {
-                    foreach (IWidgetFunction widgetFunction in provider.DynamicTypeDependentFunctions)
-                    {
-                        widgetFunctions.Add(new WidgetFunctionWrapper(widgetFunction));
-                    }
+                    dtProvider.DynamicTypeDependentFunctions?.ForEach(func => widgetFunctions.Add(new WidgetFunctionWrapper(func)));
                 }
 
                 return widgetFunctions;
