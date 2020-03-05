@@ -216,6 +216,7 @@
     <Compile Include="AspNet\ICmsSiteMapProvider.cs" />
     <Compile Include="AspNet\ISchemaOrgSiteMapNode.cs" />
     <Compile Include="AspNet\ISiteMapPlugin.cs" />
+    <Compile Include="AspNet\Razor\NoHttpRazorResponse.cs" />
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorHelper.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />

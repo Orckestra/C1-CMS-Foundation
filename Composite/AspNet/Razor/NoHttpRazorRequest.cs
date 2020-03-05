@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Hosting;
@@ -13,86 +14,35 @@ namespace Composite.AspNet.Razor
         private NameValueCollection _params;
         private NameValueCollection _serverVariables;
         private HttpCookieCollection _cookies;
+        private HttpBrowserCapabilitiesBase _browser;
 
-        public override string ApplicationPath
+        public override string ApplicationPath => HostingEnvironment.ApplicationVirtualPath;
+        public override string PhysicalApplicationPath => HostingEnvironment.ApplicationPhysicalPath;
+
+        public override HttpBrowserCapabilitiesBase Browser => _browser ?? (_browser = new HttpBrowserCapabilitiesWrapper(new HttpBrowserCapabilities
         {
-            get { return HostingEnvironment.ApplicationVirtualPath; }
+            Capabilities = new Dictionary<string, string>()
+        }));
+
+        public override HttpCookieCollection Cookies => _cookies ?? (_cookies = new HttpCookieCollection());
+        public override bool IsLocal => false;
+        public override NameValueCollection Form => _form ?? (_form = new NameValueCollection());
+        public override NameValueCollection Headers => _headers ?? (_headers = new NameValueCollection());
+        public override string HttpMethod => "GET";
+        public override bool IsAuthenticated => false;
+        public override bool IsSecureConnection => false;
+        public override string this[string key] => null;
+        public override NameValueCollection Params => _params ?? (_params = new NameValueCollection());
+        public override string PathInfo => null;
+        public override NameValueCollection QueryString => _queryString ?? (_queryString = new NameValueCollection());
+
+        public override string RequestType
+        {
+            get => HttpMethod;
+            set => throw new NotSupportedException();
         }
 
-        public override string PhysicalApplicationPath
-        {
-            get { return HostingEnvironment.ApplicationPhysicalPath; }
-        }
-
-        public override HttpCookieCollection Cookies
-        {
-            get { return _cookies ?? (_cookies = new HttpCookieCollection()); }
-        }
-
-        public override bool IsLocal
-		{
-			get { return false; }
-		}
-
-        public override NameValueCollection Form
-        {
-            get { return _form ?? (_form = new NameValueCollection()); }
-        }
-
-        public override NameValueCollection Headers
-        {
-            get { return _headers ?? (_headers = new NameValueCollection());}
-        }
-
-        public override string HttpMethod
-        {
-            get { return "GET"; }
-        }
-
-        public override bool IsAuthenticated
-        {
-            get { return false; }
-        }
-
-        public override bool IsSecureConnection
-        {
-            get { return false; }
-        }
-
-        public override string this[string key]
-        {
-            get { return null; }
-        }
-
-        public override NameValueCollection Params
-        {
-            get { return _params ?? (_params = new NameValueCollection()); }
-        }
-
-        public override string PathInfo
-        {
-            get { return null; }
-        }
-
-        public override NameValueCollection QueryString
-        {
-            get { return _queryString ?? (_queryString = new NameValueCollection()); }
-        }
-
-        public override string RequestType 
-        {
-            get { return HttpMethod; }
-            set { throw new NotSupportedException();} 
-        }
-
-        public override NameValueCollection ServerVariables
-        {
-            get { return _serverVariables ?? (_serverVariables = new NameValueCollection()); }
-        }
-
-        public override string UserAgent
-        {
-            get { return ""; }
-        }
+        public override NameValueCollection ServerVariables => _serverVariables ?? (_serverVariables = new NameValueCollection());
+        public override string UserAgent => "";
     }
 }
