@@ -92,10 +92,16 @@ namespace Composite.AspNet
         /// <exclude />
         public SiteMapNode FindSiteMapNodeFromKey(SiteMapProvider provider, string key)
         {
-            var pageId = new Guid(key);
-            var page = PageManager.GetPageById(pageId);
+            if (Guid.TryParse(key, out var pageId))
+            {
+                var page = PageManager.GetPageById(pageId);
+                if (page != null)
+                {
+                    return new CmsPageSiteMapNode(provider, page);
+                }
+            }
 
-            return page != null ? new CmsPageSiteMapNode(provider, page) : null;
+            return null;
         }
 
         /// <exclude />
