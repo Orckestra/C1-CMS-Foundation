@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Web;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 
@@ -10,11 +11,12 @@ namespace Composite.Core.Threading
     /// </summary>
     public static class ThreadDataManager
     {
-        private static readonly string LogTitle = typeof(ThreadDataManager).Name;
-        private const string c_HttpContextItemsId = "ThreadDataManager";
+        private static readonly string LogTitle = nameof(ThreadDataManager);
 
-        [ThreadStatic]
-        private static ThreadDataManagerData _threadDataManagerData;
+        private const string HttpContextItemsKey_InitializedKey = "ThreadDataManager_initialized";
+        private const string HttpContextItemsKey_SavedData = "ThreadDataManager_saved";
+
+        private static AsyncLocal<ThreadDataManagerData> _threadDataManagerData = new AsyncLocal<ThreadDataManagerData>();
 
         /// <summary>
         /// Gets <see cref="Composite.Core.Threading.ThreadDataManagerData" /> object for the current thread
@@ -25,36 +27,11 @@ namespace Composite.Core.Threading
         {
             get
             {
-                var currentContext = _threadDataManagerData;
-
-                if(currentContext != null)
-                {
-                    return currentContext;
-                }
-
-                var httpContext = HttpContext.Current;
-
-                if (httpContext != null)
-                {
-                    var data = httpContext.Items[c_HttpContextItemsId] as ThreadDataManagerData;
-
-                    if (data == null)
-                    {
-                        InitializeThroughHttpContext();
-
-                        data = httpContext.Items[c_HttpContextItemsId] as ThreadDataManagerData;
-
-                        Verify.That(data != null, "Failed to initialize data through http context");
-                    }
-
-                    return data;
-                }
-
-                return null;
+                return _threadDataManagerData?.Value;
             }
             internal set
             {
-                _threadDataManagerData = value;
+                _threadDataManagerData.Value = value;
             }
         }
 
@@ -145,16 +122,18 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             var httpContext = HttpContext.Current;
             Verify.IsNotNull(httpContext, "This can only be called from a thread started with a current http context");
 
-            if (httpContext.Items[c_HttpContextItemsId] == null)
+            if (httpContext.Items[HttpContextItemsKey_InitializedKey] == null)
             {
-                if (_threadDataManagerData != null)
+                if (_threadDataManagerData.Value != null)
                 {
-                    Log.LogCritical(LogTitle, "ThreadData has already been initialized in the current thread. It's been reset to NULL value, resource leaks are possible.");
-                    _threadDataManagerData = null;
+                    Log.LogCritical(LogTitle, "ThreadData has already been initialized for the current thread. It's been reset to NULL value, resource leaks are possible.");
+                    _threadDataManagerData.Value = null;
                 }
 
                 var threadData = new ThreadDataManagerData();
-                httpContext.Items[c_HttpContextItemsId] = threadData;
+
+                _threadDataManagerData.Value = threadData;
+                httpContext.Items[HttpContextItemsKey_InitializedKey] = threadData;
             }
         }
 
@@ -181,29 +160,30 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void FinalizeThroughHttpContext()
         {
-            if(_threadDataManagerData != null)
+
+            var context = HttpContext.Current;
+            var valueFromContext = context?.Items[HttpContextItemsKey_InitializedKey] as ThreadDataManagerData;
+
+            var value = _threadDataManagerData.Value ?? valueFromContext;
+            if (value == null)
             {
-                _threadDataManagerData = null;
-                Log.LogError(LogTitle, "Thread data hasn't been disposed after request execution. Resource leaks are possible.");
+                Log.LogError(LogTitle, "Thread data was already disposed after request execution.");
+                return;
             }
 
-
-            var httpContext = HttpContext.Current;
-
-            // Checking if ThreadData was initialized though HttpContext
-            var currentData = httpContext.Items[c_HttpContextItemsId] as IDisposable;
-            if (currentData != null)
+            if (!ReferenceEquals(valueFromContext, value))
             {
-                httpContext.Items[c_HttpContextItemsId] = null;
-                try
-                {
-                    currentData.Dispose();
-                }
-                catch(Exception e)
-                {
-                    Log.LogError(LogTitle, e);
-                }
+                Log.LogError(LogTitle, "Thread data preserved in context items and AsyncLocal differ.");
             }
+
+            if (context != null)
+            {
+                context.Items[HttpContextItemsKey_InitializedKey] = null;
+            }
+
+            _threadDataManagerData.Value = null;
+
+            value.Dispose();
         }
 
 
@@ -223,8 +203,8 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                 _threadData = newCurrentData;
 
                 // NOTE: We shouldn't take value from 'Current' property, since it may return it from HttpContext
-                _threadDataValueToBeRestored = _threadDataManagerData;
-                _threadDataManagerData = newCurrentData;
+                _threadDataValueToBeRestored = _threadDataManagerData.Value;
+                _threadDataManagerData.Value = newCurrentData;
 
                 _disposeData = disposeData;
             }
@@ -264,7 +244,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                     }
                     finally
                     {
-                        _threadDataManagerData = _threadDataValueToBeRestored;
+                        _threadDataManagerData.Value = _threadDataValueToBeRestored;
                     }
                 }
                 else
@@ -294,6 +274,18 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 #endif
                 Dispose(false);
             }
+        }
+
+        internal static void RestoreContext(HttpContextBase ctx)
+        {
+            _threadDataManagerData.Value = ctx.Items[HttpContextItemsKey_SavedData] as ThreadDataManagerData;
+            ctx.Items.Remove(HttpContextItemsKey_SavedData);
+        }
+
+        internal static void SaveContext(HttpContextBase ctx)
+        {
+            ctx.Items[HttpContextItemsKey_SavedData] = _threadDataManagerData.Value;
+            _threadDataManagerData.Value = null;
         }
     }
 }

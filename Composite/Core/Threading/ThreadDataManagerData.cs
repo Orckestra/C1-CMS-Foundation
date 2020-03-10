@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using Composite.Core.Collections.Generic;
 using System;
 
@@ -14,6 +14,7 @@ namespace Composite.Core.Threading
         /// <exclude />
         public ThreadDataManagerData Parent { get; set; }
         private Hashtable<object, object> Data { get; set; }
+        private string CreationCallStack { get; } = Environment.StackTrace;
         private bool _disposed = false;
 
 
@@ -22,8 +23,6 @@ namespace Composite.Core.Threading
             : this(null)
         {
         }
-
-        internal delegate void OnThreadDataDisposedDelegate();
 
         /// <exclude />
         public event ThreadStart OnDispose;

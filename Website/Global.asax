@@ -5,6 +5,19 @@
 
 <script RunAt="server">
 
+    public override void Init()
+    {
+        this.OnExecuteRequestStep((ctx, step) =>
+        {
+            ApplicationLevelEventHandlers.RestoreAmbientContext(ctx);
+
+            step();
+
+            ApplicationLevelEventHandlers.SaveAmbientContext(ctx);
+        });
+
+        base.Init();
+    }
 
     void Application_Start(object sender, EventArgs e)
     {

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Composite.AspNet;
 using Composite.C1Console.Actions.Data;
@@ -172,7 +173,7 @@ namespace Composite.Core.WebClient
 
             if (SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
-            ServiceLocator.CreateRequestServicesScope(context);
+                ServiceLocator.CreateRequestServicesScope(context);
             }
 
             if (LogRequestDetails)
@@ -336,32 +337,31 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void ApplicationStartInitialize(bool displayDebugInfo = false)
         {
-            ThreadDataManager.InitializeThroughHttpContext();
-
-            if (displayDebugInfo)
+            using (ThreadDataManager.EnsureInitialize())
             {
-                Log.LogVerbose("Global.asax", "--- Web Application Start, {0} Id = {1} ---", DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id);
+                if (displayDebugInfo)
+                {
+                    Log.LogVerbose("Global.asax", "--- Web Application Start, {0} Id = {1} ---", DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id);
+                }
+
+                PerformanceCounterFacade.SystemStartupIncrement();
+
+                using (GlobalInitializerFacade.GetPreInitHandlersScope())
+                {
+                    ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
+
+                    ServiceLocator.BuildServiceProvider();
+                    ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
+
+                    ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
+                }
+
+                TempDirectoryFacade.OnApplicationStart();
+
+                HostnameBindingsFacade.Initialize();
+
+                ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
             }
-
-            PerformanceCounterFacade.SystemStartupIncrement();
-
-            using (GlobalInitializerFacade.GetPreInitHandlersScope())
-            {
-                ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
-
-                ServiceLocator.BuildServiceProvider();
-                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
-
-                ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
-            }
-
-            TempDirectoryFacade.OnApplicationStart();
-
-            HostnameBindingsFacade.Initialize();
-
-            ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
-
-            ThreadDataManager.FinalizeThroughHttpContext();
         }
 
 
@@ -407,6 +407,16 @@ namespace Composite.Core.WebClient
             Log.LogVerbose("RGB(250,50,50)ASP.NET Shut Down",
                 $"_shutDownMessage=\n{shutDownMessage}\n\n_shutDownStack=\n{shutDownStack}");
 
+        }
+
+        public static void RestoreAmbientContext(HttpContextBase ctx)
+        {
+            ThreadDataManager.RestoreContext(ctx);
+        }
+
+        public static void SaveAmbientContext(HttpContextBase ctx)
+        {
+            ThreadDataManager.SaveContext(ctx);
         }
     }
 }
