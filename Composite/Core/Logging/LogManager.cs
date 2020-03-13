@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener;
@@ -17,6 +17,8 @@ namespace Composite.Core.Logging
 
         /// <exclude />
         public static int LogLinesRequestLimit = 5000;
+
+        private static int MaxLogEntriesToParse = 50000;
 
         private static LogFileReader[] _logFiles;
         private static readonly object _syncRoot = new object();
@@ -143,8 +145,24 @@ namespace Composite.Core.Logging
                         }
 
                         int entriesRead = 0;
+                        int entriesParsed = 0;
                         foreach (var entry in logFile.GetLogEntries(timeFrom, timeTo))
                         {
+                            entriesParsed++;
+
+                            if (entriesParsed >= MaxLogEntriesToParse)
+                            {
+                                result.Add(new LogEntry
+                                {
+                                    ApplicationDomainId = AppDomain.CurrentDomain.Id,
+                                    ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                    TimeStamp = DateTime.Now,
+                                    Title = nameof(LogManager),
+                                    Message = $"Maximum amount of parsed log entries reached ({MaxLogEntriesToParse})."
+                                });
+                                break;
+                            }
+
                             if (entry.TimeStamp >= timeFrom && entry.TimeStamp <= timeTo)
                             {
                                 if (!includeVerbose && entry.Severity == VerboseSeverity)
