@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Types;
@@ -63,33 +64,35 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         private static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
         {
-            string fullName = dataTypeDescriptor.GetFullInterfaceName();
+            string interfaceTypeFullName = dataTypeDescriptor.GetFullInterfaceName();
+
+            var debugDisplayText = $"Data wrapper for '{interfaceTypeFullName}'";
+            foreach (var keyPropertyName in dataTypeDescriptor.KeyPropertyNames)
+            {
+                debugDisplayText += $", {keyPropertyName} = {{{keyPropertyName}}}";
+            }
+
+            var labelFieldName = dataTypeDescriptor.LabelFieldName;
+            if (!string.IsNullOrEmpty(labelFieldName) && !dataTypeDescriptor.KeyPropertyNames.Contains(labelFieldName))
+            {
+                debugDisplayText += $", {labelFieldName} = {{{labelFieldName}}}";
+            }
 
             IEnumerable<Tuple<string, Type, bool>> properties =
                 dataTypeDescriptor.Fields.
-                Select(f => new Tuple<string, Type, bool>(f.Name, f.InstanceType, f.IsReadOnly)).
-                Concat(new[] { new Tuple<string, Type, bool>("DataSourceId", typeof(DataSourceId), true) });
+                    Select(f => new Tuple<string, Type, bool>(f.Name, f.InstanceType, f.IsReadOnly)).
+                    Concat(new[] { new Tuple<string, Type, bool>("DataSourceId", typeof(DataSourceId), true) });
 
-            return CreateCodeTypeDeclaration(fullName, properties);
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="interfaceTypeFullName"></param>
-        /// <param name="properties">Tuple(string propertyName, Type propertyType, bool readOnly)</param>
-        /// <returns></returns>
-        private static CodeTypeDeclaration CreateCodeTypeDeclaration(string interfaceTypeFullName, IEnumerable<Tuple<string, Type, bool>> properties)
-        {
-            CodeTypeDeclaration declaration = new CodeTypeDeclaration();
-            declaration.Name = CreateWrapperClassName(interfaceTypeFullName);
-            declaration.IsClass = true;
-            declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
+            var declaration = new CodeTypeDeclaration
+            {
+                Name = CreateWrapperClassName(interfaceTypeFullName),
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed
+            };
             declaration.BaseTypes.Add(interfaceTypeFullName);
             declaration.BaseTypes.Add(typeof(IDataWrapper));
-            declaration.CustomAttributes.Add(
+            declaration.CustomAttributes.AddRange(new[]
+            {
                 new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(EditorBrowsableAttribute)),
                     new CodeAttributeArgument(
@@ -98,8 +101,14 @@ namespace Composite.Data.Foundation.CodeGeneration
                             EditorBrowsableState.Never.ToString()
                         )
                     )
+                ),
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(DebuggerDisplayAttribute)),
+                    new CodeAttributeArgument(
+                        new CodePrimitiveExpression(debugDisplayText)
+                    )
                 )
-            );
+            });
 
             declaration.Members.Add(new CodeMemberField(interfaceTypeFullName, WrappedObjectName));
 
