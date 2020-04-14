@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
 using System.Security;
 using Composite.C1Console.Security;
 using Composite.Core.Types;
@@ -20,7 +21,7 @@ namespace Composite.Core.Serialization
         private const string HashKeyString = "meta:hash";
 
         /// <summary>
-        /// Check if string is serilized with JsonSerializer
+        /// Check if string is serialized with JsonSerializer
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -33,12 +34,12 @@ namespace Composite.Core.Serialization
         /// Serialize with automatic type name handling
         /// </summary>
         /// <param name="obj">Object to serialize</param>
-        /// <returns>seialized string</returns>
+        /// <returns>serialized string</returns>
         public static string Serialize(object obj)
         {
             var serializedData = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
             {
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Auto,
                 Converters = { new JsonTypeConverter() },
                 Binder = CompositeSerializationBinder.Instance
@@ -51,12 +52,12 @@ namespace Composite.Core.Serialization
         /// Serialize with json object structure type name handling
         /// </summary>
         /// <param name="obj">Object to serialize</param>
-        /// <returns>seialized string</returns>
+        /// <returns>serialized string</returns>
         public static string SerializeObject(object obj)
         {
             var serializedData = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
             {
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+                TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Objects,
                 Formatting = Formatting.None,
                 Converters = { new JsonTypeConverter() },
@@ -71,7 +72,7 @@ namespace Composite.Core.Serialization
         /// </summary>
         /// <param name="obj">Object to serialize</param>
         /// <param name="propertyNames">List of properties to be serialized</param>
-        /// <returns>seialized string</returns>
+        /// <returns>serialized string</returns>
         public static string SerializePartial(object obj, IEnumerable<string> propertyNames)
         {
             if (propertyNames == null)
@@ -94,7 +95,7 @@ namespace Composite.Core.Serialization
         /// </summary>
         /// <param name="obj">Object to serialize</param>
         /// <param name="shouldSign">To calculate the hash sign</param>
-        /// <returns>seialized string</returns>
+        /// <returns>serialized string</returns>
         public static string Serialize(object obj, bool shouldSign)
         {
             var type = obj.GetType();
@@ -125,7 +126,7 @@ namespace Composite.Core.Serialization
         /// <summary>
         /// Deserialize string into object with specified type
         /// </summary>
-        /// <param name="str">Serilaized string</param>
+        /// <param name="str">Serialized string</param>
         /// <typeparam name="T">Type of returned object</typeparam>
         /// <returns>The object</returns>
         public static T Deserialize<T>(string str)
@@ -141,7 +142,7 @@ namespace Composite.Core.Serialization
         /// <summary>
         /// Deserialize strings into object with specified type by merging them together
         /// </summary>
-        /// <param name="strs">Serilaized string</param>
+        /// <param name="strs">Serialized string</param>
         /// <typeparam name="T">Type of returned object</typeparam>
         /// <returns>The object</returns>
         public static T Deserialize<T>(params string[] strs)
@@ -173,7 +174,7 @@ namespace Composite.Core.Serialization
         /// <summary>
         /// Deserialize string into object
         /// </summary>
-        /// <param name="str">Serilaized string</param>
+        /// <param name="str">Serialized string</param>
         /// <returns>The object</returns>
         public static object Deserialize(string str)
         {
@@ -188,13 +189,13 @@ namespace Composite.Core.Serialization
         /// <summary>
         /// Deserialize strings into object with specified type from a hash signed wrapper
         /// </summary>
-        /// <param name="str">Serilaized string</param>
+        /// <param name="str">Serialized string</param>
         /// <param name="isSigned">Is signed</param>
         /// <typeparam name="T">Type of returned object</typeparam>
         /// <returns>The object</returns>
         public static T Deserialize<T>(string str, bool isSigned)
         {
-            var legacyStyleSerilized = str.StartsWith("{\"" + ObjectKeyString + "\":\"");
+            var legacyStyleSerialized = str.StartsWith("{\"" + ObjectKeyString + "\":\"");
 
             string obj;
             var hash = 0;
@@ -209,7 +210,7 @@ namespace Composite.Core.Serialization
                     throw new SerializationException();
             }
 
-            if (legacyStyleSerilized)
+            if (legacyStyleSerialized)
             {
                 obj = str.GetValue(ObjectKeyString);
             }
@@ -299,7 +300,7 @@ namespace Composite.Core.Serialization
                 {
                     TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                     TypeNameHandling = TypeNameHandling.Objects,
-                    Converters = {new JsonTypeConverter()}
+                    Converters = { new JsonTypeConverter() }
                 };
 
                 foreach (var property in _propertyNames)
