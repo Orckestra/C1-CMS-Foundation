@@ -40,7 +40,7 @@ namespace Composite.Core.Serialization
             {
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Auto,
-                Converters = {new JsonTypeConverter()},
+                Converters = { new JsonTypeConverter() },
                 Binder = CompositeSerializationBinder.Instance
             });
 
@@ -59,7 +59,7 @@ namespace Composite.Core.Serialization
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Objects,
                 Formatting = Formatting.None,
-                Converters = {new JsonTypeConverter()},
+                Converters = { new JsonTypeConverter() },
                 Binder = CompositeSerializationBinder.Instance
             });
 
@@ -79,8 +79,10 @@ namespace Composite.Core.Serialization
                 return SerializeObject(obj);
             }
 
-            var serializedData =
-                JsonConvert.SerializeObject(obj, new PartialJsonConvertor(propertyNames, obj.GetType()));
+            var serializedData = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            {
+                Converters = { new PartialJsonConvertor(propertyNames, obj.GetType()) }
+            });
 
             return serializedData;
         }
