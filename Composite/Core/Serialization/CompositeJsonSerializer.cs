@@ -88,8 +88,6 @@ namespace Composite.Core.Serialization
             return serializedData;
         }
 
-
-
         /// <summary>
         /// Serialize with a wrapper containing the serialized object, its hash sign and its type
         /// </summary>
@@ -99,9 +97,9 @@ namespace Composite.Core.Serialization
         public static string Serialize(object obj, bool shouldSign)
         {
             var type = obj.GetType();
-            var methodInfo = type.GetMethod("Serialize");
             string serializedData;
 
+            var methodInfo = type.GetMethod("Serialize");
             if (methodInfo == null)
             {
                 serializedData = Serialize(obj);
@@ -117,9 +115,9 @@ namespace Composite.Core.Serialization
                 ? serializedData.Substring(1, serializedData.Length - 2)
                 : $@"""{ObjectKeyString}"":""{serializedData}""";
 
-            return "{" + serializedProperties 
-                + $@",""{TypeKeyString}"":""{GetSerializedTypeName(type)}""" 
-                + (shouldSign ? $@",""{HashKeyString}"":""{hash}""" : "") 
+            return "{" + serializedProperties
+                + $@",""{TypeKeyString}"":""{GetSerializedTypeName(type)}"""
+                + (shouldSign ? $@",""{HashKeyString}"":""{hash}""" : "")
                 + "}";
         }
 
@@ -136,6 +134,7 @@ namespace Composite.Core.Serialization
                 TypeNameHandling = TypeNameHandling.Auto,
                 Binder = CompositeSerializationBinder.Instance
             });
+
             return obj;
         }
 
@@ -148,10 +147,12 @@ namespace Composite.Core.Serialization
         public static T Deserialize<T>(params string[] strs)
         {
             var combinedObj = new JObject();
+
             var mergeSettings = new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Union
             };
+
             try
             {
                 foreach (var s in strs)
@@ -163,11 +164,13 @@ namespace Composite.Core.Serialization
             {
                 throw new ArgumentException("Cannot merge arguments into one");
             }
+
             var obj = JsonConvert.DeserializeObject<T>(combinedObj.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
                 Binder = CompositeSerializationBinder.Instance
             });
+
             return obj;
         }
 
@@ -183,6 +186,7 @@ namespace Composite.Core.Serialization
                 TypeNameHandling = TypeNameHandling.Objects,
                 Binder = CompositeSerializationBinder.Instance
             });
+
             return obj;
         }
 
@@ -201,13 +205,17 @@ namespace Composite.Core.Serialization
             var hash = 0;
             var type = TypeManager.TryGetType(str.GetValue(TypeKeyString));
 
-            if (type==null)
+            if (type == null)
+            {
                 throw new SerializationException();
+            }
 
             if (isSigned)
             {
-                if(!int.TryParse(str.GetValue(HashKeyString),out hash))
+                if (!int.TryParse(str.GetValue(HashKeyString), out hash))
+                {
                     throw new SerializationException();
+                }
             }
 
             if (legacyStyleSerialized)
@@ -226,7 +234,8 @@ namespace Composite.Core.Serialization
                     throw new SecurityException($"Serialized {typeof(T).FullName} is tampered");
                 }
             }
-            MethodInfo methodInfo = type.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
+
+            var methodInfo = type.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
             if (methodInfo == null)
             {
                 return Deserialize<T>(obj);
@@ -234,9 +243,10 @@ namespace Composite.Core.Serialization
 
             if (!(typeof(T).IsAssignableFrom(methodInfo.ReturnType)))
             {
-                string typeName = str.GetValue(TypeKeyString);
-                Log.LogWarning("CompositeJsonSerializer", string.Format("The action {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", typeName, typeof(T)));
-                throw new InvalidOperationException(string.Format("The token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", typeName, typeof(T)));
+                var typeName = str.GetValue(TypeKeyString);
+                Log.LogWarning("CompositeJsonSerializer", $"The action {typeName} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(T)}");
+
+                throw new InvalidOperationException($"The token {typeName} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(T)}");
             }
 
             return (T)methodInfo.Invoke(null, new object[] { obj });
@@ -244,10 +254,11 @@ namespace Composite.Core.Serialization
 
         private static string GetValue(this string str, string key)
         {
-            var searchterm = "\"" + key + "\":\"";
-            var valueStartIndex = str.LastIndexOf(searchterm,StringComparison.InvariantCulture) + searchterm.Length;
-            var valueLength = str.IndexOf("\"", valueStartIndex,StringComparison.InvariantCulture) - valueStartIndex;
+            var searchTerm = "\"" + key + "\":\"";
+            var valueStartIndex = str.LastIndexOf(searchTerm, StringComparison.InvariantCulture) + searchTerm.Length;
+            var valueLength = str.IndexOf("\"", valueStartIndex, StringComparison.InvariantCulture) - valueStartIndex;
             var value = str.Substring(valueStartIndex, valueLength);
+
             return value;
         }
 
@@ -260,12 +271,11 @@ namespace Composite.Core.Serialization
         {
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
-                var type = (Type) value;
+                var type = (Type)value;
                 writer.WriteValue(GetSerializedTypeName(type));
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-                JsonSerializer serializer)
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 throw new NotImplementedException();
             }
@@ -277,7 +287,6 @@ namespace Composite.Core.Serialization
                 return typeof(Type).IsAssignableFrom(objectType);
             }
         }
-
 
         private class PartialJsonConvertor : JsonConverter
         {
@@ -298,7 +307,7 @@ namespace Composite.Core.Serialization
 
                 var jsonSerializer = new JsonSerializer
                 {
-                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple,
                     TypeNameHandling = TypeNameHandling.Objects,
                     Converters = { new JsonTypeConverter() }
                 };
@@ -313,17 +322,16 @@ namespace Composite.Core.Serialization
 
             private static object GetPropValue(object src, string propName)
             {
-                var pinf = src.GetType().GetProperty(propName);
-                if (pinf == null)
+                var prop = src.GetType().GetProperty(propName);
+                if (prop == null)
                 {
                     throw new ArgumentException($"There is no {propName} in {src.GetType().FullName}");
                 }
-                return pinf.GetValue(src, null);
 
+                return prop.GetValue(src, null);
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
-                JsonSerializer serializer)
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 throw new NotImplementedException();
             }
