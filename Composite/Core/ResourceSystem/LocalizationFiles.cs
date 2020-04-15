@@ -2906,7 +2906,7 @@ public static string PageMetaDataFolderToolTip=>T("PageMetaDataFolderToolTip");
 public static string Add=>T("Add");
 ///<summary>&quot;Add new global datatype&quot;</summary> 
 public static string AddToolTip=>T("AddToolTip");
-///<summary>&quot;List Unpublished Data&quot;</summary> 
+///<summary>&quot;List Unpublished Content&quot;</summary> 
 public static string ViewUnpublishedItems=>T("ViewUnpublishedItems");
 ///<summary>&quot;Get an overview of data that haven&apos;t been published yet&quot;</summary> 
 public static string ViewUnpublishedItemsToolTip=>T("ViewUnpublishedItemsToolTip");
@@ -3940,13 +3940,13 @@ public static string PageElementProvider_AddPageAtRootFormat_Template=>T("PageEl
 public static string PageElementProvider_AddPageAtRootFormat(object parameter0)=>string.Format(T("PageElementProvider.AddPageAtRootFormat"), parameter0);
 ///<summary>&quot;Add new homepage&quot;</summary> 
 public static string PageElementProvider_AddPageAtRootToolTip=>T("PageElementProvider.AddPageAtRootToolTip");
-///<summary>&quot;List Unpublished Pages&quot;</summary> 
+///<summary>&quot;List Unpublished Content&quot;</summary> 
 public static string PageElementProvider_ViewUnpublishedItems=>T("PageElementProvider.ViewUnpublishedItems");
-///<summary>&quot;Get an overview of pages and page folder data that haven&apos;t been published yet.&quot;</summary> 
+///<summary>&quot;Get an overview of pages and other content that haven&apos;t been published yet.&quot;</summary> 
 public static string PageElementProvider_ViewUnpublishedItemsToolTip=>T("PageElementProvider.ViewUnpublishedItemsToolTip");
-///<summary>&quot;Unpublished content&quot;</summary> 
+///<summary>&quot;Unpublished Content&quot;</summary> 
 public static string PageElementProvider_ViewUnpublishedItems_document_title=>T("PageElementProvider.ViewUnpublishedItems-document-title");
-///<summary>&quot;The list below displays pages and page data which are currently being edited or are ready to be approved / published.&quot;</summary> 
+///<summary>&quot;The list below displays pages and other content which are currently in draft or are ready to be approved / published.&quot;</summary> 
 public static string PageElementProvider_ViewUnpublishedItems_document_description=>T("PageElementProvider.ViewUnpublishedItems-document-description");
 ///<summary>&quot;Edit Page&quot;</summary> 
 public static string PageElementProvider_EditPage=>T("PageElementProvider.EditPage");
@@ -4042,7 +4042,7 @@ public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_Text=>T("Dele
 public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteAllVersions=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions");
 ///<summary>&quot;Delete only current version&quot;</summary> 
 public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteCurrentVersion=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion");
-///<summary>&quot;Page Title&quot;</summary> 
+///<summary>&quot;Title&quot;</summary> 
 public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItems.PageTitleLabel");
 ///<summary>&quot;Version&quot;</summary> 
 public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.VersionLabel");
@@ -6224,14 +6224,20 @@ public static string EditUserGroup_EditUserGroupStep1_UserGroupNameAlreadyExists
 public static string EditUserGroup_EditUserGroupStep1_ActivePerspectiveFieldLabel=>T("EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel");
 ///<summary>&quot;Perspectives&quot;</summary> 
 public static string EditUserGroup_EditUserGroupStep1_ActivePerspectiveMultiSelectLabel=>T("EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel");
-///<summary>&quot;Select which perspectives the user gets access to view&quot;</summary> 
+///<summary>&quot;Select which perspectives the users of this group gets access to view&quot;</summary> 
 public static string EditUserGroup_EditUserGroupStep1_ActivePerspectiveMultiSelectHelp=>T("EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp");
 ///<summary>&quot;Global permissions&quot;</summary> 
 public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsFieldLabel=>T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel");
 ///<summary>&quot;Global permissions&quot;</summary> 
 public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsMultiSelectLabel=>T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel");
-///<summary>&quot;The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks.&quot;</summary> 
+///<summary>&quot;Global permissions that users in this group should have. The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks.&quot;</summary> 
 public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsMultiSelectHelp=>T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp");
+///<summary>&quot;Data Language Access&quot;</summary> 
+public static string EditUserGroup_EditUserGroupStep1_ActiveLocalesFieldLabel=>T("EditUserGroup.EditUserGroupStep1.ActiveLocalesFieldLabel");
+///<summary>&quot;Data Languages&quot;</summary> 
+public static string EditUserGroup_EditUserGroupStep1_ActiveLocalesMultiSelectLabel=>T("EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectLabel");
+///<summary>&quot;Users in this group has access to manage data in the selected languages.&quot;</summary> 
+public static string EditUserGroup_EditUserGroupStep1_ActiveLocalesMultiSelectHelp=>T("EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectHelp");
 ///<summary>&quot;User Group Has Users&quot;</summary> 
 public static string DeleteUserGroup_DeleteUserGroupInitialStep_UserGroupHasUsersTitle=>T("DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle");
 ///<summary>&quot;You cannot delete a user group that has users.&quot;</summary> 
@@ -6666,6 +6672,8 @@ public static string SearchPage_MultipleResultsFound(object parameter0,object pa
 public static string DataType_Page=>T("DataType.Page");
 ///<summary>&quot;Media File&quot;</summary> 
 public static string DataType_MediaFile=>T("DataType.MediaFile");
+///<summary>&quot;Page Type&quot;</summary> 
+public static string FieldNames_PageTypeId=>T("FieldNames.PageTypeId");
 ///<summary>&quot;Label&quot;</summary> 
 public static string FieldNames_Label=>T("FieldNames.Label");
 ///<summary>&quot;Description&quot;</summary> 
@@ -6697,6 +6705,8 @@ public const string SearchPage_MultipleResultsFound="${Composite.Search,SearchPa
 public const string DataType_Page="${Composite.Search,DataType.Page}";
 ///<summary>&quot;Media File&quot;</summary>
 public const string DataType_MediaFile="${Composite.Search,DataType.MediaFile}";
+///<summary>&quot;Page Type&quot;</summary>
+public const string FieldNames_PageTypeId="${Composite.Search,FieldNames.PageTypeId}";
 ///<summary>&quot;Label&quot;</summary>
 public const string FieldNames_Label="${Composite.Search,FieldNames.Label}";
 ///<summary>&quot;Description&quot;</summary>
@@ -7213,6 +7223,10 @@ public static string Toolbar_Insert_Label=>T("Toolbar.Insert.Label");
 public static string Toolbar_Format_Label=>T("Toolbar.Format.Label");
 ///<summary>&quot;Format XML source&quot;</summary> 
 public static string Toolbar_Format_ToolTip=>T("Toolbar.Format.ToolTip");
+///<summary>&quot;Toggle word wrap&quot;</summary> 
+public static string Toolbar_ToggleWordWrap_Label=>T("Toolbar.ToggleWordWrap.Label");
+///<summary>&quot;Find and replace&quot;</summary> 
+public static string Toolbar_FindAndReplace_Label=>T("Toolbar.FindAndReplace.Label");
 ///<summary>&quot;Page URL&quot;</summary> 
 public static string Insert_PageURL_Label=>T("Insert.PageURL.Label");
 ///<summary>&quot;Image URL&quot;</summary> 
@@ -7239,6 +7253,24 @@ public static string ResxEditor_OriginalText=>T("ResxEditor.OriginalText");
 public static string ResxEditor_TranslatedText=>T("ResxEditor.TranslatedText");
 ///<summary>&quot;Save&quot;</summary> 
 public static string ResxEditor_Save=>T("ResxEditor.Save");
+///<summary>&quot;Find and replace&quot;</summary> 
+public static string FindAndReplace_LabelTitle=>T("FindAndReplace.LabelTitle");
+///<summary>&quot;Find&quot;</summary> 
+public static string FindAndReplace_LabelFind=>T("FindAndReplace.LabelFind");
+///<summary>&quot;Replace with&quot;</summary> 
+public static string FindAndReplace_LabelReplaceWith=>T("FindAndReplace.LabelReplaceWith");
+///<summary>&quot;Match case&quot;</summary> 
+public static string FindAndReplace_LabelMatchCase=>T("FindAndReplace.LabelMatchCase");
+///<summary>&quot;Whole words&quot;</summary> 
+public static string FindAndReplace_LabelWholeWords=>T("FindAndReplace.LabelWholeWords");
+///<summary>&quot;Find Next&quot;</summary> 
+public static string FindAndReplace_ButtonFind=>T("FindAndReplace.ButtonFind");
+///<summary>&quot;Replace&quot;</summary> 
+public static string FindAndReplace_ButtonReplace=>T("FindAndReplace.ButtonReplace");
+///<summary>&quot;Replace all&quot;</summary> 
+public static string FindAndReplace_ButtonReplaceAll=>T("FindAndReplace.ButtonReplaceAll");
+///<summary>&quot;Find and Replace&quot;</summary> 
+public static string FindAndReplace_LaunchButton_Label=>T("FindAndReplace.LaunchButton.Label");
 private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
 } 
 
@@ -7569,6 +7601,28 @@ public static string SpellCheck_InfoLabel=>T("SpellCheck.InfoLabel");
 public static string SpellCheck_InfoCaption=>T("SpellCheck.InfoCaption");
 ///<summary>&quot;To get suggestions for a misspelled word, press your SHIFT key down when you invoke the context menu.&quot;</summary> 
 public static string SpellCheck_InfoText=>T("SpellCheck.InfoText");
+///<summary>&quot;Find and Replace&quot;</summary> 
+public static string SearchAndReplace_LaunchButton_Label=>T("SearchAndReplace.LaunchButton.Label");
+///<summary>&quot;Find and replace&quot;</summary> 
+public static string SearchAndReplace_LabelTitle=>T("SearchAndReplace.LabelTitle");
+///<summary>&quot;Find&quot;</summary> 
+public static string SearchAndReplace_LabelFind=>T("SearchAndReplace.LabelFind");
+///<summary>&quot;Replace with&quot;</summary> 
+public static string SearchAndReplace_LabelReplaceWith=>T("SearchAndReplace.LabelReplaceWith");
+///<summary>&quot;Match case&quot;</summary> 
+public static string SearchAndReplace_LabelMatchCase=>T("SearchAndReplace.LabelMatchCase");
+///<summary>&quot;Whole words&quot;</summary> 
+public static string SearchAndReplace_LabelWholeWords=>T("SearchAndReplace.LabelWholeWords");
+///<summary>&quot;Find Next&quot;</summary> 
+public static string SearchAndReplace_ButtonFind=>T("SearchAndReplace.ButtonFind");
+///<summary>&quot;Replace&quot;</summary> 
+public static string SearchAndReplace_ButtonReplace=>T("SearchAndReplace.ButtonReplace");
+///<summary>&quot;Replace all&quot;</summary> 
+public static string SearchAndReplace_ButtonReplaceAll=>T("SearchAndReplace.ButtonReplaceAll");
+///<summary>&quot;nothing was found&quot;</summary> 
+public static string SearchAndReplace_NothingFoundMessage=>T("SearchAndReplace.NothingFoundMessage");
+///<summary>&quot;item(s) found&quot;</summary> 
+public static string SearchAndReplace_ItemsWereFoundMessage=>T("SearchAndReplace.ItemsWereFoundMessage");
 ///<summary>&quot;Edit&quot;</summary> 
 public static string Function_Edit=>T("Function.Edit");
 ///<summary>&quot;Edit {0}&quot;</summary> 
@@ -7590,6 +7644,82 @@ public static string Components_Window_Ok=>T("Components.Window.Ok");
 ///<summary>&quot;Cancel&quot;</summary> 
 public static string Components_Window_Cancel=>T("Components.Window.Cancel");
 private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Orckestra_Tools_UrlConfiguration {
+///<summary>&quot;URL Configuration&quot;</summary> 
+public static string Tree_ConfigurationElementLabel=>T("Tree.ConfigurationElementLabel");
+///<summary>&quot;This section allows configuring shorter and friendlier urls&quot;</summary> 
+public static string Tree_ConfigurationElementToolTip=>T("Tree.ConfigurationElementToolTip");
+///<summary>&quot;Edit URL Configuration&quot;</summary> 
+public static string Tree_ConfigurationElementEditLabel=>T("Tree.ConfigurationElementEditLabel");
+///<summary>&quot;Edit URL Configuration&quot;</summary> 
+public static string Tree_ConfigurationElementEditToolTip=>T("Tree.ConfigurationElementEditToolTip");
+///<summary>&quot;Hostnames&quot;</summary> 
+public static string Tree_HostnamesFolderLabel=>T("Tree.HostnamesFolderLabel");
+///<summary>&quot;Here you can map a hostname to a site&quot;</summary> 
+public static string Tree_HostnamesFolderToolTip=>T("Tree.HostnamesFolderToolTip");
+///<summary>&quot;Add Hostname&quot;</summary> 
+public static string Tree_AddHostnameLabel=>T("Tree.AddHostnameLabel");
+///<summary>&quot;Add a new hostname mapping&quot;</summary> 
+public static string Tree_AddHostnameToolTip=>T("Tree.AddHostnameToolTip");
+///<summary>&quot;Edit Hostname&quot;</summary> 
+public static string Tree_EditHostnameLabel=>T("Tree.EditHostnameLabel");
+///<summary>&quot;Edit this hostname mapping&quot;</summary> 
+public static string Tree_EditHostnameToolTip=>T("Tree.EditHostnameToolTip");
+///<summary>&quot;Delete Hostname&quot;</summary> 
+public static string Tree_DeleteHostnameLabel=>T("Tree.DeleteHostnameLabel");
+///<summary>&quot;Delete this hostname mapping&quot;</summary> 
+public static string Tree_DeleteHostnameToolTip=>T("Tree.DeleteHostnameToolTip");
+///<summary>&quot;UrlConfiguration&quot;</summary> 
+public static string Tree_UrlConfigurationLabel=>T("Tree.UrlConfigurationLabel");
+///<summary>&quot;URL Configuration&quot;</summary> 
+public static string UrlConfiguration_Title=>T("UrlConfiguration.Title");
+///<summary>&quot;Page URL Suffix&quot;</summary> 
+public static string UrlConfiguration_PageUrlSuffix_Label=>T("UrlConfiguration.PageUrlSuffix.Label");
+///<summary>&quot;A string that will be appended to all page urls. F.e. &apos;.aspx&apos; or &apos;.html&apos;, leaving this field empty will produce extensionless urls&quot;</summary> 
+public static string UrlConfiguration_PageUrlSuffix_Help=>T("UrlConfiguration.PageUrlSuffix.Help");
+///<summary>&quot;New Hostname&quot;</summary> 
+public static string HostnameBinding_AddNewHostnameTitle=>T("HostnameBinding.AddNewHostnameTitle");
+///<summary>&quot;Hostname&quot;</summary> 
+public static string HostnameBinding_Hostname_Label=>T("HostnameBinding.Hostname.Label");
+///<summary>&quot;Hostname to which current url building rules will be applied&quot;</summary> 
+public static string HostnameBinding_Hostname_Help=>T("HostnameBinding.Hostname.Help");
+///<summary>&quot;Page&quot;</summary> 
+public static string HostnameBinding_Page_Label=>T("HostnameBinding.Page.Label");
+///<summary>&quot;Root page that will be the default page for the current hostname&quot;</summary> 
+public static string HostnameBinding_Page_Help=>T("HostnameBinding.Page.Help");
+///<summary>&quot;URL&quot;</summary> 
+public static string HostnameBinding_IncludeHomepageUrlTitle_Label=>T("HostnameBinding.IncludeHomepageUrlTitle.Label");
+///<summary>&quot;Include homepage URL Title&quot;</summary> 
+public static string HostnameBinding_IncludeHomepageUrlTitle_ItemLabel=>T("HostnameBinding.IncludeHomepageUrlTitle.ItemLabel");
+///<summary>&quot;Determines whether root page&apos;s title should be a part of url. Not having it checked produces shorter urls&quot;</summary> 
+public static string HostnameBinding_IncludeHomepageUrlTitle_Help=>T("HostnameBinding.IncludeHomepageUrlTitle.Help");
+///<summary>&quot;Include language URL mapping&quot;</summary> 
+public static string HostnameBinding_IncludeLanguageUrlMapping_ItemLabel=>T("HostnameBinding.IncludeLanguageUrlMapping.ItemLabel");
+///<summary>&quot;Determines whether language code should be a part of a url&quot;</summary> 
+public static string HostnameBinding_IncludeLanguageUrlMapping_Help=>T("HostnameBinding.IncludeLanguageUrlMapping.Help");
+///<summary>&quot;Enforce HTTPS&quot;</summary> 
+public static string HostnameBinding_EnforceHttps_ItemLabel=>T("HostnameBinding.EnforceHttps.ItemLabel");
+///<summary>&quot;When checked, all the HTTP requests will be redirected to HTTPS links&quot;</summary> 
+public static string HostnameBinding_EnforceHttps_Help=>T("HostnameBinding.EnforceHttps.Help");
+///<summary>&quot;Custom 404 Page&quot;</summary> 
+public static string HostnameBinding_Custom404Page_Label=>T("HostnameBinding.Custom404Page.Label");
+///<summary>&quot;Url to which request will be redirected in the case there&apos;s a request to non-existent c1 page&quot;</summary> 
+public static string HostnameBinding_Custom404Page_Help=>T("HostnameBinding.Custom404Page.Help");
+///<summary>&quot;Alias hostnames&quot;</summary> 
+public static string HostnameBinding_Aliases_Label=>T("HostnameBinding.Aliases.Label");
+///<summary>&quot;Hostnames from which all requests will be redirected to the current hostname&quot;</summary> 
+public static string HostnameBinding_Aliases_Help=>T("HostnameBinding.Aliases.Help");
+///<summary>&quot;Alias Redirect&quot;</summary> 
+public static string HostnameBinding_UsePermanentRedirect_Label=>T("HostnameBinding.UsePermanentRedirect.Label");
+///<summary>&quot;Use permanent redirect (HTTP 301)&quot;</summary> 
+public static string HostnameBinding_UsePermanentRedirect_ItemLabel=>T("HostnameBinding.UsePermanentRedirect.ItemLabel");
+///<summary>&quot;When redirecting from an alias to the common hostname, a permanent redirect will tell visitors (browsers and search engines) that this redirect should be considered permanent and may be cached. Checking this box has a positive effect on SEO, provided the alias rule do not change in the near future&quot;</summary> 
+public static string HostnameBinding_UsePermanentRedirect_Help=>T("HostnameBinding.UsePermanentRedirect.Help");
+private static string T(string key) => StringResourceSystemFacade.GetString("Orckestra.Tools.UrlConfiguration", key);
 } 
 
 	}

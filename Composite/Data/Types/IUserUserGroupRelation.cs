@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 
@@ -9,6 +9,7 @@ namespace Composite.Data.Types
     /// This data interface represents a user relation to a user group in C1 CMS. This can be used to query user group members through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
+    [Caching(CachingType.Full)]
     [KeyPropertyName(0, "UserId")]
     [KeyPropertyName(1, "UserGroupId")]
     [DataScope(DataScopeIdentifier.PublicName)]

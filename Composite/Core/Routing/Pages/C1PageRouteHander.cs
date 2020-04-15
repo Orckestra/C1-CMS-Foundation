@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Web;
 using System.Web.Compilation;
@@ -8,13 +9,20 @@ using System.Web.Hosting;
 using System.Web.Routing;
 using System.Web.UI;
 using System.Xml.Linq;
+using Composite.AspNet;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.PageTemplates;
+
 
 namespace Composite.Core.Routing.Pages
 {
     internal class C1PageRouteHandler : IRouteHandler
     {
+        private const string PageHandlerPath = "Renderers/Page.aspx";
+        private const string PageHandlerVirtualPath = "~/" + PageHandlerPath;
+
         private readonly PageUrlData _pageUrlData;
 
         private static readonly Type _handlerType;
@@ -39,9 +47,8 @@ namespace Composite.Core.Routing.Pages
 
                 var handler = handlers
                     .Elements("add")
-                    .Where(e => e.Attribute("path") != null
-                          && e.Attribute("path").Value.Equals("Renderers/Page.aspx", StringComparison.OrdinalIgnoreCase))
-                    .SingleOrDefaultOrException("Multiple handlers for 'Renderers/Page.aspx' were found'");
+                    .Where(e => e.Attribute("path")?.Value.Equals(PageHandlerPath, StringComparison.OrdinalIgnoreCase) ?? false)
+                    .SingleOrDefaultOrException($"Multiple handlers for '{PageHandlerPath}' were found'");
 
                 if (handler != null)
                 {
@@ -51,7 +58,7 @@ namespace Composite.Core.Routing.Pages
                     _handlerType = Type.GetType(typeAttr.Value);
                     if(_handlerType == null)
                     {
-                        Log.LogError(typeof(C1PageRouteHandler).Name, "Failed to load type '{0}'", typeAttr.Value);
+                        Log.LogError(nameof(C1PageRouteHandler), $"Failed to load type '{typeAttr.Value}'");
                     }
                 }
             }
@@ -84,6 +91,17 @@ namespace Composite.Core.Routing.Pages
                 context.RewritePath(filePath, pathInfo, queryString);
             }
 
+            if (_handlerType == null && GlobalSettingsFacade.OmitAspNetWebFormsSupport)
+            {
+                var page = _pageUrlData.GetPage()
+                    ?? throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
+
+                if (IsSlimPageRenderer(page.TemplateId))
+                {
+                    return new CmsPageHttpHandler();
+                }
+            }
+
             // Disabling ASP.NET cache if there's a logged-in user
             if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
             {
@@ -94,8 +112,17 @@ namespace Composite.Core.Routing.Pages
             {
                 return (IHttpHandler)Activator.CreateInstance(_handlerType);
             }
-            
-            return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath("~/Renderers/Page.aspx", typeof(Page));
+
+            return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath(PageHandlerVirtualPath, typeof(Page));
+        }
+
+        private static readonly ConcurrentDictionary<Guid, bool> _pageRendererTypCache
+            = new ConcurrentDictionary<Guid, bool>();
+
+        private bool IsSlimPageRenderer(Guid pageTemplate)
+        {
+            return _pageRendererTypCache.GetOrAdd(pageTemplate, 
+                templateId => PageTemplateFacade.BuildPageRenderer(templateId) is ISlimPageRenderer);
         }
     }
 }

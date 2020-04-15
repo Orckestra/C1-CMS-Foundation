@@ -51,9 +51,18 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
             cookie.HttpOnly = true;
 
             var context = HttpContext.Current;
-            if (context != null && context.Request.IsSecureConnection)
+            if (context != null)
             {
-                cookie.Secure = true;
+                if (context.Request.IsSecureConnection)
+                {
+                    cookie.Secure = true;
+                }
+                else if (cookie.Secure)
+                {
+                    throw new InvalidOperationException(
+                        "A login attempt over a not secure connection, when system.web/httpCookies/@requireSSL is set to 'true'. " +
+                        "Either secure connection should be required for console login, or SSL should not be required for cookies.");
+                }
             }
 
             if (persistAcrossSessions)

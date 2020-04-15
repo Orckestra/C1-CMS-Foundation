@@ -373,6 +373,11 @@ namespace Composite.Core.Localization
             }
 
             DynamicTypeManager.RemoveLocale(cultureInfo);
+
+            if (makeFlush)
+            {
+                C1Console.Events.GlobalEventSystemFacade.FlushTheSystem(false);
+            }
         }
     }
 }

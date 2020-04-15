@@ -257,7 +257,7 @@ namespace Composite
             Log.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
 
 
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized && !SystemSetupFacade.SetupIsRunning)
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized && !SystemSetupFacade.SetupIsRunning && HostingEnvironment.IsHosted)
             {
                 using (new LogExecutionTime(LogTitle, "Initializing workflow runtime"))
                 {

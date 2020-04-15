@@ -45,24 +45,45 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         public CodeTypeDeclaration CreateClass()
         {
-            CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration(_entityClassName);
+            var debugDisplayText = $"SQL entity for '{_dataTypeDescriptor.GetFullInterfaceName()}', culture = '{_localeCultureName}', scope = '{_dataScopeIdentifierName}'";
+            foreach (var keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            {
+                debugDisplayText += $", {keyPropertyName} = {{{keyPropertyName}}}";
+            }
 
-            codeTypeDeclaration.IsClass = true;
-            codeTypeDeclaration.TypeAttributes = TypeAttributes.Public;
+            var labelFieldName = _dataTypeDescriptor.LabelFieldName;
+            if (!string.IsNullOrEmpty(labelFieldName) && !_dataTypeDescriptor.KeyPropertyNames.Contains(labelFieldName))
+            {
+                debugDisplayText += $", {labelFieldName} = {{{labelFieldName}}}";
+            }
+
+            var codeTypeDeclaration = new CodeTypeDeclaration(_entityClassName)
+            {
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public
+            };
+
             codeTypeDeclaration.BaseTypes.Add(new CodeTypeReference(_entityBaseClassName));
-
-            codeTypeDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration(
+            codeTypeDeclaration.CustomAttributes.AddRange(new []
+            {
+                new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(TableAttribute)),
                     new CodeAttributeArgument("Name", new CodePrimitiveExpression(_tableName))
-                ));
+                ),
+                new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(DebuggerDisplayAttribute)),
+                    new CodeAttributeArgument(
+                        new CodePrimitiveExpression(debugDisplayText)
+                    )
+                )
+            });
 
 
-            
             string propertyName =
                 typeof(DataScopeIdentifier).GetProperties(BindingFlags.Static | BindingFlags.Public).
                 Where(f => f.Name.Equals(_dataScopeIdentifierName, StringComparison.OrdinalIgnoreCase)).
                 Select(f => f.Name).
-                Single();                
+                Single();
 
 
             CodeMemberField constDataSourceIdCodeMemberField = new CodeMemberField(

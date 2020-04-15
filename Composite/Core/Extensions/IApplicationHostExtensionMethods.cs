@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Web.Hosting;
 
@@ -12,10 +12,22 @@ namespace Composite.Core.Extensions
     {
         static readonly PropertyInfo _shutdownInitiatedPropertyInfo = typeof(HostingEnvironment).GetProperty("ShutdownInitiated", BindingFlags.NonPublic | BindingFlags.Static);
 
+        private static bool _processExit;
+
+        static IApplicationHostExtensionMethods()
+        {
+            AppDomain.CurrentDomain.ProcessExit += (s, a) => _processExit = true;
+        }
+
         /// <exclude />
         public static bool ShutdownInitiated(this IApplicationHost host)
         {
-            return (bool)_shutdownInitiatedPropertyInfo.GetValue(null, new object[0]);
+            if (!HostingEnvironment.IsHosted)
+            {
+                return _processExit;
+            }
+
+            return (bool)_shutdownInitiatedPropertyInfo.GetValue(null, null);
         }
     }
 }

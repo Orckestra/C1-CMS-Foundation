@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Web;
 using System.Web.Routing;
 using Composite.Core.WebClient;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.WebClient.Renderings;
+using Composite.Core.WebClient.Renderings.Page;
+using Composite.Search.DocumentSources;
 
 namespace Composite.Core.Routing.Pages
 {
@@ -42,8 +45,7 @@ namespace Composite.Core.Routing.Pages
         /// <returns>The PathInfo url part.</returns>
         public static string GetPathInfo()
         {
-            var urlData = PageUrlData;
-            return urlData != null ? urlData.PathInfo : null;
+            return PageUrlData?.PathInfo;
         }
 
         /// <summary>
@@ -94,12 +96,21 @@ namespace Composite.Core.Routing.Pages
 
             string localPath = context.Request.Url.LocalPath;
 
-            var urlProvider = PageUrls.UrlProvider;
+            if (IsPagePreviewPath(localPath) &&
+                PagePreviewContext.TryGetPreviewKey(context.Request, out Guid previewKey))
+            {
+                var page = PagePreviewContext.GetPage(previewKey);
+                if (page == null) throw new InvalidOperationException("Not preview information found by key: " + previewKey);
+
+                return new RouteData(this, new C1PageRouteHandler(new PageUrlData(page)));
+            }
 
             if (UrlUtils.IsAdminConsoleRequest(localPath) || IsRenderersPath(localPath))
             {
                 return null;
             }
+
+            var urlProvider = PageUrls.UrlProvider;
 
             string currentUrl = context.Request.Url.OriginalString;
 
@@ -193,6 +204,11 @@ namespace Composite.Core.Routing.Pages
         private static bool IsRenderersPath(string relativeUrl)
         {
             return relativeUrl.StartsWith(UrlUtils.RenderersRootPath + "/", true);
+        }
+
+        private static bool IsPagePreviewPath(string relativeUrl)
+        {
+            return relativeUrl.StartsWith($"{UrlUtils.RenderersRootPath}/PagePreview", true);
         }
 
         private RouteData GetRedirectRoute(string url)

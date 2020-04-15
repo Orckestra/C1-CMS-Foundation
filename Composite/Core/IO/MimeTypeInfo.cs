@@ -283,12 +283,13 @@ namespace Composite.Core.IO
                 return;
 	        }
 
-            if(config == null)
+            var configRawXml = config?.SectionInformation.GetRawXml();
+            if (configRawXml == null)
             {
                 return;
             }
 
-            XElement webServerConfig = XElement.Parse(config.SectionInformation.GetRawXml());
+            XElement webServerConfig = XElement.Parse(configRawXml);
             XElement staticContentConfig = webServerConfig.Element("staticContent");
             if(staticContentConfig == null)
             {

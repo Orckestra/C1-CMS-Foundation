@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -273,7 +273,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
 
 
-        private static FormTreeCompiler CurrentFormTreeCompiler
+        internal static FormTreeCompiler CurrentFormTreeCompiler
         {
             get { return HttpContext.Current.Items[_formTreeCompilerLookupKey] as FormTreeCompiler; }
             set { HttpContext.Current.Items[_formTreeCompilerLookupKey] = value; }

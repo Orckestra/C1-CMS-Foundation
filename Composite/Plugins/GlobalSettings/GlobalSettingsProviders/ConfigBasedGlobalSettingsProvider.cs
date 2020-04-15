@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -101,6 +101,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         public bool InheritGlobalReadPermissionOnHiddenPerspectives =>
             _configurationData.InheritGlobalReadPermissionOnHiddenPerspectives;
+
+        public bool OmitAspNetWebFormsSupport => _configurationData.OmitAspNetWebFormsSupport;
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -520,7 +522,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             get { return (bool)base[InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName]; }
             set { base[InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName] = value; }
         }
-  
+
+        private const string _omitAspNetWebFormsSupportPropertyName = "omitAspNetWebFormsSupport";
+        [ConfigurationProperty(_omitAspNetWebFormsSupportPropertyName, DefaultValue = false)]
+        public bool OmitAspNetWebFormsSupport
+        {
+            get { return (bool)base[_omitAspNetWebFormsSupportPropertyName]; }
+            set { base[_omitAspNetWebFormsSupportPropertyName] = value; }
+        }
     }
 
 

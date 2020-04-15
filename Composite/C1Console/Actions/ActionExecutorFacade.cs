@@ -1,7 +1,8 @@
-﻿//#warning REMARK THIS!!!
+//#warning REMARK THIS!!!
 //#define NO_SECURITY
 using System;
 using System.Collections.Generic;
+using System.Web;
 using Composite.C1Console.Actions.Foundation;
 using Composite.C1Console.Actions.Workflows;
 using Composite.C1Console.Events;
@@ -33,6 +34,7 @@ namespace Composite.C1Console.Actions
             if (entityToken == null) throw new ArgumentNullException("entityToken");
             if (actionToken == null) throw new ArgumentNullException("actionToken");
 
+            AddEntityTokenToContext(entityToken);
 
             string username = UserValidationFacade.GetUsername();
 #if NO_SECURITY
@@ -117,7 +119,15 @@ namespace Composite.C1Console.Actions
             return flowToken;
         }
 
-
+        internal const string HttpContextItem_EntityToken = "EntityToken"; 
+        private static void AddEntityTokenToContext(EntityToken entityToken) 
+        { 
+            var httpContext = HttpContext.Current; 
+            if (httpContext == null) 
+                return; 
+ 
+            httpContext.Items[HttpContextItem_EntityToken] = entityToken; 
+        } 
 
         /// <exclude />
         public static FlowToken ExecuteEntityTokenLocked(ActionToken lockedActionToken, EntityToken lockedEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)

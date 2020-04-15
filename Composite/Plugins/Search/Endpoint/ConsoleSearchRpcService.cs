@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,6 +11,7 @@ using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
 using Composite.Data;
@@ -55,131 +56,134 @@ namespace Composite.Plugins.Search.Endpoint
         {
             if (_searchProvider == null || query == null) return null;
 
-            Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
-            Thread.CurrentThread.CurrentUICulture = UserSettings.C1ConsoleUiLanguage;
-
-            var documentSources = _docSourceProviders.SelectMany(dsp => dsp.GetDocumentSources()).ToList();
-            var allFields = documentSources.SelectMany(ds => ds.CustomFields).ToList();
-
-            var facetFields = RemoveDuplicateKeys(
-                allFields
-                .Where(f => f.FacetedSearchEnabled && f.Label != null),
-                f => f.Name).ToList();
-
-            if (string.IsNullOrEmpty(query.Text))
+            using (ThreadDataManager.EnsureInitialize())
             {
-                return new ConsoleSearchResult
-                {
-                    QueryText = string.Empty,
-                    FacetFields = EmptyFacetsFromSelections(query, facetFields),
-                    TotalHits = 0
-                };
-            }
+                Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
+                Thread.CurrentThread.CurrentUICulture = UserSettings.C1ConsoleUiLanguage;
 
-            var selections = new List<SearchQuerySelection>();
-            if (query.Selections != null)
-            {
-                foreach (var selection in query.Selections)
-                {
-                    string fieldName = ExtractFieldName(selection.FieldName);
+                var documentSources = _docSourceProviders.SelectMany(dsp => dsp.GetDocumentSources()).ToList();
+                var allFields = documentSources.SelectMany(ds => ds.CustomFields).ToList();
 
-                    var field = allFields.Where(f => f.Facet != null)
-                        .FirstOrDefault(f => f.Name == fieldName);
-                    Verify.IsNotNull(field, $"Failed to find a facet field by name '{fieldName}'");
-
-                    selections.Add(new SearchQuerySelection
-                    {
-                        FieldName = fieldName,
-                        Values = selection.Values,
-                        Operation = field.Facet.FacetType == FacetType.SingleValue 
-                            ? SearchQuerySelectionOperation.Or
-                            : SearchQuerySelectionOperation.And
-                    });
-                }
-            }
-
-            var sortOptions = new List<SearchQuerySortOption>();
-            if (!string.IsNullOrEmpty(query.SortBy))
-            {
-                string sortByFieldName = ExtractFieldName(query.SortBy);
-
-                var sortTermsAs = allFields
-                    .Where(f => f.Name == sortByFieldName && f.Preview != null && f.Preview.Sortable)
-                    .Select(f => f.Preview.SortTermsAs)
-                    .FirstOrDefault();
-
-                sortOptions.Add(new SearchQuerySortOption(sortByFieldName, query.SortInReverseOrder, sortTermsAs));
-            }
-
-            var culture = !string.IsNullOrEmpty(query.CultureName) 
-                ? new CultureInfo(query.CultureName) 
-                : UserSettings.ActiveLocaleCultureInfo;
-            
-            var searchQuery = new SearchQuery(query.Text, culture)
-            {
-                Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)).ToList(),
-                Selection = selections,
-                SortOptions = sortOptions
-            };
-
-            searchQuery.FilterByUser(UserSettings.Username);
-            searchQuery.AddFieldFacet(DocumentFieldNames.Source);
-
-            var result = await _searchProvider.SearchAsync(searchQuery);
-
-            var items = result.Items.Evaluate();
-            if (!items.Any())
-            {
-                return new ConsoleSearchResult
-                {
-                    QueryText = query.Text,
-                    FacetFields = EmptyFacetsFromSelections(query, facetFields),
-                    TotalHits = 0
-                };
-            }
-
-            var documents = items.Select(m => m.Document);
-
-            HashSet<string> dataSourceNames;
-            Facet[] dsFacets;
-            if (result.Facets != null && result.Facets.TryGetValue(DocumentFieldNames.Source, out dsFacets))
-            {
-                dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
-            }
-            else
-            {
-                Log.LogWarning(nameof(ConsoleSearchRpcService), "The search provider did not return the list of document sources");
-                dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
-            }
-
-
-            var dataSources = documentSources.Where(d => dataSourceNames.Contains(d.Name)).ToList();
-            var previewFields = RemoveDuplicateKeys(
-                    dataSources
-                        .SelectMany(ds => ds.CustomFields)
-                        .Where(f => f.FieldValuePreserved), 
+                var facetFields = RemoveDuplicateKeys(
+                    allFields
+                    .Where(f => f.FacetedSearchEnabled && f.Label != null),
                     f => f.Name).ToList();
 
-            using (new DataConnection(culture))
-            {
-                return new ConsoleSearchResult
+                if (string.IsNullOrEmpty(query.Text))
                 {
-                    QueryText = query.Text,
-                    Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                    return new ConsoleSearchResult
                     {
-                        FieldName = MakeFieldNameJsFriendly(pf.Name),
-                        Label = StringResourceSystemFacade.ParseString(pf.Label),
-                        Sortable = pf.Preview.Sortable
-                    }).ToArray(),
-                    Rows = documents.Select(doc => new ConsoleSearchResultRow
+                        QueryText = string.Empty,
+                        FacetFields = EmptyFacetsFromSelections(query, facetFields),
+                        TotalHits = 0
+                    };
+                }
+
+                var selections = new List<SearchQuerySelection>();
+                if (query.Selections != null)
+                {
+                    foreach (var selection in query.Selections)
                     {
-                        Label = doc.Label,
-                        Url = GetFocusUrl(doc.SerializedEntityToken),
-                        Values = GetPreviewValues(doc, previewFields)
-                    }).ToArray(),
-                    FacetFields = GetFacets(result, facetFields),
-                    TotalHits = result.TotalHits
+                        string fieldName = ExtractFieldName(selection.FieldName);
+
+                        var field = allFields.Where(f => f.Facet != null)
+                            .FirstOrDefault(f => f.Name == fieldName);
+                        Verify.IsNotNull(field, $"Failed to find a facet field by name '{fieldName}'");
+
+                        selections.Add(new SearchQuerySelection
+                        {
+                            FieldName = fieldName,
+                            Values = selection.Values,
+                            Operation = field.Facet.FacetType == FacetType.SingleValue 
+                                ? SearchQuerySelectionOperation.Or
+                                : SearchQuerySelectionOperation.And
+                        });
+                    }
+                }
+
+                var sortOptions = new List<SearchQuerySortOption>();
+                if (!string.IsNullOrEmpty(query.SortBy))
+                {
+                    string sortByFieldName = ExtractFieldName(query.SortBy);
+
+                    var sortTermsAs = allFields
+                        .Where(f => f.Name == sortByFieldName && f.Preview != null && f.Preview.Sortable)
+                        .Select(f => f.Preview.SortTermsAs)
+                        .FirstOrDefault();
+
+                    sortOptions.Add(new SearchQuerySortOption(sortByFieldName, query.SortInReverseOrder, sortTermsAs));
+                }
+
+                var culture = !string.IsNullOrEmpty(query.CultureName) 
+                    ? new CultureInfo(query.CultureName) 
+                    : UserSettings.ActiveLocaleCultureInfo;
+                
+                var searchQuery = new SearchQuery(query.Text, culture)
+                {
+                    Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)).ToList(),
+                    Selection = selections,
+                    SortOptions = sortOptions
                 };
+
+                searchQuery.FilterByUser(UserSettings.Username);
+                searchQuery.AddFieldFacet(DocumentFieldNames.Source);
+
+                var result = await _searchProvider.SearchAsync(searchQuery);
+
+                var items = result.Items.Evaluate();
+                if (!items.Any())
+                {
+                    return new ConsoleSearchResult
+                    {
+                        QueryText = query.Text,
+                        FacetFields = EmptyFacetsFromSelections(query, facetFields),
+                        TotalHits = 0
+                    };
+                }
+
+                var documents = items.Select(m => m.Document);
+
+                HashSet<string> dataSourceNames;
+                Facet[] dsFacets;
+                if (result.Facets != null && result.Facets.TryGetValue(DocumentFieldNames.Source, out dsFacets))
+                {
+                    dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
+                }
+                else
+                {
+                    Log.LogWarning(nameof(ConsoleSearchRpcService), "The search provider did not return the list of document sources");
+                    dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
+                }
+
+
+                var dataSources = documentSources.Where(d => dataSourceNames.Contains(d.Name)).ToList();
+                var previewFields = RemoveDuplicateKeys(
+                        dataSources
+                            .SelectMany(ds => ds.CustomFields)
+                            .Where(f => f.FieldValuePreserved), 
+                        f => f.Name).ToList();
+
+                using (new DataConnection(culture))
+                {
+                    return new ConsoleSearchResult
+                    {
+                        QueryText = query.Text,
+                        Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                        {
+                            FieldName = MakeFieldNameJsFriendly(pf.Name),
+                            Label = StringResourceSystemFacade.ParseString(pf.Label),
+                            Sortable = pf.Preview.Sortable
+                        }).ToArray(),
+                        Rows = documents.Select(doc => new ConsoleSearchResultRow
+                        {
+                            Label = doc.Label,
+                            Url = GetFocusUrl(doc.SerializedEntityToken),
+                            Values = GetPreviewValues(doc, previewFields)
+                        }).ToArray(),
+                        FacetFields = GetFacets(result, facetFields),
+                        TotalHits = result.TotalHits
+                    };
+                }
             }
         }
 

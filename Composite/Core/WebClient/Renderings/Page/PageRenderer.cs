@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -18,6 +19,7 @@ using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
+using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -30,6 +32,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly string LogTitle = typeof(PageRenderer).Name;
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
+        private static readonly XName XName_function = Namespaces.Function10 + "function";
+        private static readonly XName XName_Id = "id";
+        private static readonly XName XName_Name = "name";
 
         /// <exclude />
         public static FunctionContextContainer GetPageRenderFunctionContextContainer()
@@ -54,7 +59,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             Verify.ArgumentNotNull(page, "page");
             Verify.ArgumentNotNull(functionContextContainer, "functionContextContainer");
             Verify.ArgumentCondition(functionContextContainer.XEmbedableMapper is XEmbeddedControlMapper,
-                "functionContextContainer", $"Unknown or missing XEmbedable mapper on context container. Use {nameof(GetPageRenderFunctionContextContainer)}().");
+                "functionContextContainer", $"Unknown or missing XEmbedableMapper on context container. Use {nameof(GetPageRenderFunctionContextContainer)}().");
 
             CurrentPage = page;
 
@@ -101,7 +106,13 @@ namespace Composite.Core.WebClient.Renderings.Page
             return XhtmlDocument.Parse($"<html xmlns='{Namespaces.Xhtml}'><head/><body>{placeholderContent.Content}</body></html>");
         }
 
-        private static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
+
+        /// <summary>
+        /// Replaces &lt;rendering:placeholder  ... /&gt; tags with provided placeholder contents. Used by <see cref="XmlPageRenderer"/>.
+        /// </summary>
+        /// <param name="document">The document to be updated.</param>
+        /// <param name="placeholderContents">The placeholder content to be used.</param>
+        internal static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
@@ -121,15 +132,6 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     XhtmlDocument xhtmlDocument = ParsePlaceholderContent(placeHolderContent);
                     placeholder.Element.ReplaceWith(xhtmlDocument.Root);
-
-                    //try
-                    //{
-                    //    placeholder.Element.Add(new XAttribute(RenderingElementNames.PlaceHolderIdAttribute, placeHolderId));
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    throw new InvalidOperationException($"Failed to set id '{placeHolderId}' on element", ex);
-                    //}
                 }
             }
         }
@@ -145,18 +147,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        public static Guid CurrentPageId
-        {
-            get
-            {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return Guid.Empty;
-                }
-
-                return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").Id;
-            }
-        }
+        public static Guid CurrentPageId => CurrentPage?.Id ?? Guid.Empty;
 
 
         /// <summary>
@@ -179,11 +170,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return null;
-                }
-
                 return RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
             }
             set
@@ -203,20 +189,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        public static CultureInfo CurrentPageCulture
-        {
-            get
-            {
-                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return null;
-                }
-
-                var page = RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
-                return page.DataSourceId.LocaleScope;
-            }
-        }
-
+        public static CultureInfo CurrentPageCulture => CurrentPage?.DataSourceId.LocaleScope;
 
 
         /// <exclude />
@@ -236,27 +209,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-        internal static void ProcessPageDocument(
-            XDocument document, 
-            FunctionContextContainer contextContainer,
-            IPage page)
-        {
-            using (Profiler.Measure("Executing embedded functions"))
-            {
-                ExecuteEmbeddedFunctions(document.Root, contextContainer);
-            }
-
-            using (Profiler.Measure("Resolving page fields"))
-            {
-                ResolvePageFields(document, page);
-            }
-
-            using (Profiler.Measure("Normalizing ASP.NET forms"))
-            {
-                NormalizeAspNetForms(document);
-            }
-        }
-
         internal static void ProcessXhtmlDocument(XhtmlDocument xhtmlDocument, IPage page)
         {
             using (Profiler.Measure("Normalizing XHTML document"))
@@ -269,14 +221,14 @@ namespace Composite.Core.WebClient.Renderings.Page
                 ResolveRelativePaths(xhtmlDocument);
             }
 
-            using (Profiler.Measure("Sorting <head> elements"))
-            {
-                PrioritizeHeadNodes(xhtmlDocument);
-            }
-
             using (Profiler.Measure("Appending C1 meta tags"))
             {
                 AppendC1MetaTags(page, xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Sorting <head> elements"))
+            {
+                PrioritizeHeadNodes(xhtmlDocument);
             }
 
             using (Profiler.Measure("Parsing localization strings"))
@@ -292,9 +244,92 @@ namespace Composite.Core.WebClient.Renderings.Page
             var filters = ServiceLocator.GetServices<IPageContentFilter>().OrderBy(f => f.Order).ToList();
             if (filters.Any())
             {
-                using (Profiler.Measure("Executing custom filters"))
+                using (Profiler.Measure("Executing page content filters"))
                 {
-                    filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                    filters.ForEach(filter =>
+                    {
+                        using (Profiler.Measure($"Filter: {filter.GetType().FullName}"))
+                        {
+                            filter.Filter(xhtmlDocument, page);
+                        }
+                    });
+                }
+            }
+        }
+
+        private static bool IsMetaTag(XElement e) => e.Name.LocalName.Equals("meta", StringComparison.OrdinalIgnoreCase);
+
+        private static bool CheckForDuplication(HashSet<string> values, string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                if (values.Contains(value)) return true;
+
+                values.Add(value);
+            }
+            
+            return false;
+        }
+
+        private static string AttributesAsString(this XElement e)
+        {
+            var str = new StringBuilder();
+            foreach (var attr in e.Attributes().OrderBy(a => a.Name.NamespaceName).ThenBy(a => a.Name.LocalName))
+            {
+                str.Append(attr.Name.LocalName);
+                str.Append("=\"");
+                str.Append(attr.Value);
+                str.Append("\" ");
+            }
+
+            return str.ToString();
+        }
+
+        /// <exclude />
+        public static void ProcessDocumentHead(XhtmlDocument xhtmlDocument)
+        {
+            RemoveDuplicates(xhtmlDocument.Head);
+        }
+
+        private static void RemoveDuplicates(XElement head)
+        {
+            var uniqueIdValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueMetaNameValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueScriptAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var uniqueLinkAttributes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var priorityOrderedElements = new List<XElement>();
+
+            priorityOrderedElements.AddRange(head.Elements().Where(IsMetaTag));
+            priorityOrderedElements.Reverse();
+            priorityOrderedElements.AddRange(head.Elements().Where(e => !IsMetaTag(e)));
+
+            foreach (var e in priorityOrderedElements)
+            {
+                var id = (string)e.Attribute(XName_Id);
+
+                bool toBeRemoved = CheckForDuplication(uniqueIdValues, id);
+
+                if (!toBeRemoved && !e.Nodes().Any())
+                {
+                    switch (e.Name.LocalName.ToLowerInvariant())
+                    {
+                        case "meta":
+                            var name = (string)e.Attribute(XName_Name);
+                            toBeRemoved = CheckForDuplication(uniqueMetaNameValues, name);
+                            break;
+                        case "script":
+                            toBeRemoved = CheckForDuplication(uniqueScriptAttributes, e.AttributesAsString());
+                            break;
+                        case "link":
+                            toBeRemoved = CheckForDuplication(uniqueLinkAttributes, e.AttributesAsString());
+                            break;
+                    }
+                }
+
+                if (toBeRemoved)
+                {
+                    e.Remove();
                 }
             }
         }
@@ -305,7 +340,20 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                ProcessPageDocument(document, contextContainer, page);
+                using (Profiler.Measure("Executing embedded functions"))
+                {
+                    ExecuteEmbeddedFunctions(document.Root, contextContainer);
+                }
+
+                using (Profiler.Measure("Resolving page fields"))
+                {
+                    ResolvePageFields(document, page);
+                }
+
+                using (Profiler.Measure("Normalizing ASP.NET forms"))
+                {
+                    NormalizeAspNetForms(document);
+                }
 
                 if (document.Root.Name != RenderingElementNames.Html)
                 {
@@ -357,7 +405,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     if (headElement.Attribute("name") != null) return 20;
 
-                    if (headElement.Attribute("property") != null) return 30;
+                    if (headElement.Attribute("property") != null) return 25;
 
                     return 20;
                 }
@@ -459,7 +507,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     aspNetFormElement.ReplaceWith(aspNetFormElement.Nodes());
                 }
             }
-
         }
 
 
@@ -486,111 +533,151 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 elem.ReplaceWith(new XElement(Namespaces.Xhtml + "meta",
-                                    new XAttribute("name", "description"),
-                                    new XAttribute("content", page.Description)));
+                    new XAttribute("name", "description"),
+                    new XAttribute("content", page.Description)));
             }
         }
 
-
-
-        /// <exclude />
-        public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer contextContainer)
+        /// <summary>
+        /// Executes functions that match the predicate recursively,
+        /// 
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <param name="functionShouldBeExecuted">A predicate that defines whether a function should be executed based on its name.</param>
+        /// <returns><value>True</value> if all of the functions has matched the predicate</returns>
+        internal static bool ExecuteFunctionsRec(
+            XElement element, 
+            FunctionContextContainer functionContext,
+            Predicate<string> functionShouldBeExecuted = null)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
+            if (element.Name != XName_function)
             {
-                IEnumerable<XElement> functionCallDefinitions = element.DescendantsAndSelf(Namespaces.Function10 + "function")
-                                                                       .Where(f => !f.Ancestors(Namespaces.Function10 + "function").Any());
-
-                var functionCalls = functionCallDefinitions.ToList();
-                if (functionCalls.Count == 0) return;
-
-                object[] functionExecutionResults = new object[functionCalls.Count];
-
-                for (int i = 0; i < functionCalls.Count; i++)
+                var children = element.Elements();
+                if (element.Elements(XName_function).Any())
                 {
-                    XElement functionCallDefinition = functionCalls[i];
-                    string functionName = null;
+                    // Allows replacing the function elements without breaking the iterator
+                    children = children.ToList(); 
+                }
 
-                    object functionResult;
-                    try
-                    {
-                        // Evaluating function calls in parameters
-                        IEnumerable<XElement> parameters = functionCallDefinition.Elements();
-
-                        foreach (XElement parameterNode in parameters)
-                        {
-                            ExecuteEmbeddedFunctions(parameterNode, contextContainer);
-                        }
-
-
-                        // Executing a function call
-                        BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
-
-                        functionName = runtimeTreeNode.GetAllSubFunctionNames().FirstOrDefault();
-
-                        object result = runtimeTreeNode.GetValue(contextContainer);
-
-                        if (result != null)
-                        {
-                            // Evaluating functions in a result of a function call
-                            object embedableResult = contextContainer.MakeXEmbedable(result);
-
-                            foreach (XElement xelement in GetXElements(embedableResult))
-                            {
-                                ExecuteEmbeddedFunctions(xelement, contextContainer);
-                            }
-
-                            functionResult = embedableResult;
-                        }
-                        else
-                        {
-                            functionResult = null;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        using (Profiler.Measure("PageRenderer. Loggin an exception"))
-                        {
-                            XElement errorBoxHtml;
-
-                            if (!contextContainer.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
-                            {
-                                throw;
-                            }
-
-                            functionResult = errorBoxHtml;
-                        }
-                    }
-
-                    functionExecutionResults[i] = functionResult;
-                };
-
-                // Applying changes
-                for (int i = 0; i < functionCalls.Count; i++)
+                bool allChildrenExecuted = true;
+                foreach (var childElement in children)
                 {
-                    XElement functionCall = functionCalls[i];
-                    object functionCallResult = functionExecutionResults[i];
-                    if (functionCallResult != null)
+                    if (!ExecuteFunctionsRec(childElement, functionContext, functionShouldBeExecuted))
                     {
-                        if (functionCallResult is XAttribute && functionCall.Parent != null)
-                        {
-                            functionCall.Parent.Add(functionCallResult);
-                            functionCall.Remove();
-                        }
-                        else
-                        {
-                            functionCall.ReplaceWith(functionCallResult);
-                        }
+                        allChildrenExecuted = false;
                     }
-                    else
+                }
+                return allChildrenExecuted;
+            }
+
+            bool allRecFunctionsExecuted = true;
+
+            string functionName = (string) element.Attribute("name");
+            object result;
+            try
+            {
+                // Evaluating function calls in parameters
+                IEnumerable<XElement> parameters = element.Elements();
+
+                bool allParametersEvaluated = true;
+                foreach (XElement parameterNode in parameters.ToList())
+                {
+                    if (!ExecuteFunctionsRec(parameterNode, functionContext, functionShouldBeExecuted))
                     {
-                        functionCall.Remove();
+                        allParametersEvaluated = false;
+                    }
+                }
+
+                if (!allParametersEvaluated)
+                {
+                    return false;
+                }
+
+                if (functionShouldBeExecuted != null &&
+                    !functionShouldBeExecuted(functionName))
+                {
+                    return false;
+                }
+
+                // Executing a function call
+                BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(element);
+                result = runtimeTreeNode.GetValue(functionContext);
+
+                if (result != null)
+                {
+                    // Evaluating functions in a result of a function call
+                    result = functionContext.MakeXEmbedable(result);
+
+                    foreach (XElement xelement in GetXElements(result).ToList())
+                    {
+                        if (!ExecuteFunctionsRec(xelement, functionContext, functionShouldBeExecuted))
+                        {
+                            allRecFunctionsExecuted = false;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                using (Profiler.Measure("PageRenderer. Logging exception: " + ex.Message))
+                {
+                    XElement errorBoxHtml;
+
+                    if (!functionContext.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
+                    {
+                        throw;
+                    }
+
+                    result = errorBoxHtml;
+                }
+            }
+
+            ReplaceFunctionWithResult(element, result);
+
+            return allRecFunctionsExecuted;
         }
 
+        /// <exclude />
+        public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer functionContext)
+        {
+            ExecuteFunctionsRec(element, functionContext, null);
+        }
 
+        /// <summary>
+        /// Executes all cacheable (not dynamic) functions and returns <value>True</value> 
+        /// if all of the functions were cacheable.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <returns></returns>
+        internal static bool ExecuteCacheableFunctions(XElement element, FunctionContextContainer functionContext)
+        {
+            return ExecuteFunctionsRec(element, functionContext, name =>
+            {
+                var function = FunctionFacade.GetFunction(name);
+                return !(function is IDynamicFunction df && df.PreventFunctionOutputCaching);
+            });
+        }
+
+        private static void ReplaceFunctionWithResult(XElement functionCall, object result)
+        {
+            if (result == null)
+            {
+                functionCall.Remove();
+                return;
+            }
+
+            if (result is XAttribute && functionCall.Parent != null)
+            {
+                functionCall.Parent.Add(result);
+                functionCall.Remove();
+            }
+            else
+            {
+                functionCall.ReplaceWith(result);
+            }
+        }
 
         private static IEnumerable<XElement> GetXElements(object source)
         {

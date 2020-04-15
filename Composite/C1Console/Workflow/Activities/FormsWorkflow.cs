@@ -96,7 +96,14 @@ namespace Composite.C1Console.Workflow.Activities
             }
 
             base.Initialize(provider);
+
+            if (!BindingExist(EntityTokenKey))
+            {
+                Bindings.Add(EntityTokenKey, EntityToken);
+            }
         }
+
+        internal static readonly string EntityTokenKey = typeof(FormsWorkflow).FullName + ":EntityToken";
 
 
         /// <exclude />

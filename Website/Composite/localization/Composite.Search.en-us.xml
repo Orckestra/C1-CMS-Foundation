@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<string key="SearchPerspective.Label" value="Search" />
 
@@ -9,7 +9,8 @@
 
 	<string key="DataType.Page" value="Page" />
 	<string key="DataType.MediaFile" value="Media File" />
-	
+
+	<string key="FieldNames.PageTypeId" value="Page Type" />
 	<string key="FieldNames.Label" value="Label" />
 	<string key="FieldNames.Description" value="Description" />
 	<string key="FieldNames.DataType" value="Data Type" />

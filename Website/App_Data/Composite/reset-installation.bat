@@ -1,4 +1,3 @@
-
 del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config

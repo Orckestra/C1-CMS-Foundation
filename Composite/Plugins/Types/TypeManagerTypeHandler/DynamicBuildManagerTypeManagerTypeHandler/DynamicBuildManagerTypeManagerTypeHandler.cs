@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web.Hosting;
 using Composite.Core.Types;
 using Composite.Core.Types.Plugins.TypeManagerTypeHandler;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -21,12 +22,17 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
             Type compiledType = CodeGenerationManager.GetCompiledType(fullName);
             if (compiledType != null) return compiledType;
 
-            if (fullName.StartsWith(_prefix) && !fullName.Contains(","))
-            {
-                string name = fullName.Remove(0, _prefix.Length);
-                Type resultType = Type.GetType(name + ", Composite.Generated");
+            string name = fullName;
 
-                return resultType;
+            bool hasObsoletePrefix = name.StartsWith(_prefix);
+            if (hasObsoletePrefix)
+            {
+                name = name.Substring(_prefix.Length);
+            }
+
+            if (!name.Contains(",") && (hasObsoletePrefix || !HostingEnvironment.IsHosted))
+            {
+                return Type.GetType(name + ", Composite.Generated");
             }
             
             return null;
@@ -40,7 +46,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
             {
                 string result;
 
-                if (_serializedCache.TryGetValue(type, out result) == false)
+                if (!_serializedCache.TryGetValue(type, out result))
                 {
                     result = SerializeTypeImpl(type);
                     _serializedCache.Add(type, result);
@@ -62,9 +68,13 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
         private static string SerializeTypeImpl(Type type)
         {
             string assemblyLocation = type.Assembly.Location;
+            string assemblyCodeBase = type.Assembly.CodeBase;
+            string tempAssemblyFolderPath = CodeGenerationManager.TempAssemblyFolderPath;
+            string tempAssemblyFolderUri = new Uri(tempAssemblyFolderPath).AbsoluteUri;
 
-            if ((assemblyLocation.StartsWith(CodeGenerationManager.TempAssemblyFolderPath, StringComparison.InvariantCultureIgnoreCase)) ||
-                (assemblyLocation.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.InvariantCultureIgnoreCase) >= 0))
+            if (assemblyLocation.StartsWith(tempAssemblyFolderPath, StringComparison.InvariantCultureIgnoreCase) ||
+                assemblyCodeBase.StartsWith(tempAssemblyFolderUri, StringComparison.InvariantCultureIgnoreCase) ||
+                assemblyLocation.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 return type.FullName;
             }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Composite.Core.Collections.Generic;
@@ -326,6 +326,7 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         public static bool InheritGlobalReadPermissionOnHiddenPerspectives =>
             UseReaderLock(p => p.InheritGlobalReadPermissionOnHiddenPerspectives);
 
+        public static bool OmitAspNetWebFormsSupport => UseReaderLock(p => p.OmitAspNetWebFormsSupport);
 
         private static void Flush()
         {
