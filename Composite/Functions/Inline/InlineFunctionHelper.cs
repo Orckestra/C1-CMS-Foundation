@@ -89,7 +89,7 @@ namespace Composite.Functions.Inline
                 compilerParameters.ReferencedAssemblies.Add(appCodeAssembly.Location);
             }
 
-            CSharpCodeProvider compiler = new CSharpCodeProvider();
+            var compiler = CSharpCodeProviderFactory.CreateCompiler();
             CompilerResults results = compiler.CompileAssemblyFromSource(compilerParameters, code);
 
             if (results.Errors.HasErrors)

@@ -168,10 +168,10 @@ namespace Composite.Core.Types
             var codeCompileUnit = new CodeCompileUnit();
             codeCompileUnit.Namespaces.AddRange(codeGenerationBuilder.Namespaces.ToArray());
 
-            var compiler = new CSharpCodeProvider();
+            var compiler = CSharpCodeProviderFactory.CreateCompiler();
             var compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
 
-            if (compileResult.Errors.Count == 0)
+            if (!compileResult.Errors.HasErrors)
             {
                 Assembly resultAssembly = compileResult.CompiledAssembly;
 
@@ -212,7 +212,10 @@ namespace Composite.Core.Types
             sb.AppendLine("Failed building: " + codeGenerationBuilder.DebugLabel);
             foreach (CompilerError compilerError in compileResult.Errors)
             {
-                if (compilerError.IsWarning) continue;
+                if (compilerError.IsWarning)
+                {
+                    continue;
+                }
 
                 string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
 
@@ -338,11 +341,13 @@ namespace Composite.Core.Types
 
             for (int i = 0; i < NumberOfCompileRetries; i++)
             {
-                var compiler = new CSharpCodeProvider();
+                var compiler = CSharpCodeProviderFactory.CreateCompiler();
                 CompilerResults compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
 
-
-                if (compileResult.Errors.Count == 0) return;
+                if (!compileResult.Errors.HasErrors)
+                {
+                    return;
+                }
 
                 if (i == NumberOfCompileRetries - 1)
                 {
@@ -359,7 +364,10 @@ namespace Composite.Core.Types
                     var sb = new StringBuilder();
                     foreach (CompilerError compilerError in compileResult.Errors)
                     {
-                        if (compilerError.IsWarning) continue;
+                        if (compilerError.IsWarning)
+                        {
+                            continue;
+                        }
 
                         string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
 

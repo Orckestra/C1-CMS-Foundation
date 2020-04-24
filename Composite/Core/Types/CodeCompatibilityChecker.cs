@@ -66,7 +66,7 @@ namespace Composite.Core.Types
 
             if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
 
-            var csCompiler = new CSharpCodeProvider();
+            CSharpCodeProvider csCompiler = CSharpCodeProviderFactory.CreateCompiler();
 
             List<Assembly> referencedAssemblies = new List<Assembly>();
             var codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
@@ -134,10 +134,13 @@ namespace Composite.Core.Types
                 codeCompileUnit.Namespaces.Add(codeNamespace);
             }
 
-            var compiler = new CSharpCodeProvider();
+            var compiler = CSharpCodeProviderFactory.CreateCompiler();
             var compileResult = compiler.CompileAssemblyFromFile(compilerParameters, filesToCompile.ToArray());
 
-            if (compileResult.Errors.Count == 0) return new CompatibilityCheckResult();
+            if (!compileResult.Errors.HasErrors)
+            {
+                return new CompatibilityCheckResult();
+            }
 
             // Checking for a missing assembly error, if it is present, that means that App_Code check isn't applicable due to circular reference
             foreach (CompilerError error in compileResult.Errors)

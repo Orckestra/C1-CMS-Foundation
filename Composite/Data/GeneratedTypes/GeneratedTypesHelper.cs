@@ -726,7 +726,7 @@ namespace Composite.Data.GeneratedTypes
 
         private bool IsCSharpValidIdentifier(string name)
         {
-            return new CSharpCodeProvider().IsValidIdentifier(name);
+            return CSharpCodeProviderFactory.CreateCompiler().IsValidIdentifier(name);
         }
 
 
