@@ -11,7 +11,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 using Composite.Functions;
-using Microsoft.CSharp;
 
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_GeneratedTypes;
 
@@ -38,7 +37,7 @@ namespace Composite.Data.GeneratedTypes
 
 
         private static readonly string[] ReservedNamespaces = { "System", "Composite.Data.GeneratedTypes", "GeneratedTypes" };
-        private static readonly string CompositeNamespace = "Composite";
+        private const string CompositeNamespace = "Composite";
 
         private Type _associatedType;
         private readonly Type _oldType;
@@ -48,7 +47,7 @@ namespace Composite.Data.GeneratedTypes
         private string _newTypeName;
         private string _newTypeNamespace;
         private string _newTypeTitle;
-        private bool _cachable;
+        private bool _cacheable;
         private bool _searchable;
         private bool _publishControlled;
         private bool _localizedControlled;
@@ -65,19 +64,14 @@ namespace Composite.Data.GeneratedTypes
 
         private bool _typeCreated;
 
-        private static readonly string IdFieldName = "Id";
-        private static readonly string PageReferenceFieldName = "PageId";
-        private static readonly string CompositionDescriptionFieldName = "FieldName";
+        private const string IdFieldName = "Id";
+        private const string PageReferenceFieldName = "PageId";
+        private const string CompositionDescriptionFieldName = "FieldName";
 
         //private KeyFieldType _keyFieldType = KeyFieldType.Guid;
-        
 
         /// <exclude />
-        public GeneratedTypesHelper()
-        {
-        }
-
-
+        public GeneratedTypesHelper() { }
 
         /// <exclude />
         public GeneratedTypesHelper(Type oldType)
@@ -90,8 +84,6 @@ namespace Composite.Data.GeneratedTypes
             Initialize();
         }
 
-
-
         /// <exclude />
         public GeneratedTypesHelper(DataTypeDescriptor oldDataTypeDescriptor)
         {
@@ -103,16 +95,8 @@ namespace Composite.Data.GeneratedTypes
             Initialize();
         }
 
-
-
         /// <exclude />
-        public bool AllowForeignKeyEditing
-        {
-            get;
-            set;
-        }
-
-
+        public bool AllowForeignKeyEditing { get; set; }
 
         /// <exclude />
         [Obsolete("Use EditableOwnDataFieldDescriptors which does not return inherited fields", true)]
@@ -150,16 +134,17 @@ namespace Composite.Data.GeneratedTypes
                 Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
                 return from field in _oldDataTypeDescriptor.Fields
-                       where !IsDataFieldBindable(_oldDataTypeDescriptor, field)
-                             || _oldDataTypeDescriptor.KeyPropertyNames.FirstOrDefault() == field.Name
+                       where !IsDataFieldBindable(_oldDataTypeDescriptor, field) || _oldDataTypeDescriptor.KeyPropertyNames.FirstOrDefault() == field.Name
                        select field.Name;
             }
         }
 
-
+        /// <exclude />
+        [Obsolete("Use IsCacheable")]
+        public bool IsCachable => IsCacheable;
 
         /// <exclude />
-        public bool IsCachable
+        public bool IsCacheable
         {
             get
             {
@@ -168,7 +153,6 @@ namespace Composite.Data.GeneratedTypes
                 return _oldDataTypeDescriptor.Cachable;
             }
         }
-
 
         /// <exclude />
         public bool IsSearchable
@@ -181,7 +165,6 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
-
         /// <exclude />
         public bool IsPublishControlled
         {
@@ -192,8 +175,6 @@ namespace Composite.Data.GeneratedTypes
                 return _oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled));
             }
         }
-
-
 
         /// <exclude />
         public bool IsLocalizedControlled
@@ -206,20 +187,10 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
-
-
         /// <summary>
         /// Returns <value>true</value> if the date type is a page meta data type.
         /// </summary>
-        public bool IsEditProcessControlledAllowed
-        {
-            get
-            {
-                return _pageMetaDataDescriptionForeignKeyDataFieldDescriptor == null;
-            }
-        }
-
-
+        public bool IsEditProcessControlledAllowed => _pageMetaDataDescriptionForeignKeyDataFieldDescriptor == null;
 
         /// <exclude />
         public bool ValidateNewTypeName(string typeName, out string message)
@@ -229,8 +200,6 @@ namespace Composite.Data.GeneratedTypes
             return NameValidation.TryValidateName(typeName, out message);
         }
 
-
-
         /// <exclude />
         public bool ValidateNewTypeNamespace(string typeNamespace, out string message)
         {
@@ -238,8 +207,6 @@ namespace Composite.Data.GeneratedTypes
 
             return NameValidation.TryValidateNamespace(typeNamespace, out message);
         }
-
-
 
         /// <exclude />
         public bool ValidateNewTypeFullName(string typeName, string typeNamespace, out string message)
@@ -255,8 +222,6 @@ namespace Composite.Data.GeneratedTypes
                 return false;
             }
 
-
-
             if (_oldDataTypeDescriptor != null)
             {
                 if (_oldDataTypeDescriptor.Name == typeName &&
@@ -265,7 +230,7 @@ namespace Composite.Data.GeneratedTypes
                     return true;
                 }
 
-                Type interfaceType = _oldDataTypeDescriptor.GetInterfaceType();
+                var interfaceType = _oldDataTypeDescriptor.GetInterfaceType();
 
                 if (interfaceType.GetRefereeTypes().Count > 0)
                 {
@@ -274,27 +239,28 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-            string typeFullname = StringExtensionMethods.CreateNamespace(typeNamespace, typeName, '.');
-            foreach (DataTypeDescriptor dtd in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
+            var typeFullname = StringExtensionMethods.CreateNamespace(typeNamespace, typeName, '.');
+            foreach (var dtd in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
             {
-                string fullname = StringExtensionMethods.CreateNamespace(dtd.Namespace, dtd.Name, '.');
-
+                var fullname = StringExtensionMethods.CreateNamespace(dtd.Namespace, dtd.Name, '.');
                 if (typeFullname == fullname)
                 {
                     message = Texts.TypesNameClash;
+
                     return false;
                 }
             }
 
-
-            string[] partNames = typeFullname.Split('.');
+            var partNames = typeFullname.Split('.');
             var sb = new StringBuilder(partNames[0]);
-            for (int i = 1; i < partNames.Length; i++)
+
+            for (var i = 1; i < partNames.Length; i++)
             {
-                bool exists = TypeManager.HasTypeWithName(sb.ToString());
+                var exists = TypeManager.HasTypeWithName(sb.ToString());
                 if (exists)
                 {
                     message = Texts.NameSpaceIsTypeTypeName(sb.ToString());
+
                     return false;
                 }
 
@@ -305,38 +271,39 @@ namespace Composite.Data.GeneratedTypes
             return true;
         }
 
-
-
         /// <exclude />
         public bool ValidateByCompile(out string errorMessage)
         {
             var dataTypeDescriptor = _oldDataTypeDescriptor == null ? CreateNewDataTypeDescriptor() : CreateUpdatedDataTypeDescriptor();
 
-            string classFullName = (dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name).Replace(" ", string.Empty);
-            string classFullNameWithDot = classFullName + ".";
+            var classFullName = (dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name).Replace(" ", string.Empty);
+            var classFullNameWithDot = classFullName + ".";
             foreach (var reservedNamespace in ReservedNamespaces)
             {
                 if (classFullNameWithDot.StartsWith(reservedNamespace + ".", StringComparison.InvariantCultureIgnoreCase))
                 {
                     errorMessage = Texts.NamespaceIsReserved;
+
                     return false;
                 }
             }
 
-            foreach (string namePart in classFullName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var namePart in classFullName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (!IsCSharpValidIdentifier(namePart))
                 {
                     errorMessage = Texts.TypeNameIsInvalidIdentifier(classFullName);
+
                     return false;
                 }
             }
 
-            foreach (DataFieldDescriptor dataField in dataTypeDescriptor.Fields)
+            foreach (var dataField in dataTypeDescriptor.Fields)
             {
                 if (!IsCSharpValidIdentifier(dataField.Name))
                 {
                     errorMessage = Texts.FieldNameCannotBeUsed(dataField.Name);
+
                     return false;
                 }
             }
@@ -346,33 +313,31 @@ namespace Composite.Data.GeneratedTypes
             {
                 foreach (var type in typeof(IData).Assembly.GetTypes())
                 {
-                    string typeNameWithDot = type.FullName + ".";
+                    var typeNameWithDot = type.FullName + ".";
 
-                    if (classFullNameWithDot.StartsWith(typeNameWithDot, StringComparison.InvariantCultureIgnoreCase)
-                       || typeNameWithDot.StartsWith(classFullNameWithDot, StringComparison.InvariantCultureIgnoreCase))
+                    if (classFullNameWithDot.StartsWith(typeNameWithDot, StringComparison.InvariantCultureIgnoreCase) || typeNameWithDot.StartsWith(classFullNameWithDot, StringComparison.InvariantCultureIgnoreCase))
                     {
                         errorMessage = Texts.CompileErrorWhileAddingType;
+
                         return false;
                     }
                 }
             }
 
-
-            CompatibilityCheckResult compatibilityCheckResult = CodeCompatibilityChecker.CheckCompatibilityWithAppCodeFolder(dataTypeDescriptor);
-
+            var compatibilityCheckResult = CodeCompatibilityChecker.CheckCompatibilityWithAppCodeFolder(dataTypeDescriptor);
             if (!compatibilityCheckResult.Successful)
             {
                 errorMessage = _oldDataTypeDescriptor == null ? Texts.CompileErrorWhileAddingType : Texts.CompileErrorWhileChangingType;
 
                 errorMessage += compatibilityCheckResult.ErrorMessage;
+
                 return false;
             }
 
             errorMessage = string.Empty;
+
             return true;
         }
-
-
 
         /// <exclude />
         public bool ValidateNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string keyFieldName, out string message)
@@ -383,21 +348,22 @@ namespace Composite.Data.GeneratedTypes
 
             message = null;
 
-            if (!newDataFieldDescriptors.Any(f => f.Name != keyFieldName))
+            if (newDataFieldDescriptors.All(f => f.Name == keyFieldName))
             {
                 message = Texts.MissingFields;
+
                 return false;
             }
 
             if (keyFieldName != IdFieldName && newDataFieldDescriptors.Any(dfd => dfd.Name == IdFieldName))
             {
                 message = Texts.FieldNameCannotBeUsed(IdFieldName);
+
                 return false;
             }
 
             return true;
         }
-
 
         /// <exclude />
         public static string GetCompositionDescriptionPropertyName(Type compositionType)
@@ -405,22 +371,17 @@ namespace Composite.Data.GeneratedTypes
             return CompositionDescriptionFieldName;
         }
 
-
-
         /// <exclude />
         public static PropertyInfo GetCompositionDescriptionPropertyInfo(Type compositionType)
         {
             return compositionType.GetPropertiesRecursively().Single(f => f.Name == CompositionDescriptionFieldName);
         }
 
-
-
         /// <exclude />
         public static PropertyInfo GetPageReferencePropertyInfo(Type compositionType)
         {
             return compositionType.GetPropertiesRecursively().Single(f => f.Name == PageReferenceFieldName);
         }
-
 
         /// <exclude />
         public void SetNewTypeFullName(string typeName, string typeNamespace)
@@ -432,8 +393,6 @@ namespace Composite.Data.GeneratedTypes
             _newTypeNamespace = typeNamespace;
         }
 
-
-
         /// <exclude />
         public void SetNewTypeTitle(string typeTitle)
         {
@@ -442,29 +401,30 @@ namespace Composite.Data.GeneratedTypes
             _newTypeTitle = typeTitle;
         }
 
-
-
         /// <exclude />
         public void SetNewInternalUrlPrefix(string internalUrlPrefix)
         {
             _newInternalUrlPrefix = internalUrlPrefix;
         }
 
-
-
         /// <exclude />
-        public void SetCachable(bool cachable)
+        [Obsolete("SetCacheable")]
+        public void SetCachable(bool cacheable)
         {
-            _cachable = cachable;
+            SetCacheable(cacheable);
         }
 
+        /// <exclude />
+        public void SetCacheable(bool cacheable)
+        {
+            _cacheable = cacheable;
+        }
 
         /// <exclude />
         public void SetSearchable(bool searchable)
         {
             _searchable = searchable;
         }
-
 
         /// <exclude />
         public void SetPublishControlled(bool isPublishControlled)
@@ -474,8 +434,6 @@ namespace Composite.Data.GeneratedTypes
             _publishControlled = isPublishControlled;
         }
 
-
-
         /// <exclude />
         public void SetLocalizedControlled(bool isLocalizedControlled)
         {
@@ -483,7 +441,6 @@ namespace Composite.Data.GeneratedTypes
 
             _localizedControlled = isLocalizedControlled;
         }
-
 
         /// <exclude />
         [Obsolete("Left for backward compatibility")]
@@ -495,8 +452,6 @@ namespace Composite.Data.GeneratedTypes
 
             SetNewFieldDescriptors(fields.Concat(newDataFieldDescriptors), IdFieldName, labelFieldName);
         }
-
-
 
         /// <exclude />
         public void SetNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string keyFieldName, string labelFieldName)
@@ -513,68 +468,62 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
-
-
         /// <exclude />
         public void SetForeignKeyReference(Type targetDataType, DataAssociationType dataAssociationType)
         {
-            if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
+            if (dataAssociationType == DataAssociationType.None)
+            {
+                throw new ArgumentException("dataAssociationType");
+            }
 
-            DataTypeDescriptor targetDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(targetDataType);
+            var targetDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(targetDataType);
 
             SetForeignKeyReference(targetDataTypeDescriptor, dataAssociationType);
         }
 
-
-
         /// <exclude />
         public void SetForeignKeyReference(DataTypeDescriptor targetDataTypeDescriptor, DataAssociationType dataAssociationType)
         {
-            if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
+            if (dataAssociationType == DataAssociationType.None)
+            {
+                throw new ArgumentException("dataAssociationType");
+            }
 
-            if ((dataAssociationType == DataAssociationType.Aggregation || dataAssociationType == DataAssociationType.Composition)
-                && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)
+            if ((dataAssociationType == DataAssociationType.Aggregation || dataAssociationType == DataAssociationType.Composition) && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)
             {
                 throw new InvalidOperationException("The type already has a foreign key reference");
             }
 
-
-            Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
             string fieldName = null;
+
+            var targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
             if (targetType == typeof(IPage))
             {
                 fieldName = PageReferenceFieldName;
+
                 _dataAssociationType = dataAssociationType;
             }
 
-            string foreignKeyFieldName;
-            _foreignKeyDataFieldDescriptor = CreateReferenceDataFieldDescriptor(targetDataTypeDescriptor, out foreignKeyFieldName, fieldName);
+            _foreignKeyDataFieldDescriptor = CreateReferenceDataFieldDescriptor(targetDataTypeDescriptor, out var foreignKeyFieldName, fieldName);
 
             if (dataAssociationType != DataAssociationType.None)
             {
-                _dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(
-                        targetType,
-                        foreignKeyFieldName,
-                        dataAssociationType
-                    );
+                _dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(targetType, foreignKeyFieldName, dataAssociationType);
             }
 
             if (dataAssociationType == DataAssociationType.Composition)
             {
-                DataTypeDescriptor compositionRuleDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPageMetaDataDefinition));
+                var compositionRuleDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPageMetaDataDefinition));
 
                 _pageMetaDataDescriptionForeignKeyDataFieldDescriptor = CreateWeakReferenceDataFieldDescriptor(compositionRuleDataTypeDescriptor, compositionRuleDataTypeDescriptor.Fields["Name"], CompositionDescriptionFieldName);
             }
         }
-
-
 
         /// <exclude />
         public bool TryValidateUpdate(bool originalTypeDataExists, out string errorMessage)
         {
             if (_oldDataTypeDescriptor != null)
             {
-
                 if (_newLabelFieldName == null)
                 {
                     _newLabelFieldName = KeyFieldName;
@@ -594,12 +543,13 @@ namespace Composite.Data.GeneratedTypes
             return ValidateByCompile(out errorMessage);
         }
 
-
-
         /// <exclude />
         public void CreateType(bool originalTypeHasData)
         {
-            if (_typeCreated) throw new InvalidOperationException("The type can only be created once");
+            if (_typeCreated)
+            {
+                throw new InvalidOperationException("The type can only be created once");
+            }
 
             try
             {
@@ -623,10 +573,7 @@ namespace Composite.Data.GeneratedTypes
                 }
                 else
                 {
-                    string errorMessage;
-
-
-                    UpdateOldType(false, originalTypeHasData, out errorMessage);
+                    UpdateOldType(false, originalTypeHasData, out _);
                 }
             }
             finally
@@ -634,8 +581,6 @@ namespace Composite.Data.GeneratedTypes
                 _typeCreated = true;
             }
         }
-
-
 
         /// <exclude />
         public Type InterfaceType
@@ -648,7 +593,6 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
-
         /// <exclude />
         public static void SetNewIdFieldValue(IData data)
         {
@@ -658,8 +602,8 @@ namespace Composite.Data.GeneratedTypes
 
             foreach (var keyProperty in keyProperties)
             {
-                bool hasDefaultFieldValueAttribute = keyProperty.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
-                bool hasNewInstanceDefaultFieldValueAttribute = keyProperty.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
+                var hasDefaultFieldValueAttribute = keyProperty.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
+                var hasNewInstanceDefaultFieldValueAttribute = keyProperty.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
 
                 if (!hasDefaultFieldValueAttribute && !hasNewInstanceDefaultFieldValueAttribute)
                 {
@@ -677,25 +621,22 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
-
-
         private void Initialize()
         {
             if (_oldDataTypeDescriptor.DataAssociations.Count > 0)
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = _oldDataTypeDescriptor.DataAssociations.Single();
+                var dataTypeAssociationDescriptor = _oldDataTypeDescriptor.DataAssociations.Single();
 
                 _associatedType = dataTypeAssociationDescriptor.AssociatedInterfaceType;
             }
 
-
-            foreach (DataFieldDescriptor dataFieldDescriptor in _oldDataTypeDescriptor.Fields)
+            foreach (var dataFieldDescriptor in _oldDataTypeDescriptor.Fields)
             {
                 if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
                 {
                     if (_associatedType != null)
                     {
-                        string associatedTypeTypeName = TypeManager.SerializeType(_associatedType);
+                        var associatedTypeTypeName = TypeManager.SerializeType(_associatedType);
 
                         if (dataFieldDescriptor.ForeignKeyReferenceTypeName == associatedTypeTypeName)
                         {
@@ -711,11 +652,9 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-            _publishControlled = this.IsPublishControlled;
-            _localizedControlled = this.IsLocalizedControlled;
+            _publishControlled = IsPublishControlled;
+            _localizedControlled = IsLocalizedControlled;
         }
-
-
 
         private void CreateNewType()
         {
@@ -724,11 +663,10 @@ namespace Composite.Data.GeneratedTypes
             GeneratedTypesFacade.GenerateNewType(_newDataTypeDescriptor);
         }
 
-        private bool IsCSharpValidIdentifier(string name)
+        private static bool IsCSharpValidIdentifier(string name)
         {
             return CSharpCodeProviderFactory.CreateCompiler().IsValidIdentifier(name);
         }
-
 
         private bool UpdateOldType(bool validateOnly, bool originalTypeDataExists, out string errorMessage)
         {
@@ -752,10 +690,8 @@ namespace Composite.Data.GeneratedTypes
 
             GeneratedTypesFacade.UpdateType(new UpdateDataTypeDescriptor(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists));
 
-            return true;   
+            return true;
         }
-
-
 
         private DataTypeDescriptor CreateNewDataTypeDescriptor()
         {
@@ -765,7 +701,7 @@ namespace Composite.Data.GeneratedTypes
                 _newTypeTitle,
                 _newLabelFieldName,
                 _newInternalUrlPrefix,
-                _cachable,
+                _cacheable,
                 _searchable,
                 _publishControlled,
                 _localizedControlled,
@@ -774,8 +710,6 @@ namespace Composite.Data.GeneratedTypes
                 _dataTypeAssociationDescriptor,
                 _pageMetaDataDescriptionForeignKeyDataFieldDescriptor);
         }
-
-
 
         private DataTypeDescriptor CreateNewDataTypeDescriptor(
             string typeNamespace,
@@ -792,7 +726,7 @@ namespace Composite.Data.GeneratedTypes
             DataTypeAssociationDescriptor dataTypeAssociationDescriptor,
             DataFieldDescriptor compositionRuleForeignKeyDataFieldDescriptor)
         {
-            Guid id = Guid.NewGuid();
+            var id = Guid.NewGuid();
             var dataTypeDescriptor = new DataTypeDescriptor(id, typeNamespace, typeName, true)
             {
                 Cachable = cachable,
@@ -835,7 +769,7 @@ namespace Composite.Data.GeneratedTypes
             //    dataTypeDescriptor.KeyPropertyNames.Add(IdFieldName);
             //}
 
-            foreach (DataFieldDescriptor dataFieldDescriptor in dataFieldDescriptors)
+            foreach (var dataFieldDescriptor in dataFieldDescriptors)
             {
                 dataTypeDescriptor.Fields.Add(dataFieldDescriptor);
             }
@@ -845,7 +779,7 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.KeyPropertyNames.Add(_newKeyFieldName);
             }
 
-            int position = 100;
+            var position = 100;
             if (_foreignKeyDataFieldDescriptor != null)
             {
                 _foreignKeyDataFieldDescriptor.Position = position++;
@@ -857,7 +791,6 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-
             return dataTypeDescriptor;
         }
 
@@ -867,16 +800,15 @@ namespace Composite.Data.GeneratedTypes
         /// <returns></returns>
         public static DataFieldDescriptor BuildIdField()
         {
-            var idFieldDescriptor = new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof (Guid));
-            idFieldDescriptor.DataUrlProfile = new DataUrlProfile { Order = 0 };
+            var idFieldDescriptor = new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof(Guid))
+            {
+                DataUrlProfile = new DataUrlProfile { Order = 0 }
+            };
+
             return idFieldDescriptor;
         }
 
-        private string KeyFieldName
-        {
-            get { return _newKeyFieldName ?? IdFieldName; }
-        }
-
+        private string KeyFieldName => _newKeyFieldName ?? IdFieldName;
 
         //private DataFieldDescriptor BuildKeyFieldDescriptor()
         //{
@@ -907,23 +839,19 @@ namespace Composite.Data.GeneratedTypes
         //    return result;
         //}
 
-
         private DataTypeDescriptor CreateUpdatedDataTypeDescriptor()
         {
-            var dataTypeDescriptor = new DataTypeDescriptor(
-                _oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true)
+            var dataTypeDescriptor = new DataTypeDescriptor(_oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true)
             {
-                Cachable = _cachable,
+                Cachable = _cacheable,
                 Searchable = _searchable
             };
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-
-
             Type[] indirectlyInheritedInterfaces =
             {
-                typeof(IPublishControlled), typeof(ILocalizedControlled), 
+                typeof(IPublishControlled), typeof(ILocalizedControlled),
                 typeof(IPageData), typeof(IPageFolderData), typeof(IPageMetaData)
             };
 
@@ -936,7 +864,6 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-
             if (_publishControlled && _dataAssociationType != DataAssociationType.Composition)
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
@@ -946,7 +873,6 @@ namespace Composite.Data.GeneratedTypes
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
-
 
             if (_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageFolderData)))
             {
@@ -967,12 +893,12 @@ namespace Composite.Data.GeneratedTypes
 
                 //dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
                 //dataTypeDescriptor.KeyPropertyNames.Add(KeyFieldName);
-                
+
             }
 
             dataTypeDescriptor.Title = _newTypeTitle;
 
-            foreach (DataFieldDescriptor dataFieldDescriptor in _newDataFieldDescriptors)
+            foreach (var dataFieldDescriptor in _newDataFieldDescriptors)
             {
                 dataTypeDescriptor.Fields.Add(dataFieldDescriptor);
             }
@@ -982,13 +908,13 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.KeyPropertyNames.Add(KeyFieldName);
             }
 
-
             dataTypeDescriptor.LabelFieldName = _newLabelFieldName;
             dataTypeDescriptor.InternalUrlPrefix = _newInternalUrlPrefix;
 
             dataTypeDescriptor.DataAssociations.AddRange(_oldDataTypeDescriptor.DataAssociations);
 
-            int position = 100;
+            var position = 100;
+
             if (_foreignKeyDataFieldDescriptor != null)
             {
                 _foreignKeyDataFieldDescriptor.Position = position++;
@@ -1002,20 +928,13 @@ namespace Composite.Data.GeneratedTypes
             return dataTypeDescriptor;
         }
 
-
-
-        private DataFieldDescriptor CreateWeakReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, DataFieldDescriptor targetDataFieldDescriptor, string fieldName)
+        private static DataFieldDescriptor CreateWeakReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, DataFieldDescriptor targetDataFieldDescriptor, string fieldName)
         {
             TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
 
-            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.TextBoxWidget;
+            var widgetFunctionProvider = StandardWidgetFunctions.TextBoxWidget;
 
-            return new DataFieldDescriptor(
-                            Guid.NewGuid(),
-                            fieldName,
-                            targetDataFieldDescriptor.StoreType,
-                            targetDataFieldDescriptor.InstanceType
-                        )
+            return new DataFieldDescriptor(Guid.NewGuid(), fieldName, targetDataFieldDescriptor.StoreType, targetDataFieldDescriptor.InstanceType)
             {
                 IsNullable = targetDataFieldDescriptor.IsNullable,
                 DefaultValue = targetDataFieldDescriptor.DefaultValue,
@@ -1029,26 +948,18 @@ namespace Composite.Data.GeneratedTypes
             };
         }
 
-
-
-        private DataFieldDescriptor CreateReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, out string foreignKeyFieldName, string fieldName = null)
+        private static DataFieldDescriptor CreateReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, out string foreignKeyFieldName, string fieldName = null)
         {
-            Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
-            string targetKeyFieldName = targetDataTypeDescriptor.KeyPropertyNames.First();
+            var targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
+            var targetKeyFieldName = targetDataTypeDescriptor.KeyPropertyNames.First();
 
-            DataFieldDescriptor targetKeyDataFieldDescriptor = targetDataTypeDescriptor.Fields[targetKeyFieldName];
+            var targetKeyDataFieldDescriptor = targetDataTypeDescriptor.Fields[targetKeyFieldName];
 
-            foreignKeyFieldName = fieldName ??
-                                  $"{targetDataTypeDescriptor.Name}{targetKeyFieldName}ForeignKey";
+            foreignKeyFieldName = fieldName ?? $"{targetDataTypeDescriptor.Name}{targetKeyFieldName}ForeignKey";
 
             var widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
 
-            return new DataFieldDescriptor(
-                            Guid.NewGuid(),
-                            foreignKeyFieldName,
-                            targetKeyDataFieldDescriptor.StoreType,
-                            targetKeyDataFieldDescriptor.InstanceType
-                        )
+            return new DataFieldDescriptor(Guid.NewGuid(), foreignKeyFieldName, targetKeyDataFieldDescriptor.StoreType, targetKeyDataFieldDescriptor.InstanceType)
             {
                 IsNullable = targetKeyDataFieldDescriptor.IsNullable,
                 DefaultValue = targetKeyDataFieldDescriptor.DefaultValue,
@@ -1063,27 +974,23 @@ namespace Composite.Data.GeneratedTypes
             };
         }
 
-
-
         private bool IsDataFieldBindable(DataTypeDescriptor dataTypeDescriptor, DataFieldDescriptor dataFieldDescriptor)
         {
             if (dataFieldDescriptor.Inherited)
             {
-                Type superInterface = dataTypeDescriptor.SuperInterfaces.FirstOrDefault(type => type.GetProperty(dataFieldDescriptor.Name) != null);
-                
-                if(superInterface != null && superInterface.Assembly == typeof(IData).Assembly)
+                var superInterface = dataTypeDescriptor.SuperInterfaces.FirstOrDefault(type => type.GetProperty(dataFieldDescriptor.Name) != null);
+                if (superInterface != null && superInterface.Assembly == typeof(IData).Assembly)
                 {
                     return false;
                 }
             }
 
-            if ((dataFieldDescriptor.Name == IdFieldName || dataFieldDescriptor.Name == CompositionDescriptionFieldName)
-                && dataTypeDescriptor.IsPageMetaDataType)
+            if ((dataFieldDescriptor.Name == IdFieldName || dataFieldDescriptor.Name == CompositionDescriptionFieldName) && dataTypeDescriptor.IsPageMetaDataType)
             {
                 return false;
             }
 
-            if (PageFolderFacade.GetAllFolderTypes().Contains(this._oldType) && dataFieldDescriptor.Name == PageReferenceFieldName)
+            if (PageFolderFacade.GetAllFolderTypes().Contains(_oldType) && dataFieldDescriptor.Name == PageReferenceFieldName)
             {
                 return false;
             }
@@ -1091,11 +998,9 @@ namespace Composite.Data.GeneratedTypes
             if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
             {
                 var dataTypeAssociationDescriptor = dataTypeDescriptor.DataAssociations.FirstOrDefault();
-
                 if (dataTypeAssociationDescriptor != null)
                 {
-                    if (!this.AllowForeignKeyEditing &&
-                        dataFieldDescriptor.Name == dataTypeAssociationDescriptor.ForeignKeyPropertyName)
+                    if (!AllowForeignKeyEditing && dataFieldDescriptor.Name == dataTypeAssociationDescriptor.ForeignKeyPropertyName)
                     {
                         return false;
                     }

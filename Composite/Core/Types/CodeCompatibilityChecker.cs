@@ -13,8 +13,6 @@ using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
-using Microsoft.CSharp;
-
 
 namespace Composite.Core.Types
 {
@@ -30,10 +28,8 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static CompatibilityCheckResult CheckCompatibilityWithAppCodeFolder(DataTypeDescriptor dataTypeDescriptorToTest)
         {
-            return CheckAgainsAppCode(dataTypeDescriptorToTest, true);
+            return CheckAgainstAppCode(dataTypeDescriptorToTest, true);
         }
-
-
 
         /// <summary>
         /// This method will check if any code in en App_Code folder depends on the given data interface.
@@ -42,10 +38,8 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static CompatibilityCheckResult CheckIfAppCodeDependsOnInterface(DataTypeDescriptor dataTypeDescriptorToTest)
         {
-            return CheckAgainsAppCode(dataTypeDescriptorToTest, false);
+            return CheckAgainstAppCode(dataTypeDescriptorToTest, false);
         }
-
-
 
         /// <summary>
         /// This method checks to see if any change in the given data type descriptor will make code 
@@ -60,44 +54,57 @@ namespace Composite.Core.Types
         [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "File api is used for creating temporary files")]
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "File api is used for creating temporary files")]
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "File api is used for creating temporary files")]
-        private static CompatibilityCheckResult CheckAgainsAppCode(DataTypeDescriptor dataTypeDescriptorToTest, bool includeDataTypeDescriptor)
+        private static CompatibilityCheckResult CheckAgainstAppCode(DataTypeDescriptor dataTypeDescriptorToTest, bool includeDataTypeDescriptor)
         {
-            List<string> filesToCompile = GetAppCodeFiles().ToList();
+            var filesToCompile = GetAppCodeFiles().ToList();
+            if (filesToCompile.Count == 0)
+            {
+                return new CompatibilityCheckResult();
+            }
 
-            if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
+            var csCompiler = CSharpCodeProviderFactory.CreateCompiler();
 
-            CSharpCodeProvider csCompiler = CSharpCodeProviderFactory.CreateCompiler();
-
-            List<Assembly> referencedAssemblies = new List<Assembly>();
+            var referencedAssemblies = new List<Assembly>();
             var codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
 
             foreach (var dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
             {
-                if (!includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId) continue;
+                if (!includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)
+                {
+                    continue;
+                }
 
-                DataTypeDescriptor dataTypeDescriptorToUse = dataTypeDescriptor;
-                if (includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
+                var dataTypeDescriptorToUse = dataTypeDescriptor;
+
+                if (includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)
+                {
+                    dataTypeDescriptorToUse = dataTypeDescriptorToTest;
+                }
 
                 referencedAssemblies.AddRange(InterfaceCodeGenerator.GetReferencedAssemblies(dataTypeDescriptorToUse));
-                CodeTypeDeclaration codeTypeDeclaration = InterfaceCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptorToUse);
 
-                List<CodeTypeDeclaration> declarations;
-                if (!codeTypeDeclarations.TryGetValue(dataTypeDescriptorToUse.Namespace, out declarations))
+                var codeTypeDeclaration = InterfaceCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptorToUse);
+                if (!codeTypeDeclarations.TryGetValue(dataTypeDescriptorToUse.Namespace, out var declarations))
                 {
                     declarations = new List<CodeTypeDeclaration>();
+
                     codeTypeDeclarations.Add(dataTypeDescriptorToUse.Namespace, declarations);
                 }
+
                 declarations.Add(codeTypeDeclaration);
 
-                string tempFilePath = GetTempFileName(dataTypeDescriptorToUse);
+                var tempFilePath = GetTempFileName(dataTypeDescriptorToUse);
+
                 filesToCompile.Add(tempFilePath);
 
-                using (FileStream file = File.Create(tempFilePath))
+                using (var file = File.Create(tempFilePath))
                 {
                     using (var sw = new StreamWriter(file))
                     {
                         var codeNamespace = new CodeNamespace(dataTypeDescriptorToUse.Namespace);
+
                         codeNamespace.Types.Add(codeTypeDeclaration);
+
                         csCompiler.GenerateCodeFromNamespace(codeNamespace, sw, new CodeGeneratorOptions());
                     }
 
@@ -111,7 +118,6 @@ namespace Composite.Core.Types
 
             filesToCompile.Sort();
 
-
             var compilerParameters = new CompilerParameters
             {
                 GenerateExecutable = false,
@@ -120,16 +126,17 @@ namespace Composite.Core.Types
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(referencedAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CodeGenerationManager.CompiledAssemblies.Select(f => f.Location).ToArray());
+
             compilerParameters.AddLoadedAssemblies(false);
             compilerParameters.AddAssemblyLocationsFromBin();
             compilerParameters.AddCommonAssemblies();
             compilerParameters.RemoveGeneratedAssemblies();
 
-
             var codeCompileUnit = new CodeCompileUnit();
             foreach (var kvp in codeTypeDeclarations)
             {
                 var codeNamespace = new CodeNamespace(kvp.Key);
+
                 codeNamespace.Types.AddRange(kvp.Value.ToArray());
                 codeCompileUnit.Namespaces.Add(codeNamespace);
             }
@@ -157,9 +164,9 @@ namespace Composite.Core.Types
 
         private static string GetTempFileName(DataTypeDescriptor typeDescriptor)
         {
-            string folderPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+            var folderPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
 
-            string filePath = Path.Combine(folderPath, typeDescriptor.GetFullInterfaceName() + ".cs");
+            var filePath = Path.Combine(folderPath, typeDescriptor.GetFullInterfaceName() + ".cs");
             if (filePath.Length > 255)
             {
                 filePath = Path.Combine(folderPath, typeDescriptor.DataTypeId + ".cs");
@@ -169,11 +176,13 @@ namespace Composite.Core.Types
         }
 
         [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
-        private static string[] GetAppCodeFiles()
+        private static IEnumerable<string> GetAppCodeFiles()
         {
-            string appCodeFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
-
-            if (!Directory.Exists(appCodeFolderPath)) return new string[0];
+            var appCodeFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
+            if (!Directory.Exists(appCodeFolderPath))
+            {
+                return new string[0];
+            }
 
             return Directory.GetFiles(appCodeFolderPath, "*.cs", SearchOption.AllDirectories);
         }

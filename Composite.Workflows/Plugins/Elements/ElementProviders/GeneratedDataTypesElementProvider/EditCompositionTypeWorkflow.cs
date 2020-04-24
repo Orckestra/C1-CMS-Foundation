@@ -62,7 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {"TypeNamespace", dataTypeDescriptor.Namespace},
                 {"TypeTitle", dataTypeDescriptor.Title},
                 {"LabelFieldName", dataTypeDescriptor.LabelFieldName},
-                {"HasCaching", helper.IsCachable},
+                {"HasCaching", helper.IsCacheable},
                 {"HasPublishing", helper.IsPublishControlled},
                 {"DataFieldDescriptors", fieldDescriptors},
                 {"OldTypeName", dataTypeDescriptor.Name},
@@ -135,7 +135,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeTitle(typeTitle);
                 // TODO: fix
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, null, labelFieldName);
-                helper.SetCachable(hasCaching);
+                helper.SetCacheable(hasCaching);
 
                 if (helper.IsEditProcessControlledAllowed)
                 {

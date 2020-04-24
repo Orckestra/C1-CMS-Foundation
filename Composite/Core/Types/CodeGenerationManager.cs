@@ -6,6 +6,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,8 +18,6 @@ using Composite.Core.IO;
 using Composite.Core.PackageSystem;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.GeneratedTypes;
-using Microsoft.CSharp;
-
 
 namespace Composite.Core.Types
 {
@@ -34,7 +33,7 @@ namespace Composite.Core.Types
         private static bool _compositeGeneratedCompiled = true;
         private static List<ICodeProvider> _dynamicallyAddedCodeProviders = new List<ICodeProvider>();
         private static readonly List<Assembly> _compiledAssemblies = new List<Assembly>();
-        private static readonly Dictionary<string, Type>  _compiledTypesByFullName = new Dictionary<string, Type>();
+        private static readonly Dictionary<string, Type> _compiledTypesByFullName = new Dictionary<string, Type>();
 
         /// <summary>
         /// If set to <c>true</c>, /Bin/Composite.Generated.dll won't be overwritten on shutdown
@@ -63,10 +62,8 @@ namespace Composite.Core.Types
             }
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
-
             GlobalEventSystemFacade.SubscribeToShutDownEvent(args => ClearOldTempFiles());
         }
-
 
 
         /// <summary>
@@ -77,21 +74,26 @@ namespace Composite.Core.Types
         /// <param name="time"></param>
         internal static void ValidateCompositeGenerate(DateTime time)
         {
-            if (SuppressGeneration) return;
+            if (SuppressGeneration)
+            {
+                return;
+            }
 
-            string filePath = Path.Combine(PathUtil.BaseDirectory, "Bin", "Composite.Generated.dll");
+            var filePath = Path.Combine(PathUtil.BaseDirectory, "Bin", "Composite.Generated.dll");
+            if (!C1File.Exists(filePath))
+            {
+                return;
+            }
 
-            if (!C1File.Exists(filePath)) return;
-
-            DateTime lastWrite = C1File.GetLastWriteTime(filePath);
-
-            if (lastWrite <= time) return;
+            var lastWrite = C1File.GetLastWriteTime(filePath);
+            if (lastWrite <= time)
+            {
+                return;
+            }
 
             _compositeGeneratedCompiled = true;
             Log.LogVerbose(LogTitle, $"Assembly in this application domain is newer than this application domain ({AppDomain.CurrentDomain.Id})");
         }
-
-
 
         /// <summary>
         /// This method will recompile Composite.Generated.dll and drop it into bin.
@@ -99,7 +101,10 @@ namespace Composite.Core.Types
         /// <param name="forceGeneration"></param>
         public static void GenerateCompositeGeneratedAssembly(bool forceGeneration = false)
         {
-            if (SuppressGeneration) return;
+            if (SuppressGeneration)
+            {
+                return;
+            }
 
             if (forceGeneration || !_compositeGeneratedCompiled)
             {
@@ -109,21 +114,21 @@ namespace Composite.Core.Types
                     {
                         Log.LogVerbose(LogTitle, $"Compiling new assembly in this application domain ({AppDomain.CurrentDomain.Id})");
 
-                        int t1 = Environment.TickCount;
+                        var t1 = Environment.TickCount;
 
                         var builder = new CodeGenerationBuilder("Composite.Generated.dll");
                         PopulateBuilder(builder);
 
-                        int t2 = Environment.TickCount;
+                        var t2 = Environment.TickCount;
 
                         Compile(builder);
 
-                        int t3 = Environment.TickCount;
+                        var t3 = Environment.TickCount;
 
-                        int numberOfTypes = builder.Namespaces.SelectMany(f => f.Types.OfType<CodeTypeDeclaration>()).Count();
+                        var numberOfTypes = builder.Namespaces.SelectMany(f => f.Types.OfType<CodeTypeDeclaration>()).Count();
 
                         Log.LogVerbose(LogTitle, "Number of types build: " + numberOfTypes +
-                                                 "\nBuilding code dom: " + (t2 - t1) + "ms" + 
+                                                 "\nBuilding code dom: " + (t2 - t1) + "ms" +
                                                  "\nCompiling code dom: " + (t3 - t2) + "ms" +
                                                  "\nTotal compilation: " + (t3 - t1) + "ms");
 
@@ -137,8 +142,6 @@ namespace Composite.Core.Types
             Log.LogVerbose(LogTitle, "New assembly already compiled by this application domain ({0})", AppDomain.CurrentDomain.Id);
         }
 
-
-
         /// <summary>
         /// This method will compile the type defined in <paramref name="codeGenerationBuilder"/>
         /// and return the result types. These types exists in a temp assembly, that will be
@@ -149,7 +152,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static IEnumerable<Type> CompileRuntimeTempTypes(CodeGenerationBuilder codeGenerationBuilder, bool verbose = true)
         {
-            int t1 = Environment.TickCount;
+            var t1 = Environment.TickCount;
 
             _compositeGeneratedCompiled = false; // When compiling a new type, Composite.Generated.dll should always be recompiled
 
@@ -164,8 +167,8 @@ namespace Composite.Core.Types
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(_compiledAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.AddAssemblyLocationsFromBin();
 
-
             var codeCompileUnit = new CodeCompileUnit();
+
             codeCompileUnit.Namespaces.AddRange(codeGenerationBuilder.Namespaces.ToArray());
 
             var compiler = CSharpCodeProviderFactory.CreateCompiler();
@@ -173,18 +176,18 @@ namespace Composite.Core.Types
 
             if (!compileResult.Errors.HasErrors)
             {
-                Assembly resultAssembly = compileResult.CompiledAssembly;
+                var resultAssembly = compileResult.CompiledAssembly;
 
                 AddCompiledAssembly(resultAssembly);
 
-                Type[] resultTypes = resultAssembly.GetTypes();
+                var resultTypes = resultAssembly.GetTypes();
 
-                int t2 = Environment.TickCount;
+                var t2 = Environment.TickCount;
 
                 Log.LogVerbose(LogTitle, $"Compile '{codeGenerationBuilder.DebugLabel}' in {t2 - t1}ms");
                 Log.LogVerbose(LogTitle, $"Types from : {compilerParameters.OutputAssembly}");
 
-                foreach (Type resultType in resultTypes)
+                foreach (var resultType in resultTypes)
                 {
                     _compiledTypesByFullName[resultType.FullName] = resultType;
                 }
@@ -192,17 +195,7 @@ namespace Composite.Core.Types
                 return resultTypes;
             }
 
-
-#if OUTPUT_SOURCE_CODE_ON_ERROR
-            using (FileStream file = File.Create(Path.Combine(PathUtil.BaseDirectory, "output.cs")))
-            {
-                using (var sw = new StreamWriter(file))
-                {
-                    compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
-                }
-            }
-#endif
-            
+            OutputSourceCodeOnError(compiler, codeCompileUnit);
 
             var failedAssemblyLoads = LoadAssembliesToMemory(compilerParameters.ReferencedAssemblies);
 
@@ -217,7 +210,7 @@ namespace Composite.Core.Types
                     continue;
                 }
 
-                string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
+                var entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
 
                 if (verbose)
                 {
@@ -230,11 +223,10 @@ namespace Composite.Core.Types
             throw new InvalidOperationException(sb.ToString());
         }
 
-
-        private static ICollection<Pair<string, Exception>> LoadAssembliesToMemory(StringCollection assemblyLocations)
+        private static IEnumerable<Pair<string, Exception>> LoadAssembliesToMemory(StringCollection assemblyLocations)
         {
             var failedAssemblyLoads = new List<Pair<string, Exception>>();
-            foreach (string assemblyLocation in assemblyLocations)
+            foreach (var assemblyLocation in assemblyLocations)
             {
                 if (PackageAssemblyHandler.TryGetAlreadyLoadedAssembly(assemblyLocation) != null)
                 {
@@ -248,7 +240,7 @@ namespace Composite.Core.Types
                 }
                 catch (Exception ex)
                 {
-                    Exception exceptionToLog = ex;
+                    var exceptionToLog = ex;
 
                     var loadException = ex as ReflectionTypeLoadException;
                     if (loadException?.LoaderExceptions != null && loadException.LoaderExceptions.Any())
@@ -263,7 +255,6 @@ namespace Composite.Core.Types
             return failedAssemblyLoads;
         }
 
-
         /// <summary>
         /// This method returns true if the given type <paramref name="type"/> is
         /// compiled at runetime. Otherwise false.
@@ -275,9 +266,6 @@ namespace Composite.Core.Types
             return type.Assembly.Location.StartsWith(PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory), StringComparison.InvariantCultureIgnoreCase);
         }
 
-
-
-
         /// <summary>
         /// This method returns true if the types given by <paramref name="dependingTypes"/> needs a recompile because
         /// they either is null or the type given by <paramref name="dependableType"/> has changed and there for
@@ -288,17 +276,21 @@ namespace Composite.Core.Types
         /// <returns>Returns true if the types given by <paramref name="dependingTypes"/> needs a recompile.</returns>
         public static bool IsRecompileNeeded(Type dependableType, IEnumerable<Type> dependingTypes)
         {
-            foreach (Type dependingType in dependingTypes)
+            foreach (var dependingType in dependingTypes)
             {
-                if (dependingType == null) return true;
+                if (dependingType == null)
+                {
+                    return true;
+                }
 
-                if (IsCompiledAtRuntime(dependableType) && !IsCompiledAtRuntime(dependingType)) return true;
+                if (IsCompiledAtRuntime(dependableType) && !IsCompiledAtRuntime(dependingType))
+                {
+                    return true;
+                }
             }
 
             return false;
         }
-
-
 
         /// <summary>
         /// Use this method to add a <see cref="ICodeProvider"/> implementation
@@ -310,17 +302,14 @@ namespace Composite.Core.Types
             _dynamicallyAddedCodeProviders.Add(codeProvider);
         }
 
-
         /// <summary>
         /// Gets the compiled types.
         /// </summary>
         /// <returns></returns>
         public static Type GetCompiledType(string fullName)
         {
-            Type type;
-            return _compiledTypesByFullName.TryGetValue(fullName, out type) ? type : null;
+            return _compiledTypesByFullName.TryGetValue(fullName, out var type) ? type : null;
         }
-
 
         private static void Compile(CodeGenerationBuilder builder)
         {
@@ -336,10 +325,10 @@ namespace Composite.Core.Types
             compilerParameters.AddAssemblyLocationsFromBin();
 
             var codeCompileUnit = new CodeCompileUnit();
+
             codeCompileUnit.Namespaces.AddRange(builder.Namespaces.ToArray());
 
-
-            for (int i = 0; i < NumberOfCompileRetries; i++)
+            for (var i = 0; i < NumberOfCompileRetries; i++)
             {
                 var compiler = CSharpCodeProviderFactory.CreateCompiler();
                 CompilerResults compileResult = compiler.CompileAssemblyFromDom(compilerParameters, codeCompileUnit);
@@ -351,15 +340,7 @@ namespace Composite.Core.Types
 
                 if (i == NumberOfCompileRetries - 1)
                 {
-#if OUTPUT_SOURCE_CODE_ON_ERROR
-                    using (FileStream file = File.Create(Path.Combine(PathUtil.BaseDirectory, "output.cs")))
-                    {
-                        using (var sw = new StreamWriter(file))
-                        {
-                            compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
-                        }
-                    }
-#endif
+                    OutputSourceCodeOnError(compiler, codeCompileUnit);
 
                     var sb = new StringBuilder();
                     foreach (CompilerError compilerError in compileResult.Errors)
@@ -369,7 +350,7 @@ namespace Composite.Core.Types
                             continue;
                         }
 
-                        string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
+                        var entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
 
                         Log.LogError(LogTitle, entry);
 
@@ -381,52 +362,34 @@ namespace Composite.Core.Types
             }
         }
 
-
-
         /// <summary>
         /// Returns all currently temp compiled assemblies.
         /// </summary>
         internal static IEnumerable<Assembly> CompiledAssemblies => _compiledAssemblies;
 
-
         /// <summary>
         /// </summary>
         internal static string TempAssemblyFolderPath => PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
 
-
         /// <summary>
         /// </summary>
-        internal static string BinFolder
-        {
-            get
-            {
-                return RuntimeInformation.IsUnittest 
-                    ? PathUtil.BaseDirectory
-                    : Path.Combine(PathUtil.BaseDirectory, "Bin");
-            }
-        }
-
-
+        internal static string BinFolder => RuntimeInformation.IsUnittest ? PathUtil.BaseDirectory : Path.Combine(PathUtil.BaseDirectory, "Bin");
 
         /// <summary>
         /// </summary>
         internal static string CompositeGeneratedFileName => "Composite.Generated.dll";
 
-
         /// <summary>
         /// </summary>
         internal static string CompositeGeneratedAssemblyPath => Path.Combine(BinFolder, "Composite.Generated.dll");
 
-
         private static void PopulateBuilder(CodeGenerationBuilder builder)
         {
-            foreach (ICodeProvider provider in CodeProviders)
+            foreach (var provider in CodeProviders)
             {
                 provider.GetCodeToCompile(builder);
             }
         }
-
-
 
         private static IEnumerable<ICodeProvider> CodeProviders
         {
@@ -436,38 +399,34 @@ namespace Composite.Core.Types
                 yield return new EmptyDataClassCodeProvider();
                 yield return new DataWrapperClassCodeProvider();
 
-                foreach (ICodeProvider codeProvider in _dynamicallyAddedCodeProviders)
+                foreach (var codeProvider in _dynamicallyAddedCodeProviders)
                 {
                     yield return codeProvider;
                 }
             }
         }
 
-
-
         private static void AddCompiledAssembly(Assembly newAssembly)
         {
-            Type newType = newAssembly.GetTypes().First();
+            var newType = newAssembly.GetTypes().First();
 
             var assembliesToRemove = new List<Assembly>();
-            foreach (Assembly assembly in _compiledAssemblies)
+            foreach (var assembly in _compiledAssemblies)
             {
-                Type type = assembly.GetTypes().SingleOrDefault(f => f.FullName == newType.FullName);
+                var type = assembly.GetTypes().SingleOrDefault(f => f.FullName == newType.FullName);
                 if (type != null)
                 {
                     assembliesToRemove.Add(assembly);
                 }
             }
 
-            foreach (Assembly assemblyToRemove in assembliesToRemove)
+            foreach (var assemblyToRemove in assembliesToRemove)
             {
                 _compiledAssemblies.Remove(assemblyToRemove);
             }
 
             _compiledAssemblies.Add(newAssembly);
         }
-
-
 
         private static void Flush()
         {
@@ -476,7 +435,7 @@ namespace Composite.Core.Types
 
         private static void ClearOldTempFiles()
         {
-            DateTime yesterday = DateTime.Now.AddDays(-1);
+            var yesterday = DateTime.Now.AddDays(-1);
             var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yesterday).ToArray();
 
             foreach (var file in oldFiles)
@@ -488,6 +447,18 @@ namespace Composite.Core.Types
                 catch
                 {
                     // Silent
+                }
+            }
+        }
+
+        [Conditional("OUTPUT_SOURCE_CODE_ON_ERROR")]
+        private static void OutputSourceCodeOnError(CodeDomProvider compiler, CodeCompileUnit codeCompileUnit)
+        {
+            using (var file = File.Create(Path.Combine(PathUtil.BaseDirectory, "output.cs")))
+            {
+                using (var sw = new StreamWriter(file))
+                {
+                    compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
                 }
             }
         }

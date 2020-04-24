@@ -116,7 +116,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                     DataFacade.AddNew(reference);
                 }
 
-                function.SetFunctinoCode(code);
+                function.SetFunctionCode(code);
 
                 function = DataFacade.AddNew(function);
 

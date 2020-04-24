@@ -166,7 +166,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 if (helper.IsEditProcessControlledAllowed)
                 {
-                    helper.SetCachable(hasCaching);
+                    helper.SetCacheable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetLocalizedControlled(hasLocalization);
                     helper.SetSearchable(isSearchable);
