@@ -198,11 +198,11 @@ namespace Composite.Data
 
             foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
             {
-                if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof(IData)))
-                {
-                    // Ignoring assemblies that aren't referencing Composite.dll
-                    continue;
-                }
+                //if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof(IData)))
+                //{
+                //    // Ignoring assemblies that aren't referencing Composite.dll
+                //    continue;
+                //}
 
                 Type[] types;
                 try

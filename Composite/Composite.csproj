@@ -271,6 +271,11 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\ServiceFunctionProvider\ServiceFunctionCollection.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\ServiceFunctionProvider\ServiceFunctionEntityToken.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\ServiceFunctionProvider\ServiceFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\ServiceFunctionProvider\ServiceFunctionRegistry.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\ServiceFunctionProvider\ServiceMethodFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\HomePageSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunctionBase.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TreeSelectorWidgetFunction.cs" />
