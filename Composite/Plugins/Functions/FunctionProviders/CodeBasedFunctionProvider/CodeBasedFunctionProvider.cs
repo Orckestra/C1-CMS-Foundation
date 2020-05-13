@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
 
-namespace Composite.Plugins.Functions.FunctionProviders.ServiceFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvider
 {
-    internal class ServiceFunctionProvider : IFunctionProvider
+    internal class CodeBasedFunctionProvider : IFunctionProvider
     {
         private static FunctionNotifier _functionNotifier;
 
@@ -13,9 +13,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.ServiceFunctionProvider
             set => _functionNotifier = value;
         }
 
-        public IEnumerable<IFunction> Functions => ServiceFunctionRegistry.Functions;
+        public IEnumerable<IFunction> Functions => CodeBasedFunctionRegistry.Functions;
 
-        public static void Reload()
+        internal static void Reload()
         {
             // Can be called before function provider initialization
             _functionNotifier?.FunctionsUpdated();
