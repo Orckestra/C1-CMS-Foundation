@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" 
+	xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" 
+	xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
 	<cms:bindings>
 		<cms:binding name="SystemActiveLocale" type="Composite.Data.Types.ISystemActiveLocale" />
+		<cms:binding name="FallbackLocales" type="System.Collections.IEnumerable" optional="true" />
 	</cms:bindings>
 	<cms:layout iconhandle="localization-editsystemlocale" label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.Dialog.Label}">
 		<FieldGroup Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FieldGroup.Label}">
@@ -10,6 +13,14 @@
 					<cms:bind source="SystemActiveLocale.UrlMappingName" />
 				</TextBox.Text>
 			</TextBox>
+			<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Required="false" Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FallbackCultureName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FallbackCultureName.Help">
+				<KeySelector.Options>
+					<cms:read source="FallbackLocales"/>
+				</KeySelector.Options>
+				<KeySelector.Selected>
+					<cms:bind source="SystemActiveLocale.FallbackCultureName" />
+				</KeySelector.Selected>
+			</KeySelector>
 		</FieldGroup>
 	</cms:layout>
 </cms:formdefinition>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.Validation.Validators;
@@ -44,5 +44,10 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         [ImmutableFieldId("{3CF887A9-44FB-4193-A070-67E4324F9206}")]
         bool IsDefault { get; set; }
+
+        /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.String, 16)]
+        [ImmutableFieldId("{1E3022D2-F5D2-4D2E-B75D-943853DCCCD9}")]
+        string FallbackCultureName { get; set; }
 	}
 }

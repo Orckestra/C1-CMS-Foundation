@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.Data;
@@ -36,8 +37,23 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
 
             ISystemActiveLocale systemActiveLocale = (ISystemActiveLocale)dataEntityToken.Data;
+            Bindings.Add("SystemActiveLocale", systemActiveLocale);
 
-            this.Bindings.Add("SystemActiveLocale", systemActiveLocale);
+            var systemActiveLocales = DataFacade.GetData<ISystemActiveLocale>().ToList();
+
+            if (string.IsNullOrEmpty(systemActiveLocale.FallbackCultureName) && systemActiveLocales.Any(d => d.FallbackCultureName == systemActiveLocale.CultureName))
+            {
+                Bindings.Add("FallbackLocales", new Dictionary<string,string>());
+            }
+            else
+            {
+                var fallbackLocales =
+                    systemActiveLocales.Where(d =>
+                            d.CultureName != systemActiveLocale.CultureName && string.IsNullOrEmpty(d.FallbackCultureName))
+                        .Select(d => new CultureInfo(d.CultureName)).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+
+                Bindings.Add("FallbackLocales", fallbackLocales);
+            }
         }
 
 

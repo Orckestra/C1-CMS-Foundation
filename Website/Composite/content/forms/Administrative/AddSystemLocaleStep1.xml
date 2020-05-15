@@ -6,6 +6,8 @@
 		<cms:binding name="UrlMappingName" type="System.String" />
 		<cms:binding name="AccessToAllUsers" type="System.Boolean" />
     <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
+    <cms:binding name="FallbackLocales" type="System.Collections.IEnumerable" optional="true" />
+    <cms:binding name="FallbackCultureName" type="System.String" optional="true" />
   </cms:bindings>
   <cms:layout iconhandle="localization-addsystemlocale" label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.Dialog.Label}">
     <FieldGroup>
@@ -36,6 +38,14 @@
 					<cms:bind source="AccessToAllUsers" />
 				</CheckBox.Checked>
 			</CheckBox>
+			<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Required="false" Label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.FallbackCultureName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.FallbackCultureName.Help">
+				<KeySelector.Options>
+					<cms:read source="FallbackLocales"/>
+				</KeySelector.Options>
+				<KeySelector.Selected>
+					<cms:bind source="FallbackCultureName" />
+				</KeySelector.Selected>
+			</KeySelector>
 		</FieldGroup>
   </cms:layout>
 </cms:formdefinition>

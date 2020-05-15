@@ -64,10 +64,16 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             var culturesDictionary = cultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
+            var fallbackLocales = DataFacade.GetData<ISystemActiveLocale>().Where(d => string.IsNullOrEmpty(d.FallbackCultureName))
+                .Select(d => new CultureInfo(d.CultureName)).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+
+
             this.Bindings = new Dictionary<string, object>
             {
                 {"CultureName", ""},
                 {"RegionLanguageList", culturesDictionary},
+                {"FallbackCultureName", ""},
+                {"FallbackLocales", fallbackLocales},
                 {"UrlMappingName", ""},
                 {"AccessToAllUsers", true}
             };
@@ -80,6 +86,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             string cultureName = this.GetBinding<string>("CultureName");
             string urlMappingName = this.GetBinding<string>("UrlMappingName");
             bool accessToAllUsers = this.GetBinding<bool>("AccessToAllUsers");
+            string fallbackCultureName = this.GetBinding<string>("FallbackCultureName");
 
             LocalizationFacade.AddLocale(cultureName, urlMappingName, accessToAllUsers);
 
@@ -95,6 +102,11 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             if (newLocaleDataItem != null)
             {
+                if (!string.IsNullOrEmpty(fallbackCultureName))
+                {
+                    newLocaleDataItem.FallbackCultureName = fallbackCultureName;
+                    DataFacade.Update(newLocaleDataItem);
+                }
                 SelectElement(newLocaleDataItem.GetDataEntityToken());
             }
         }
