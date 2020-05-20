@@ -41,15 +41,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvide
             {
                 arguments.Add(parameters.GetParameter(paramProfile.Name, paramProfile.Type));
             }
-            if (MethodInfo.IsStatic)
-            {
-                return MethodInfo.Invoke(null, arguments.ToArray());
-            }
-
-            var serviceObject = ServiceLocator.GetService(Type);
-            return serviceObject == null
-                ? MethodInfo.Invoke(Activator.CreateInstance(Type), arguments.ToArray())
-                : MethodInfo.Invoke(serviceObject, arguments.ToArray());
+            object instance = MethodInfo.IsStatic ? null : (ServiceLocator.GetService(Type) ?? Activator.CreateInstance(Type));
+            return MethodInfo.Invoke(instance, arguments.ToArray());
         }
     }
 }

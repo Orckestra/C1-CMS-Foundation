@@ -8,7 +8,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvide
     {
         internal CodeBasedFunctionEntityToken(CodeBasedFunction function)
         {
-            Id = string.Concat(function.Namespace, ".", function.Name);
+            Id = $"{function.Namespace}.{function.Name}";
         }
 
         public CodeBasedFunctionEntityToken(string fullName)
