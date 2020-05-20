@@ -16,7 +16,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 {
     internal class MethodBasedFunction : IFunction
     {
-        private static readonly string LogTitle = typeof(MethodBasedFunction).Name;
+        private static string LogTitle;
 
         private readonly IMethodBasedFunctionInfo _methodBasedFunctionInfo;
         private readonly Type _type;
@@ -25,8 +25,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         private string _functionDescription;
         private object _object;
 
+        protected MethodBasedFunction(string logTitle)
+        {
+            LogTitle = logTitle;
+        }
 
-        protected MethodBasedFunction(IMethodBasedFunctionInfo info, Type type, MethodInfo methodInfo)
+        protected MethodBasedFunction(IMethodBasedFunctionInfo info, Type type, MethodInfo methodInfo) : this(typeof(MethodBasedFunction).Name)
         {
             _methodBasedFunctionInfo = info;
             _type = type;
@@ -38,10 +42,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         public static MethodBasedFunction Create(IMethodBasedFunctionInfo info)
         {
             Type type = TypeManager.TryGetType(info.Type);
+            string errorMessage;
 
             if (type == null)
             {
-                string errorMessage = "Could not find the type '{0}'".FormatWith(info.Type);
+                errorMessage = "Could not find the type '{0}'".FormatWith(info.Type);
 
                 // Skipping error log while package installation, the type/method may be available after restart
                 if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
@@ -52,31 +57,39 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 return new NotLoadedMethodBasedFunction(info, errorMessage);
             }
 
-            MethodInfo methodInfo = type.GetMethods().FirstOrDefault(mi => mi.Name == info.MethodName);
-
-            if (methodInfo == null)
-            {
-                string errorMessage = "Could not find the method '{0}' on the the type '{1}'".FormatWith(info.MethodName, info.Type);
-
-                // Skipping error log while package installation, the type/method may be available after restart
-                if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
-                {
-                    Log.LogError(LogTitle, GetErrorMessage(info) + errorMessage);
-                }
-
-                return new NotLoadedMethodBasedFunction(info, errorMessage);
-            }
-
-            return new MethodBasedFunction(info, type, methodInfo);
+            MethodInfo methodInfo = GetMethodInfo(type, info.MethodName, info.Namespace, info.UserMethodName, out errorMessage);
+            return methodInfo == null ? new NotLoadedMethodBasedFunction(info, errorMessage) : new MethodBasedFunction(info, type, methodInfo);
         }
 
+        protected static MethodInfo GetMethodInfo(Type type, string methodName, string @namespace, string userMethodName, out string errorMessage)
+		{
+            MethodInfo methodInfo = type.GetMethods().FirstOrDefault(mi => mi.Name == methodName);
+
+            errorMessage = null;
+            if (methodInfo == null)
+            {
+                errorMessage = "Could not find the method '{0}' on the the type '{1}'".FormatWith(methodName, type.Name);
+
+                // Skipping error log while package installation, the type/method may be available after restart
+                if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                {
+                    Log.LogError(LogTitle, GetErrorMessage(@namespace, userMethodName) + errorMessage);
+                }
+            }
+            return methodInfo;
+        }
+
+        private static string GetErrorMessage(string @namespace, string userMethodName)
+        {
+            return "Failed to initialize function '{0}.{1}'. ".FormatWith(@namespace, userMethodName);
+        }
 
         private static string GetErrorMessage(IMethodBasedFunctionInfo info)
         {
             return "Failed to initialize function '{0}.{1}'. ".FormatWith(info.Namespace, info.UserMethodName);
         }
 
-        public object Execute(ParameterList parameters, FunctionContextContainer context)
+        public virtual object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             IList<object> arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
@@ -90,14 +103,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public string Name
+        public virtual string Name
         {
             get { return _methodBasedFunctionInfo.UserMethodName; }
         }
 
 
 
-        public string Namespace
+        public virtual string Namespace
         {
             get { return _methodBasedFunctionInfo.Namespace; }
         }
@@ -260,7 +273,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        private MethodInfo MethodInfo
+        protected virtual MethodInfo MethodInfo
         {
             get
             {
@@ -285,7 +298,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public EntityToken EntityToken
+        public virtual EntityToken EntityToken
         {
             get
             {
