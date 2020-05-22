@@ -1,9 +1,9 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Routing;
 
 namespace Composite.Core.Routing.Pages
 {
-    internal class SeoFriendlyRedirectRouteHandler: IRouteHandler
+    public class SeoFriendlyRedirectRouteHandler: IRouteHandler
     {
         private readonly string _redirectUrl;
 

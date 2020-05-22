@@ -21,8 +21,11 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Routing.Pages
 {
+    /// <summary>
+    /// Default implementation of <see cref="IPageUrlProvider"/>.
+    /// </summary>
     [ConfigurationElementType(typeof(NonConfigurablePageUrlProvider))]
-    internal sealed class DefaultPageUrlProvider: IPageUrlProvider
+    public class DefaultPageUrlProvider: IPageUrlProvider
     {
         public static readonly string UrlMarker_RelativeUrl = "/c1mode(relative)";
         public static readonly string UrlMarker_Unpublished = "/c1mode(unpublished)";
@@ -33,6 +36,9 @@ namespace Composite.Plugins.Routing.Pages
          private static readonly Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
             = new Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
 
+        /// <summary>
+        /// A URL suffix, to be inserted in every page URL, f.e. ".aspx"
+        /// </summary>
         public static string UrlSuffix { get; private set;}
 
         static DefaultPageUrlProvider()
@@ -54,6 +60,7 @@ namespace Composite.Plugins.Routing.Pages
             DataEvents<IUrlConfiguration>.OnStoreChanged += (a, b) => LoadUrlSuffix();
         }
 
+        
         public DefaultPageUrlProvider()
         {
             LoadUrlSuffix();
@@ -469,7 +476,7 @@ namespace Composite.Plugins.Routing.Pages
 
                 if (page != null)
                 {
-                    return new PageUrlData(page.Id, publicationScope, locale)
+                    return new PageUrlData(page.Id, publicationScope, page.DataSourceId.LocaleScope)
                     {
                         VersionId = page.VersionId,
                         PathInfo = pathInfo
@@ -480,7 +487,7 @@ namespace Composite.Plugins.Routing.Pages
             return null;
         }
 
-        private static IPage TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
+        private IPage TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
         {
             string[] pageUrlTitles = pagePath.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
 
@@ -558,7 +565,7 @@ namespace Composite.Plugins.Routing.Pages
             return currentPage;
         }
 
-        private static IPage FindMatchingPage(Guid parentId, string urlTitle)
+        protected virtual IPage FindMatchingPage(Guid parentId, string urlTitle)
         {
             foreach (var page in GetChildPages(parentId))
             {
