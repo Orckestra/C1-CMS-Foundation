@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvider
 {
-    internal class CodeBasedFunction : MethodBasedFunction, IFunction
+    internal class CodeBasedFunction : MethodBasedFunction
     {
         public static CodeBasedFunction Create(Type type, string methodName, string userNamespace, string userMethodName, string description)
         {
-            var methodInfo = GetMethodInfo(type, methodName, userNamespace, userMethodName, out string _);
+            var methodInfo = GetMethodInfo(type, methodName, userNamespace, userMethodName, out _);
+
             return methodInfo == null ? null : new CodeBasedFunction(type, methodInfo, userNamespace, userMethodName, description);
         }
 
@@ -26,6 +27,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvide
             MethodInfo = methodInfo;
             Description = description;
         }
+
         public override string Description { get; }
         protected override MethodInfo MethodInfo { get; }
         public override string Name { get; }
@@ -36,12 +38,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.CodeBasedFunctionProvide
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            IList<object> arguments = new List<object>();
+            var arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
             {
                 arguments.Add(parameters.GetParameter(paramProfile.Name, paramProfile.Type));
             }
-            object instance = MethodInfo.IsStatic ? null : (ServiceLocator.GetService(Type) ?? Activator.CreateInstance(Type));
+
+            var instance = MethodInfo.IsStatic ? null : ActivatorUtilities.GetServiceOrCreateInstance(ServiceLocator.ServiceProvider, Type);
+
             return MethodInfo.Invoke(instance, arguments.ToArray());
         }
     }
