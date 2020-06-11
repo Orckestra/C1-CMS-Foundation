@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
@@ -21,6 +21,20 @@ namespace Composite.Data
         private XElement _pageElement;
         private int? _level;
 
+
+        /// <summary>
+        ///  Parameterless constructor for Proxy Pattern
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        public PageNode()
+        {
+            if (this.GetType() == typeof(PageNode))
+            {
+                throw new InvalidOperationException($"Can't create instance of {nameof(PageNode)} via parameterless constructor. Parameterless constructor used only for Proxy Pattern");
+            }
+            
+        }
+
         internal PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -33,9 +47,9 @@ namespace Composite.Data
         /// <summary>
         /// The Id of the page
         /// </summary>
-        public Guid Id
+        public virtual Guid Id
         {
-            get
+             get
             {
                 return _page.Id;
             }
@@ -45,7 +59,7 @@ namespace Composite.Data
         /// <summary>
         /// The Title of the page
         /// </summary>
-        public string Title
+        public virtual string Title
         {
             get
             {
@@ -57,7 +71,7 @@ namespace Composite.Data
         /// <summary>
         /// The Menu Title of the page
         /// </summary>
-        public string MenuTitle
+        public virtual string MenuTitle
         {
             get
             {
@@ -69,7 +83,7 @@ namespace Composite.Data
         /// <summary>
         /// The time the page was changed last
         /// </summary>
-        public DateTime ChangedDate
+        public virtual DateTime ChangedDate
         {
             get
             {
@@ -81,7 +95,7 @@ namespace Composite.Data
         /// <summary>
         /// The Description of the page
         /// </summary>
-        public string Description
+        public virtual string Description
         {
             get
             {
@@ -94,7 +108,7 @@ namespace Composite.Data
         /// Url to this page.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
-        public string Url
+        public virtual string Url
         {
             get
             {
@@ -106,7 +120,7 @@ namespace Composite.Data
         /// <summary>
         /// The level this page is placed at in the sitemap. Level 1 is a homepage, level 2 are children of the homepage and so on.
         /// </summary>
-        public int Level
+        public virtual int Level
         {
             get
             {
@@ -125,7 +139,7 @@ namespace Composite.Data
         /// <summary>
         /// Returns the parent <see cref="PageNode"/>.
         /// </summary>
-        public PageNode ParentPage
+        public virtual PageNode ParentPage
         {
             get
             {
@@ -143,7 +157,7 @@ namespace Composite.Data
         /// <summary>
         /// Returns <see cref="PageNode"/> elements that represent the immediate children of this page.
         /// </summary>
-        public IEnumerable<PageNode> ChildPages
+        public virtual IEnumerable<PageNode> ChildPages
         {
             get
             {
@@ -165,7 +179,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="scope">The scope.</param>
         /// <returns></returns>
-        public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
+        public virtual IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
         {
             if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
@@ -186,7 +200,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="scope">The scope.</param>
         /// <returns></returns>
-        public IEnumerable<Guid> GetPageIds(SitemapScope scope) 
+        public virtual IEnumerable<Guid> GetPageIds(SitemapScope scope) 
         {
             if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
@@ -198,7 +212,7 @@ namespace Composite.Data
         /// XML representing the page and it's decendants. Do NOT modify this structure. To do modifications, clone this first.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
-        public XElement SitemapXml
+        public virtual XElement SitemapXml
         {
             get
             {
@@ -211,6 +225,12 @@ namespace Composite.Data
             }
         }
 
+
+        /// <summary>
+        /// Get page for this page node
+        /// </summary>
+        /// <returns>IPage</returns>
+        internal IPage Page => _page;
 
         /// <summary>
         /// Serialize the page specific state to a string for reading.
@@ -227,6 +247,19 @@ namespace Composite.Data
                 this.MenuTitle,
                 this.Url,
                 this.Level);
+        }
+    }
+}
+
+namespace Composite.Data.Extensions
+{
+    /// <exclude />
+    public static class PageNodeExtensions
+    {
+        /// <exclude />
+        public static IPage GetPage(this PageNode pageNode)
+        {
+            return pageNode.Page;
         }
     }
 }
