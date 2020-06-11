@@ -21,21 +21,12 @@ namespace Composite.Data
         private XElement _pageElement;
         private int? _level;
 
-
         /// <summary>
-        ///  Parameterless constructor for Proxy Pattern
+        /// 
         /// </summary>
-        /// <exception cref="InvalidOperationException"></exception>
-        public PageNode()
-        {
-            if (this.GetType() == typeof(PageNode))
-            {
-                throw new InvalidOperationException($"Can't create instance of {nameof(PageNode)} via parameterless constructor. Parameterless constructor used only for Proxy Pattern");
-            }
-            
-        }
-
-        internal PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
+        /// <param name="page"></param>
+        /// <param name="sitemapNavigator"></param>
+        public PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
             Verify.ArgumentNotNull(page, "page");
 
@@ -47,74 +38,38 @@ namespace Composite.Data
         /// <summary>
         /// The Id of the page
         /// </summary>
-        public virtual Guid Id
-        {
-             get
-            {
-                return _page.Id;
-            }
-        }
+        public virtual Guid Id => _page.Id;
 
 
         /// <summary>
         /// The Title of the page
         /// </summary>
-        public virtual string Title
-        {
-            get
-            {
-                return _page.Title;
-            }
-        }
+        public virtual string Title => _page.Title;
 
 
         /// <summary>
         /// The Menu Title of the page
         /// </summary>
-        public virtual string MenuTitle
-        {
-            get
-            {
-                return string.IsNullOrEmpty(_page.MenuTitle) ? null : _page.MenuTitle;
-            }
-        }
+        public virtual string MenuTitle => string.IsNullOrEmpty(_page.MenuTitle) ? null : _page.MenuTitle;
 
 
         /// <summary>
         /// The time the page was changed last
         /// </summary>
-        public virtual DateTime ChangedDate
-        {
-            get
-            {
-                return _page.ChangeDate;
-            }
-        }
+        public virtual DateTime ChangedDate => _page.ChangeDate;
 
 
         /// <summary>
         /// The Description of the page
         /// </summary>
-        public virtual string Description
-        {
-            get
-            {
-                return _page.Description;
-            }
-        }
+        public virtual string Description => _page.Description;
 
 
         /// <summary>
         /// Url to this page.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
-        public virtual string Url
-        {
-            get
-            {
-                return PageUrls.BuildUrl(_page);
-            }
-        }
+        public virtual string Url => PageUrls.BuildUrl(_page);
 
 
         /// <summary>
@@ -128,7 +83,7 @@ namespace Composite.Data
                 {
                     PageNode parent = ParentPage;
 
-                    _level = parent == null ? 1 : parent.Level + 1;
+                    _level = parent?.Level + 1 ?? 1;
                 }
 
                 return _level.Value;
@@ -227,10 +182,13 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Get page for this page node
+        /// Get the page for page node
         /// </summary>
-        /// <returns>IPage</returns>
-        internal IPage Page => _page;
+        /// <returns>The page</returns>
+        public IPage GetPage()
+        {
+            return _page;
+        }
 
         /// <summary>
         /// Serialize the page specific state to a string for reading.
@@ -247,19 +205,6 @@ namespace Composite.Data
                 this.MenuTitle,
                 this.Url,
                 this.Level);
-        }
-    }
-}
-
-namespace Composite.Data.Extensions
-{
-    /// <exclude />
-    public static class PageNodeExtensions
-    {
-        /// <exclude />
-        public static IPage GetPage(this PageNode pageNode)
-        {
-            return pageNode.Page;
         }
     }
 }

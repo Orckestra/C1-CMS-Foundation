@@ -244,7 +244,7 @@ namespace Composite.Core.WebClient.Renderings
 
             _dataScope = new DataScope(Page.DataSourceId.PublicationScope, culture);
             Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = HttpContext.Current?.Items["C1_CurrentCulture"] as CultureInfo ?? culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
             PageContentToRender = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
