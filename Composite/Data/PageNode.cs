@@ -22,10 +22,10 @@ namespace Composite.Data
         private int? _level;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of <see cref="PageNode"/>.
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="sitemapNavigator"></param>
+        /// <param name="page">The page.</param>
+        /// <param name="sitemapNavigator">The site map navigator.</param>
         public PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -182,13 +182,11 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Get the page for page node
+        /// Gets the page.
         /// </summary>
         /// <returns>The page</returns>
-        public IPage GetPage()
-        {
-            return _page;
-        }
+        public virtual IPage Page => _page;
+
 
         /// <summary>
         /// Serialize the page specific state to a string for reading.
