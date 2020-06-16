@@ -126,7 +126,7 @@ namespace Composite.Core.WebClient
         /// Determines whether the current request is administration console request. 
         /// (Requests to [/virtual path]/Composite/*)
         /// </summary>
-        internal static bool IsAdminConsoleRequest(string requestPath)
+        public static bool IsAdminConsoleRequest(string requestPath)
         {
             return string.Compare(requestPath, UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase) == 0
                    || requestPath.StartsWith(UrlUtils.AdminRootPath + "/", StringComparison.OrdinalIgnoreCase);
