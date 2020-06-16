@@ -946,7 +946,6 @@ namespace Composite.Plugins.Routing.Pages
             }
             result.PathInfo = pathInfo;
 
-
             result["cultureInfo"] = cultureInfo.ToString();
 
             if (pageUrlData.QueryParameters != null)
