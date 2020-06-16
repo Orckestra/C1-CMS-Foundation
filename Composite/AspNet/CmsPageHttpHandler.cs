@@ -133,13 +133,8 @@ namespace Composite.AspNet
 
                 var response = context.Response;
 
-                if (preventResponseCaching)
-                {
-                    context.Response.Cache.SetNoServerCaching();
-                }
-
                 // Disabling ASP.NET cache if there's a logged-in user
-                if (consoleUserLoggedIn)
+                if (consoleUserLoggedIn || preventResponseCaching)
                 {
                     context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 }
