@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements.Foundation.PluginFacades;
+using Composite.C1Console.Elements.Plugins.ElementActionProvider;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.Core;
@@ -323,6 +324,22 @@ namespace Composite.C1Console.Elements.Foundation
                         catch (Exception ex)
                         {
                             Log.LogCritical("ElementActionProviderFacade", string.Format("Failed to add actions from the element action provider named '{0}'", elementActionProviderName));
+                            Log.LogCritical("ElementActionProviderFacade", ex);
+                        }
+                    }
+
+                    foreach (var elementActionProviders in ServiceLocator.GetServices<IElementActionProvider>())
+                    {
+                        try
+                        {
+                            var actions = elementActionProviders.GetActions(element.ElementHandle.EntityToken);
+
+                            element.AddAction(actions);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.LogCritical("ElementActionProviderFacade",
+                                $"Failed to add actions from the element action provider '{elementActionProviders.GetType()}'");
                             Log.LogCritical("ElementActionProviderFacade", ex);
                         }
                     }
