@@ -328,19 +328,19 @@ namespace Composite.C1Console.Elements.Foundation
                         }
                     }
 
-                    foreach (var elementActionProviders in ServiceLocator.GetServices<IElementActionProvider>())
+                    foreach (var elementActionProvider in ServiceLocator.GetServices<IElementActionProvider>())
                     {
                         try
                         {
-                            var actions = elementActionProviders.GetActions(element.ElementHandle.EntityToken);
+                            var actions = elementActionProvider.GetActions(element.ElementHandle.EntityToken);
 
                             element.AddAction(actions);
                         }
                         catch (Exception ex)
                         {
-                            Log.LogCritical("ElementActionProviderFacade",
-                                $"Failed to add actions from the element action provider '{elementActionProviders.GetType()}'");
-                            Log.LogCritical("ElementActionProviderFacade", ex);
+                            Log.LogCritical(nameof(ElementActionProviderFacade),
+                                $"Failed to add actions from the element action provider '{elementActionProvider.GetType()}'");
+                            Log.LogCritical(nameof(ElementActionProviderFacade), ex);
                         }
                     }
                 }
