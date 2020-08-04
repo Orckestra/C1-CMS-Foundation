@@ -1,10 +1,9 @@
-﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 <%@ Import Namespace="Composite.Core.Extensions" %>
 <%@ Import Namespace="Composite.Core.ResourceSystem" %>
-<%@ Import Namespace="Composite.Core.Types" %>
 
 <script runat="server">
     private bool _loaded;
@@ -166,7 +165,7 @@
         {
             if (_pageId == Guid.Empty) return "";
 
-            return Composite.Core.Types.ValueTypeConverter.Convert<string>(_pageId);
+            return _pageId.ToString();
         }
 
         public Type ReferencedType => typeof(IPage);
