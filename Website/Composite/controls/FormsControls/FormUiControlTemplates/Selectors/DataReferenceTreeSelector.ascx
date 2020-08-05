@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
+<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
@@ -8,7 +8,7 @@
 <script runat="server">
     private bool _loaded;
     private string _value;
-    
+
     protected override void BindStateToProperties()
     {
         LoadPostData();
@@ -22,7 +22,7 @@
         {
             _value = ctlSelectorDialog.Value;
             MediaUrlData mediaUrlData;
-            
+
             if(!_value.IsNullOrEmpty()
                 && IsMediaReference()
                 && TryExtractMedia(_value, out mediaUrlData))
@@ -36,8 +36,8 @@
                     _value = new DataReference<IMediaFile>(media).ToString();
                 }
             }
-            
-            
+
+
             _loaded = true;
         }
     }
@@ -45,10 +45,10 @@
     static bool TryExtractMedia(string value, out MediaUrlData mediaUrlData)
     {
         mediaUrlData = MediaUrls.ParseUrl(value);
-        
+
         return mediaUrlData != null;
     }
-    
+
     protected override void InitializeViewState()
     {
         _value = Selected;
@@ -57,12 +57,13 @@
 
     private IDataReference BuildReference(string serializedValue)
     {
-        Type dataReferenceType = typeof(DataReference<>).MakeGenericType(new[] { this.DataType });
+        Type dataReferenceType = DataType == typeof(IPage) ? typeof(PageDataReference)
+            : typeof(DataReference<>).MakeGenericType(new[] { this.DataType });
         object[] activationParameters = new object[1];
         activationParameters[0] = serializedValue;
         return (IDataReference)Activator.CreateInstance(dataReferenceType, activationParameters);
     }
-    
+
     protected override void  OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
@@ -82,19 +83,19 @@
         bool brokenReference = false;
 
         bool valueSet = false;
-        
+
         if (!_value.IsNullOrEmpty())
         {
             IDataReference reference = BuildReference(_value);
 
             valueSet = reference != null && reference.IsSet;
-            
+
             if (valueSet)
             {
                 try
                 {
                     label = reference.Data.GetLabel(true);
-					ctlSelectorDialog.Attributes["selectedtoken"] = Composite.C1Console.Security.EntityTokenSerializer.Serialize(reference.Data.GetDataEntityToken(), true);
+                    ctlSelectorDialog.Attributes["selectedtoken"] = Composite.C1Console.Security.EntityTokenSerializer.Serialize(reference.Data.GetDataEntityToken(), true);
                 }
                 catch (Exception)
                 {
@@ -107,7 +108,7 @@
         if (!this.NullValueAllowed && !valueSet)
         {
             ctlSelectorDialog.Attributes["required"] = "true";
-        }        
+        }
 
         if (label == null)
         {
@@ -119,16 +120,16 @@
         if (!brokenReference && IsMediaReference())
         {
             int fileNameIndex = label.LastIndexOf('/');
-            if(fileNameIndex > 0 && label.Length > fileNameIndex + 1) 
+            if(fileNameIndex > 0 && label.Length > fileNameIndex + 1)
             {
                 label = label.Substring(fileNameIndex + 1);
             }
         }
-        
+
         ctlSelectorDialog.Attributes["label"] = label;
         ctlSelectorDialog.Value = _value ?? string.Empty;
     }
-    
+
     private bool IsMediaReference()
     {
         return DataType == typeof (IImageFile) || DataType == typeof (IMediaFile);
@@ -138,6 +139,66 @@
     {
         return ctlSelectorDialog.UniqueID;
     }
+
+    /// <summary>
+    /// Represents a reference to a C1 CMS IPage item.
+    /// </summary>
+    [DataReferenceConverter]
+    public class PageDataReference : IDataReference
+    {
+        private IPage _cachedValue;
+        private readonly Guid _pageId;
+
+        /// <summary>
+        /// Constructs a DataReference using a key value.
+        /// </summary>
+        /// <param name="keyValue">The key value, like the Guid for a page's Id.</param>
+        public PageDataReference(string keyValue)
+        {
+            if(Guid.TryParse(keyValue, out Guid pageId))
+            {
+                _pageId = pageId;
+            }
+        }
+
+        public string Serialize()
+        {
+            if (_pageId == Guid.Empty) return "";
+
+            return _pageId.ToString();
+        }
+
+        public Type ReferencedType => typeof(IPage);
+
+
+
+        public bool IsSet => _pageId != Guid.Empty;
+
+        public object KeyValue => _pageId;
+
+        public IData Data
+        {
+            get
+            {
+                if (!IsSet)
+                {
+                    return default(IPage);
+                }
+
+                if (_cachedValue != null)
+                {
+                    return _cachedValue;
+                }
+
+                using (var connection = new DataConnection())
+                {
+                    return _cachedValue = connection.SitemapNavigator.GetPageNodeById(_pageId)?.Page;
+                }
+                
+            }
+        }
+    }
+
 </script>
 
 <aspui:PostBackDialog 
