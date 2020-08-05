@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Language="C#" Debug="true" AutoEventWireup="true" CodeFile="resxeditor.aspx.cs" Inherits="ResxEditor"
+<%@ Page Async="true" Language="C#" Debug="true" AutoEventWireup="true" CodeFile="resxeditor.aspx.cs" Inherits="ResxEditor"
 	ValidateRequest="false" %>
 
 <%@ Import Namespace="Composite.Core.ResourceSystem" %>
@@ -73,7 +73,7 @@
 								<% if (OtherCultureExist)
 									{ %>
 								<td>
-									<asp:Literal ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
+									<asp:Literal ID="Original2" runat="server" Text='<%#HttpUtility.HtmlEncode(Eval("Original"))%>' />
 								</td>
 								<td>
 									<ui:field>
