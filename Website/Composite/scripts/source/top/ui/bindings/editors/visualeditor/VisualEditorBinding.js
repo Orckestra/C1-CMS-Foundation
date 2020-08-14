@@ -40,6 +40,8 @@ VisualEditorBinding.getStructuredContent = function ( content ) {
 	var result = null;
 	WebServiceProxy.isFaultHandler = false;
 
+
+	//TinyMCE adds ../../ and firewall can blocks request
 	content = content.replace(
 		/(<img[^>]* class="[^"]*compositeFunctionWysiwygRepresentation[^"]*"[^>]* src=")(\.\.\/)+(Renderers\/FunctionBox[^"]*")/gi,
 		'$1/$3');
