@@ -41,10 +41,10 @@ VisualEditorBinding.getStructuredContent = function ( content ) {
 	WebServiceProxy.isFaultHandler = false;
 
 	content = content.replace(
-		/(<img[^>]* class="[^"]*compositeFunctionWysiwygRepresentation[^"]*" src=")(\.\.\/)+(Renderers\/FunctionBox[^"]*")/gi,
+		/(<img[^>]* class="[^"]*compositeFunctionWysiwygRepresentation[^"]*"[^>]* src=")(\.\.\/)+(Renderers\/FunctionBox[^"]*")/gi,
 		'$1/$3');
 	content = content.replace(
-		/(<img[^>]* class="[^"]*compositeFunctionWysiwygRepresentation[^"]*" data-mce-src=")(\.\.\/)+(Renderers\/FunctionBox[^"]*")/gi,
+		/(<img[^>]* class="[^"]*compositeFunctionWysiwygRepresentation[^"]*"[^>]* data-mce-src=")(\.\.\/)+(Renderers\/FunctionBox[^"]*")/gi,
 		'$1/$3');
 
 
