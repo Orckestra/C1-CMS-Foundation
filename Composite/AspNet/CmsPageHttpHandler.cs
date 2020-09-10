@@ -1,6 +1,7 @@
 using System.Web;
 using System.Xml.Linq;
 using Composite.AspNet.Caching;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Instrumentation;
 using Composite.Core.PageTemplates;
@@ -136,7 +137,10 @@ namespace Composite.AspNet
                 // Disabling ASP.NET cache if there's a logged-in user
                 if (consoleUserLoggedIn || preventResponseCaching)
                 {
-                    context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    using (preventResponseCaching ? Profiler.Measure("CmsPageHttpHandler: Disabling HTTP caching as at least one of the functions is not cacheable") : EmptyDisposable.Instance)
+                    {
+                        context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    }
                 }
 
                 // Inserting performance profiling information

@@ -340,9 +340,27 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
+                bool disableCaching = false;
+
                 using (Profiler.Measure("Executing embedded functions"))
                 {
-                    ExecuteEmbeddedFunctions(document.Root, contextContainer);
+                    ExecuteFunctionsRec(document.Root, contextContainer, func =>
+                    {
+                        if (!disableCaching && !FunctionAllowsCaching(func))
+                        {
+                            disableCaching = true;
+                        }
+
+                        return true;
+                    });
+                }
+
+                if (disableCaching)
+                {
+                    using (Profiler.Measure("PageRenderer: Disabling HTTP caching as at least one of the functions is not cacheable"))
+                    {
+                        HttpContext.Current?.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                    }
                 }
 
                 using (Profiler.Measure("Resolving page fields"))
@@ -653,11 +671,13 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <returns></returns>
         internal static bool ExecuteCacheableFunctions(XElement element, FunctionContextContainer functionContext)
         {
-            return ExecuteFunctionsRec(element, functionContext, name =>
-            {
-                var function = FunctionFacade.GetFunction(name);
-                return !(function is IDynamicFunction df && df.PreventFunctionOutputCaching);
-            });
+            return ExecuteFunctionsRec(element, functionContext, FunctionAllowsCaching);
+        }
+
+        private static bool FunctionAllowsCaching(string name)
+        {
+            var function = FunctionFacade.GetFunction(name);
+            return !(function is IDynamicFunction df && df.PreventFunctionOutputCaching);
         }
 
         private static void ReplaceFunctionWithResult(XElement functionCall, object result)
