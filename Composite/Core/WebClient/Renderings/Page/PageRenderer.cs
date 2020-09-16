@@ -19,6 +19,7 @@ using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching;
 using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 namespace Composite.Core.WebClient.Renderings.Page
@@ -591,7 +592,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             bool allRecFunctionsExecuted = true;
 
-            string functionName = (string) element.Attribute("name");
+            string functionName = (string) element.Attribute(XName_Name);
             object result;
             try
             {
@@ -601,6 +602,12 @@ namespace Composite.Core.WebClient.Renderings.Page
                 bool allParametersEvaluated = true;
                 foreach (XElement parameterNode in parameters.ToList())
                 {
+                    var parameterName = (string)parameterNode.Attribute(XName_Name);
+                    if (ParameterIsLazyEvaluated(functionName, parameterName))
+                    {
+                        continue;
+                    }
+
                     if (!ExecuteFunctionsRec(parameterNode, functionContext, functionShouldBeExecuted))
                     {
                         allParametersEvaluated = false;
@@ -654,6 +661,12 @@ namespace Composite.Core.WebClient.Renderings.Page
             ReplaceFunctionWithResult(element, result);
 
             return allRecFunctionsExecuted;
+        }
+
+        private static bool ParameterIsLazyEvaluated(string functionName, string parameterName)
+        {
+            return functionName == PageObjectCacheFunction.FunctionName &&
+                   parameterName == PageObjectCacheFunction.ParameterNames.ObjectToCache;
         }
 
         /// <exclude />
