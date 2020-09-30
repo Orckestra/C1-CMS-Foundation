@@ -468,7 +468,7 @@ VisualEditorBinding.prototype.normalizeToDocument = function ( markup ) {
 
 	var result = markup;
 	if ( !this._isNormalizedDocument ( markup )) {
-		result = this._getHtmlMarkup().replace("${body}", markup);
+		result = this._getHtmlMarkup().replace('${body}', markup.replace(/\$/g,'$$$$'));
 	}
 	return result;
 }
