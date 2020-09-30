@@ -132,7 +132,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     helper.SetLocalizedControlled(hasLocalization);
                 }
 
-                helper.SetCachable(hasCaching);
+                helper.SetCacheable(hasCaching);
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, null, labelFieldName);
