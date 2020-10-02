@@ -54,7 +54,7 @@ namespace Composite.Core.Configuration
             {
                 configurationSection = configuration.GetSection(sectionName) as System.Configuration.ConfigurationSection;
             }
-            catch (System.Configuration.ConfigurationException ex)
+            catch
             {
                 // retry once
                 UpdateCache();

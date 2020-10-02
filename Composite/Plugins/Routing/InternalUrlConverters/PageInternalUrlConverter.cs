@@ -13,9 +13,10 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
     {
         private static readonly string LogTitle = nameof(PageInternalUrlConverter);
 
-        private readonly string[] _acceptedUrlPrefixes = { "page(", "Renderers/Page.aspx" }; 
+        private readonly string[] _acceptedUrlPrefixes = { "page(", "Renderers/Page.aspx" };
 
-        public IEnumerable<string> AcceptedUrlPrefixes { get { return _acceptedUrlPrefixes; } }
+        /// <inheritdoc />
+        public IEnumerable<string> AcceptedUrlPrefixes => _acceptedUrlPrefixes;
 
         /// <inheritdoc />
         public string ToPublicUrl(string internalPageUrl, UrlSpace urlSpace)
