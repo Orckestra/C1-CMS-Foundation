@@ -1,4 +1,4 @@
-﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 html, input, textarea, button, select, td, th {
@@ -37,6 +37,7 @@ td {
 .table td {
 	overflow: visible;
 	color: inherit;
+	user-select: text;
 }
 
 .table .hidden {

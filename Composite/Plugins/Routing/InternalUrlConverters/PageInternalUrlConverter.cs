@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
@@ -6,14 +6,19 @@ using Composite.Data;
 
 namespace Composite.Plugins.Routing.InternalUrlConverters
 {
-    internal class PageInternalUrlConverter: IInternalUrlConverter
+    /// <summary>
+    /// Url provider for "internal" page links, f.e. "~/page({Guid})"
+    /// </summary>
+    public class PageInternalUrlConverter: IInternalUrlConverter
     {
-        private static readonly string LogTitle = typeof(MediaInternalUrlConverter).Name;
+        private static readonly string LogTitle = nameof(PageInternalUrlConverter);
 
-        private readonly string[] _acceptedUrlPrefixes = { "page(", "Renderers/Page.aspx" }; 
+        private readonly string[] _acceptedUrlPrefixes = { "page(", "Renderers/Page.aspx" };
 
-        public IEnumerable<string> AcceptedUrlPrefixes { get { return _acceptedUrlPrefixes; } }
+        /// <inheritdoc />
+        public IEnumerable<string> AcceptedUrlPrefixes => _acceptedUrlPrefixes;
 
+        /// <inheritdoc />
         public string ToPublicUrl(string internalPageUrl, UrlSpace urlSpace)
         {
             PageUrlData pageUrlData;
@@ -56,6 +61,7 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
             return publicPageUrl;
         }
 
+        /// <inheritdoc />
         public IDataReference ToDataReference(string internalUrl)
         {
             return null;

@@ -21,10 +21,21 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Routing.Pages
 {
+    /// <summary>
+    /// Default implementation of <see cref="IPageUrlProvider"/>.
+    /// </summary>
     [ConfigurationElementType(typeof(NonConfigurablePageUrlProvider))]
-    internal sealed class DefaultPageUrlProvider: IPageUrlProvider
+    public class DefaultPageUrlProvider: IPageUrlProvider
     {
+        /// <summary>
+        /// Url fragment than indicates that the hostname should be ignored when resolving root page.
+        /// Used for internally by C1 console.
+        /// </summary>
         public static readonly string UrlMarker_RelativeUrl = "/c1mode(relative)";
+
+        /// <summary>
+        /// URL fragment that indicates that "unpublished" version of the page should be shown.
+        /// </summary>
         public static readonly string UrlMarker_Unpublished = "/c1mode(unpublished)";
 
         private static readonly string InternalUrlPrefix = "~/page(";
@@ -33,6 +44,9 @@ namespace Composite.Plugins.Routing.Pages
          private static readonly Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
             = new Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
 
+        /// <summary>
+        /// A URL suffix, to be inserted in every page URL, f.e. ".aspx"
+        /// </summary>
         public static string UrlSuffix { get; private set;}
 
         static DefaultPageUrlProvider()
@@ -54,6 +68,10 @@ namespace Composite.Plugins.Routing.Pages
             DataEvents<IUrlConfiguration>.OnStoreChanged += (a, b) => LoadUrlSuffix();
         }
 
+        
+        /// <summary>
+        /// Creates a new instance of <see cref="DefaultPageUrlProvider" />
+        /// </summary>
         public DefaultPageUrlProvider()
         {
             LoadUrlSuffix();
@@ -65,6 +83,8 @@ namespace Composite.Plugins.Routing.Pages
                                   .Select(c => c.PageUrlSuffix).FirstOrDefault() ?? string.Empty;
         }
 
+
+        /// <inheritdoc />
         [Obsolete]
         public IPageUrlBuilder CreateUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
@@ -94,6 +114,7 @@ namespace Composite.Plugins.Routing.Pages
             return result;
         }
 
+        /// <inheritdoc />
         public bool IsInternalUrl(string relativeUrl)
         {
             string decodedRelativeUrl = HttpUtility.UrlDecode(relativeUrl);
@@ -108,10 +129,10 @@ namespace Composite.Plugins.Routing.Pages
             return filePath.EndsWith("Renderers/Page.aspx", true);
         }
 
+        /// <inheritdoc />
         public PageUrlData ParseInternalUrl(string relativeUrl)
         {
-            UrlKind urlKind;
-            return ParseInternalUrl(relativeUrl, out urlKind);
+            return ParseInternalUrl(relativeUrl, out _);
         }
 
         private PageUrlData ParseInternalUrl(string relativeUrl, out UrlKind urlKind)
@@ -250,6 +271,7 @@ namespace Composite.Plugins.Routing.Pages
             };
         }
 
+        /// <inheritdoc />
         public PageUrlData ParseUrl(string absoluteUrl, out UrlKind urlKind)
         {
             Verify.ArgumentNotNullOrEmpty(absoluteUrl, "absoluteUrl");
@@ -298,6 +320,7 @@ namespace Composite.Plugins.Routing.Pages
             return GetHostnameBindings().Any(b => b.Hostname == hostname);
         }
 
+        /// <inheritdoc />
         public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)
         {
             if (IsInternalUrl(relativeUrl))
@@ -469,7 +492,7 @@ namespace Composite.Plugins.Routing.Pages
 
                 if (page != null)
                 {
-                    return new PageUrlData(page.Id, publicationScope, locale)
+                    return new PageUrlData(page.Id, publicationScope, page.DataSourceId.LocaleScope)
                     {
                         VersionId = page.VersionId,
                         PathInfo = pathInfo
@@ -480,7 +503,7 @@ namespace Composite.Plugins.Routing.Pages
             return null;
         }
 
-        private static IPage TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
+        private IPage TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
         {
             string[] pageUrlTitles = pagePath.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
 
@@ -558,7 +581,8 @@ namespace Composite.Plugins.Routing.Pages
             return currentPage;
         }
 
-        private static IPage FindMatchingPage(Guid parentId, string urlTitle)
+        /// <xmlignore />
+        protected virtual IPage FindMatchingPage(Guid parentId, string urlTitle)
         {
             foreach (var page in GetChildPages(parentId))
             {
@@ -665,6 +689,7 @@ namespace Composite.Plugins.Routing.Pages
             return DataLocalizationFacade.DefaultUrlMappingCulture;
         }
 
+        /// <inheritdoc />
         public string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace)
         {
             Verify.ArgumentCondition(urlKind != UrlKind.Undefined, "urlKind", "Url kind is undefined");
@@ -938,7 +963,6 @@ namespace Composite.Plugins.Routing.Pages
                 pathInfo += pageUrlData.PathInfo;
             }
             result.PathInfo = pathInfo;
-
 
             result["cultureInfo"] = cultureInfo.ToString();
 

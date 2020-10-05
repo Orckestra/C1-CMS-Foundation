@@ -36,7 +36,7 @@
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
     "nightwatch": "0.9.3",
-    "node-fetch": "1.6.0",
+    "node-fetch": "2.6.1",
     "rimraf": "2.5.4",
     "robocopy": "^0.1.15",
     "selenium-server-standalone-jar": "2.53.1",

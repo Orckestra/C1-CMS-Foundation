@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
@@ -21,7 +21,12 @@ namespace Composite.Data
         private XElement _pageElement;
         private int? _level;
 
-        internal PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
+        /// <summary>
+        /// Initializes a new instance of <see cref="PageNode"/>.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="sitemapNavigator">The site map navigator.</param>
+        public PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
             Verify.ArgumentNotNull(page, "page");
 
@@ -33,80 +38,44 @@ namespace Composite.Data
         /// <summary>
         /// The Id of the page
         /// </summary>
-        public Guid Id
-        {
-            get
-            {
-                return _page.Id;
-            }
-        }
+        public virtual Guid Id => _page.Id;
 
 
         /// <summary>
         /// The Title of the page
         /// </summary>
-        public string Title
-        {
-            get
-            {
-                return _page.Title;
-            }
-        }
+        public virtual string Title => _page.Title;
 
 
         /// <summary>
         /// The Menu Title of the page
         /// </summary>
-        public string MenuTitle
-        {
-            get
-            {
-                return string.IsNullOrEmpty(_page.MenuTitle) ? null : _page.MenuTitle;
-            }
-        }
+        public virtual string MenuTitle => string.IsNullOrEmpty(_page.MenuTitle) ? null : _page.MenuTitle;
 
 
         /// <summary>
         /// The time the page was changed last
         /// </summary>
-        public DateTime ChangedDate
-        {
-            get
-            {
-                return _page.ChangeDate;
-            }
-        }
+        public virtual DateTime ChangedDate => _page.ChangeDate;
 
 
         /// <summary>
         /// The Description of the page
         /// </summary>
-        public string Description
-        {
-            get
-            {
-                return _page.Description;
-            }
-        }
+        public virtual string Description => _page.Description;
 
 
         /// <summary>
         /// Url to this page.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
-        public string Url
-        {
-            get
-            {
-                return PageUrls.BuildUrl(_page);
-            }
-        }
+        public virtual string Url => PageUrls.BuildUrl(_page);
 
 
         /// <summary>
         /// The level this page is placed at in the sitemap. Level 1 is a homepage, level 2 are children of the homepage and so on.
         /// </summary>
-        public int Level
+        public virtual int Level
         {
             get
             {
@@ -114,7 +83,7 @@ namespace Composite.Data
                 {
                     PageNode parent = ParentPage;
 
-                    _level = parent == null ? 1 : parent.Level + 1;
+                    _level = parent?.Level + 1 ?? 1;
                 }
 
                 return _level.Value;
@@ -125,7 +94,7 @@ namespace Composite.Data
         /// <summary>
         /// Returns the parent <see cref="PageNode"/>.
         /// </summary>
-        public PageNode ParentPage
+        public virtual PageNode ParentPage
         {
             get
             {
@@ -143,7 +112,7 @@ namespace Composite.Data
         /// <summary>
         /// Returns <see cref="PageNode"/> elements that represent the immediate children of this page.
         /// </summary>
-        public IEnumerable<PageNode> ChildPages
+        public virtual IEnumerable<PageNode> ChildPages
         {
             get
             {
@@ -165,7 +134,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="scope">The scope.</param>
         /// <returns></returns>
-        public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
+        public virtual IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
         {
             if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
@@ -186,7 +155,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="scope">The scope.</param>
         /// <returns></returns>
-        public IEnumerable<Guid> GetPageIds(SitemapScope scope) 
+        public virtual IEnumerable<Guid> GetPageIds(SitemapScope scope) 
         {
             if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
@@ -198,7 +167,7 @@ namespace Composite.Data
         /// XML representing the page and it's decendants. Do NOT modify this structure. To do modifications, clone this first.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
-        public XElement SitemapXml
+        public virtual XElement SitemapXml
         {
             get
             {
@@ -210,6 +179,13 @@ namespace Composite.Data
                 return _pageElement;
             }
         }
+
+
+        /// <summary>
+        /// Gets the page.
+        /// </summary>
+        /// <returns>The page</returns>
+        public virtual IPage Page => _page;
 
 
         /// <summary>

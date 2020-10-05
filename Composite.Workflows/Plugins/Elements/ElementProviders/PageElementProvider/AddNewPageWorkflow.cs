@@ -50,9 +50,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return Guid.Empty;
             }
 
-            if (this.EntityToken is DataEntityToken)
+            if (this.EntityToken is DataEntityToken dataEntityToken)
             {
-                DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
                 IPage selectedPage = (IPage)dataEntityToken.Data;
 
                 return selectedPage.Id;
@@ -244,9 +243,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 templateId = PageTemplateFacade.GetPageTemplates().Select(t => t.Id).FirstOrDefault();
             }
-            else if (this.EntityToken is DataEntityToken)
+            else if (this.EntityToken is DataEntityToken dataEntityToken)
             {
-                DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
                 IPage selectedPage = (IPage)dataEntityToken.Data;
 
                 templateId = selectedPage.TemplateId;
@@ -420,7 +418,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (this.GetBinding<string>("SelectedSortOrder") == SortOrder.Relative)
             {
-                Dictionary<Guid, string> existingPages = PageServices.GetChildren(GetParentId()).ToDictionary(page => page.Id, page => page.Title);
+                Dictionary<Guid, string> existingPages = PageServices.GetChildren(GetParentId())
+                    .GroupBy(page => page.Id)
+                    .Select(group => group.First())
+                    .ToDictionary(page => page.Id, page => page.Title);
 
                 this.Bindings["ExistingPages"] = existingPages;
                 this.Bindings["RelativeSelectedPageId"] = existingPages.First().Key;
@@ -476,7 +477,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Not handled page instert position '{sortOrder}'");
+                    throw new InvalidOperationException($"Not handled page insert position '{sortOrder}'");
                 }
 
                 newPage = newPage.Add(parentId, position);

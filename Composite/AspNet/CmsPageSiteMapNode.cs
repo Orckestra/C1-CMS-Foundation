@@ -15,7 +15,7 @@ namespace Composite.AspNet
         private int? _depth;
 
         /// <inheritdoc />
-        public CultureInfo Culture { get; }
+        public CultureInfo Culture { get; protected set; }
 
         /// <inheritdoc />
         public int? Priority { get; protected set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -65,7 +65,7 @@ public partial class ResxEditor : System.Web.UI.Page
             }
 
             var loc = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                .LastOrDefault(f => f.Name != "" && FileName.EndsWith(f.Name + ".Resx", StringComparison.OrdinalIgnoreCase));
+                .LastOrDefault(f => f.Name != "" && FileName.EndsWith("." + f.Name + ".Resx", StringComparison.OrdinalIgnoreCase));
 
             if (loc != null)
             {
@@ -226,7 +226,7 @@ public partial class ResxEditor : System.Web.UI.Page
             {
                 Label = n.Key,
                 Original = n.Value,
-                Translated = (otherculturedic != null) ? otherculturedic[n.Key] : ""
+                Translated = otherculturedic != null && otherculturedic.ContainsKey(n.Key) ? otherculturedic[n.Key] : string.Empty
             };
             li.Add(p);
         }

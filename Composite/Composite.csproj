@@ -256,6 +256,7 @@
     <Compile Include="AspNet\CmsPageHttpHandler.cs" />
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\Serialization\CompositeSerializationBinder.cs" />
+    <Compile Include="Core\Types\CSharpCodeProviderFactory.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewContext.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />
@@ -271,6 +272,10 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionEntityToken.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionRegistry.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\HomePageSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunctionBase.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TreeSelectorWidgetFunction.cs" />

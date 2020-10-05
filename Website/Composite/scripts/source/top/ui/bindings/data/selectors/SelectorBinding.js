@@ -875,7 +875,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 				else {
 
 					labelBinding = LabelBinding.newInstance(bodyDocument);
-					labelBinding.setLabel(StringBundle.getString("ui", "AspNetUiControl.Selector.NoMatchesFor").replace("{0}", this._searchString));
+					labelBinding.setLabel(StringBundle.getString("ui", "AspNetUiControl.Selector.NoMatchesFor").replace("{0}", this._searchString ? this._searchString.replace(/\$/g,'$$$$') : ''));
 					bodyBinding.add(labelBinding);
 					this._attachSelections();
 

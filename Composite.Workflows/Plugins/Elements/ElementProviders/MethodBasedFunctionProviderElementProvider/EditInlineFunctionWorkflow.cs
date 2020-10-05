@@ -162,7 +162,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 ManagedParameterManager.Save(function.Id, parameters);
 
                 DataFacade.Update(function);
-                InlineFunctionHelper.SetFunctinoCode(function, code);
+                function.SetFunctionCode(code);
 
                 transactionScope.Complete();
             }

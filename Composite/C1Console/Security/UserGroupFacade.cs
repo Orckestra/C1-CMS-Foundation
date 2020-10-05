@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -36,7 +37,8 @@ namespace Composite.C1Console.Security
             return _cache.GetOrAdd(username, name =>
             {
                 IUser user = DataFacade.GetData<IUser>()
-                    .SingleOrDefault(f => string.Compare(f.Username, name, StringComparison.InvariantCultureIgnoreCase) == 0);
+                    .Where(f => string.Compare(f.Username, name, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    .SingleOrDefaultOrException("Multiple data records for the same user name '{0}'", name);
 
                 Verify.IsNotNull(user, "Failed to find user by name '{0}'", name);
 

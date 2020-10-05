@@ -18,7 +18,10 @@ using Composite.Core.PageTemplates;
 
 namespace Composite.Core.Routing.Pages
 {
-    internal class C1PageRouteHandler : IRouteHandler
+    /// <summary>
+    /// A route handler for the "C1 page" route.
+    /// </summary>
+    public class C1PageRouteHandler : IRouteHandler
     {
         private const string PageHandlerPath = "Renderers/Page.aspx";
         private const string PageHandlerVirtualPath = "~/" + PageHandlerPath;
@@ -65,12 +68,17 @@ namespace Composite.Core.Routing.Pages
 
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="C1PageRouteHandler"/>.
+        /// </summary>
+        /// <param name="pageUrlData"></param>
         public C1PageRouteHandler(PageUrlData pageUrlData)
         {
             _pageUrlData = pageUrlData;
         }
 
 
+        /// <inheritdoc/>
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             var context = requestContext.HttpContext;

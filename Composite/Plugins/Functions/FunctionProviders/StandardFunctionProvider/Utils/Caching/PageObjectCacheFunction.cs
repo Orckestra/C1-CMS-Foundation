@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -19,36 +19,49 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     {
         private static readonly XName FunctionXName = Namespaces.Function10 + "function";
 
+        private const string C1Name = "PageObjectCache";
+        private const string C1Namespace = "Composite.Utils.Caching";
+
+        public static string FunctionName { get; } = $"{C1Namespace}.{C1Name}";
+
         public PageObjectCacheFunction(EntityTokenFactory entityTokenFactory)
-            : base("PageObjectCache", "Composite.Utils.Caching", typeof(object), entityTokenFactory)
+            : base(C1Name, C1Namespace, typeof(object), entityTokenFactory)
         {
         }
 
+        public class ParameterNames
+        {
+            public static readonly string ObjectToCache = nameof(ObjectToCache);
+            public static readonly string ObjectCacheId = nameof(ObjectCacheId);
+            public static readonly string SitemapScope = nameof(SitemapScope);
+            public static readonly string SecondsToCache = nameof(SecondsToCache);
+            public static readonly string LanguageSpecific = nameof(LanguageSpecific);
 
+        }
 
         protected override IEnumerable<StandardFunctionParameterProfile> StandardFunctionParameterProfiles
         {
             get
             {
                 WidgetFunctionProvider associationDropDown = StandardWidgetFunctions.DropDownList(
-                    this.GetType(), "PageAssociationRestrictions", "Key", "Value", false, true);
+                    this.GetType(), nameof(PageAssociationRestrictions), "Key", "Value", false, true);
 
-                WidgetFunctionProvider textboxWidget = StandardWidgetFunctions.TextBoxWidget;
+                var textboxWidget = StandardWidgetFunctions.TextBoxWidget;
 
                 yield return new StandardFunctionParameterProfile(
-                    "ObjectToCache", typeof(object), true, new NoValueValueProvider(), null);
+                    ParameterNames.ObjectToCache, typeof(object), true, new NoValueValueProvider(), null);
                 yield return new StandardFunctionParameterProfile(
-                    "ObjectCacheId", typeof(string), true, new NoValueValueProvider(), textboxWidget);
+                    ParameterNames.ObjectCacheId, typeof(string), true, new NoValueValueProvider(), textboxWidget);
                 yield return new StandardFunctionParameterProfile(
-                    "SitemapScope",
+                    ParameterNames.SitemapScope,
                     typeof(SitemapScope),
                     false,
                     new ConstantValueProvider(SitemapScope.Level1),
                     associationDropDown);
                 yield return new StandardFunctionParameterProfile(
-                    "SecondsToCache", typeof(int), false, new ConstantValueProvider(60), textboxWidget);
+                    ParameterNames.SecondsToCache, typeof(int), false, new ConstantValueProvider(60), textboxWidget);
                 yield return new StandardFunctionParameterProfile(
-                    "LanguageSpecific",
+                    ParameterNames.LanguageSpecific,
                     typeof(bool),
                     false,
                     new ConstantValueProvider(true),
@@ -58,13 +71,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
 
         readonly ConcurrentDictionary<string, object> _lockCollection = new ConcurrentDictionary<string, object>();
-        bool _poteintialKeysLeakLogged = false;
+        static bool _potentialKeysLeakLogged = false;
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             if (DataScopeManager.CurrentDataScope.Name != DataScopeIdentifier.PublicName)
             {
-                return parameters.GetParameter<object>("ObjectToCache");
+                return parameters.GetParameter<object>(ParameterNames.ObjectToCache);
             }
 
             var cache = HttpRuntime.Cache;
@@ -77,22 +90,22 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 lock (lockObject)
                 {
-                    if(_lockCollection.Count > 50000 && !_poteintialKeysLeakLogged)
+                    if(_lockCollection.Count > 50000 && !_potentialKeysLeakLogged)
                     {
-                        _poteintialKeysLeakLogged = true;
+                        _potentialKeysLeakLogged = true;
                         Log.LogWarning(nameof(PageObjectCacheFunction), "Potential memory leak in the locks collection");
                     }
 
                     result = cache.Get(cacheKey);
                     if (result == null)
                     {
-                        result = parameters.GetParameter<object>("ObjectToCache");
+                        result = parameters.GetParameter<object>(ParameterNames.ObjectToCache);
 
                         if (result != null)
                         {
                             result = EvaluateLazyResult(result, context);
 
-                            int secondsToCache = parameters.GetParameter<int>("SecondsToCache");
+                            int secondsToCache = parameters.GetParameter<int>(ParameterNames.SecondsToCache);
 
                             cache.Add(
                                 cacheKey, 
@@ -179,15 +192,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private static string BuildCacheKey(ParameterList parameters)
         {
-            string cacheKey = parameters.GetParameter<string>("ObjectCacheId");
+            string cacheKey = parameters.GetParameter<string>(ParameterNames.ObjectCacheId);
 
-            bool languageSpecific = parameters.GetParameter<bool>("LanguageSpecific");
+            bool languageSpecific = parameters.GetParameter<bool>(ParameterNames.LanguageSpecific);
             if (languageSpecific)
             {
                 cacheKey = $"{cacheKey}:{Thread.CurrentThread.CurrentCulture}";
             }
 
-            SitemapScope SitemapScope = parameters.GetParameter<SitemapScope>("SitemapScope");
+            SitemapScope SitemapScope = parameters.GetParameter<SitemapScope>(ParameterNames.SitemapScope);
             if (SitemapScope != SitemapScope.All)
             {
                 Guid associatedPageId = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, SitemapScope).FirstOrDefault();

@@ -82,7 +82,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.KeyFieldName, dataTypeDescriptor.KeyPropertyNames.Single() },
                 {BindingNames.LabelFieldName, dataTypeDescriptor.LabelFieldName},
                 {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
-                {BindingNames.HasCaching, helper.IsCachable},
+                {BindingNames.HasCaching, helper.IsCacheable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
                 {BindingNames.IsSearchable, helper.IsSearchable},
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
@@ -164,7 +164,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 if (helper.IsEditProcessControlledAllowed)
                 {
-                    helper.SetCachable(hasCaching);
+                    helper.SetCacheable(hasCaching);
                     helper.SetSearchable(isSearchable);
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetLocalizedControlled(hasLocalization);
