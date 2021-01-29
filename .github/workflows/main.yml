@@ -22,7 +22,7 @@ jobs:
         env:
           ado_token: "2fkdmowxykpxbjdesotpjddpvzodif5rd5vdsfrpxxsgrhuwmyiq"
           github_token: "df9367d03c44f7cbae7cf24cbc20766fc165d4df"
-          ado_organization: "ockestra001"
+          ado_organization: "orckestra001"
           ado_project: "OrckestraCommerce"
           ado_area_path: "OrckestraCommerce"
           ado_iteration_path: "OrckestraCommerce"
