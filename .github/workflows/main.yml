@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+
+# Controls when the action will run. 
+on:
+ issues:
+    types:
+      [opened]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: danhellem/github-actions-issue-to-work-item@master
+        env:
+          ado_token: "2fkdmowxykpxbjdesotpjddpvzodif5rd5vdsfrpxxsgrhuwmyiq"
+          github_token: "df9367d03c44f7cbae7cf24cbc20766fc165d4df"
+          ado_organization: "ockestra001"
+          ado_project: "OrckestraCommerce"
+          ado_area_path: "OrckestraCommerce"
+          ado_iteration_path: "OrckestraCommerce"
+          ado_wit: "Issue"
+          ado_new_state: "New"
+          ado_active_state: "Active"
+          ado_close_state: "Closed"
+          ado_bypassrules: true
