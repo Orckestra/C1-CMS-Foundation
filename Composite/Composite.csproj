@@ -12,6 +12,10 @@
     <ProjectTypeGuids>{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -155,8 +159,9 @@
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -213,8 +218,6 @@
   <ItemGroup>
     <Compile Include="AspNet\CmsPagesSiteMapPlugin.cs" />
     <Compile Include="AspNet\CmsPageSiteMapProvider.cs" />
-    <Compile Include="AspNet\DisplayModeFacade.cs" />
-    <Compile Include="AspNet\LegacyC1DisplayMode.cs" />
     <Compile Include="AspNet\ICmsSiteMapNode.cs" />
     <Compile Include="AspNet\ICmsSiteMapProvider.cs" />
     <Compile Include="AspNet\ISchemaOrgSiteMapNode.cs" />
@@ -259,6 +262,7 @@
     <Compile Include="AspNet\CmsPageHttpHandler.cs" />
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\Serialization\CompositeSerializationBinder.cs" />
+    <Compile Include="Core\Types\CSharpCodeProviderFactory.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewContext.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />
@@ -274,6 +278,10 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionEntityToken.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunctionRegistry.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\CodeBasedFunctionProvider\CodeBasedFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\HomePageSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\PageReferenceSelectorWidgetFunctionBase.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TreeSelectorWidgetFunction.cs" />
@@ -384,7 +392,6 @@
     <Compile Include="C1Console\Security\UserLockoutReason.cs" />
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\ServiceLocator.cs" />
-    <Compile Include="Core\Application\SpecialModesFileResolver.cs" />
     <Compile Include="Core\Application\Job.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
     <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
@@ -550,8 +557,6 @@
     <Compile Include="C1Console\Security\LoginResult.cs" />
     <Compile Include="C1Console\Security\PermissionsFacade.cs" />
     <Compile Include="C1Console\Trees\Foundation\TreePerspectiveEntityToken.cs" />
-    <Compile Include="C1Console\Trees\ITreeActionProvider.cs" />
-    <Compile Include="C1Console\Trees\SortDataTreeActionProvider.cs" />
     <Compile Include="C1Console\Trees\TreeSharedRootsFacade.cs" />
     <Compile Include="Core\Application\GlobalFileLocker.cs" />
     <Compile Include="Core\Application\SystemGlobalSemaphore.cs" />
@@ -867,7 +872,6 @@
     <Compile Include="Data\Validation\Validators\LazyFunctionProviedPropertyAttribute.cs" />
     <Compile Include="Data\Validation\Validators\LazyFunctionProviedPropertyValidator.cs" />
     <Compile Include="Data\Validation\Validators\NullIntegerRangeValidatorAttribute.cs" />
-    <Compile Include="Functions\ContentFilterFacade.cs" />
     <Compile Include="Functions\FunctionAttribute.cs" />
     <Compile Include="Functions\FunctionParameterAttribute.cs" />
     <Compile Include="Functions\Forms\FunctionParameterElementProducer.cs" />
@@ -877,7 +881,6 @@
     <Compile Include="Functions\Forms\IFunctionProducer.cs" />
     <Compile Include="Functions\Foundation\PluginFacades\XslExtensionsProviderPluginFacade.cs" />
     <Compile Include="Functions\Foundation\XslExtensionsProviderRegistry.cs" />
-    <Compile Include="Functions\IContentFilter.cs" />
     <Compile Include="Functions\ICompoundFunction.cs" />
     <Compile Include="Functions\IFunctionInitializationInfo.cs" />
     <Compile Include="Functions\Inline\InlineFunctionCreateMethodErrorHandler.cs" />
@@ -2651,7 +2654,6 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Core\ResourceSystem\LocalizationFiles.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationFiles.cs</LastGenOutput>
