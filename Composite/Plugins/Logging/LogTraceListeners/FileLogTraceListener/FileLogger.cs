@@ -1,4 +1,4 @@
-﻿//#define UseLockFiles
+//#define UseLockFiles
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
     /// </summary>
     internal class FileLogger : IDisposable
     {
+        private const int MaxLogFiles = 10;
+        private bool _initializationFailed;
+
 #if UseLockFiles
         private static readonly TimeSpan LockFileUpdateFrequency = TimeSpan.FromSeconds(20);
         private static readonly TimeSpan OldLockFilesPreservationTime = TimeSpan.FromSeconds(60);
@@ -115,6 +118,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
         public void WriteEntry(LogEntry entry)
         {
+            if (_initializationFailed) return;
+
             string logLine = entry.ToString();
 
             byte[] bytes = Encoding.UTF8.GetBytes(logLine + "\n");
@@ -133,6 +138,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 }
 
                 EnsureInitialize();
+                if (_initializationFailed) return;
 
                 FileConnection.NewEntries.Add(entry);
 
@@ -326,7 +332,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
                 string fileNamePrefix = creationDate.ToString("yyyyMMdd");
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < MaxLogFiles; i++)
                 {
                     var fileName = fileNamePrefix + (i > 0 ? "_" + i : string.Empty) + ".txt";
                     string filePath = Path.Combine(_logDirectoryPath, fileName);
@@ -377,7 +383,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     return;
                 }
 
-                throw new InvalidOperationException("Failed to open/create a log file");
+                _initializationFailed = true;
             }
 
         }
