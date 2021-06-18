@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -188,7 +188,7 @@ namespace Composite.AspNet
                 }
                 else
                 {
-                    hostnameUrl = "http://" + binding.Hostname;
+                    hostnameUrl = $"{(binding.EnforceHttps ? "https" : "http")}://{binding.Hostname}";
                 }
 
                 writer.WriteString(hostnameUrl + "{0}/{1}{2}/sitemap.xml".FormatWith(
