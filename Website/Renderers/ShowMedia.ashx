@@ -583,7 +583,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             return new FileOrStream(file);
         }
 
-        if (GlobalSettingsFacade.ProtectResizedImagesWithHash)
+        if (GlobalSettingsFacade.ProtectResizedImagesWithHash && !UserValidationFacade.IsLoggedIn())
         {
             var expectedHash = resizingOptions.GetSecureHash(file.Id);
             if (context.Request.QueryString["sh"] != expectedHash)
