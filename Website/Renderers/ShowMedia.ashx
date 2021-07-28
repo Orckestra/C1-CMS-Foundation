@@ -13,6 +13,7 @@ using Composite.C1Console.Security;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
@@ -580,6 +581,17 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             resizedImageMediaType = mediaType;
             return new FileOrStream(file);
+        }
+
+        if (GlobalSettingsFacade.ProtectResizedImagesWithHash)
+        {
+            var expectedHash = resizingOptions.GetSecureHash(file.Id);
+            if (context.Request.QueryString["sh"] != expectedHash)
+            {
+                // Returning the media file without resizing
+                resizedImageMediaType = mediaType;
+                return new FileOrStream(file);
+            }
         }
 
         var targetImageMediaType = GetResizedImageMediaType(preferredMediaType ?? mediaType);
