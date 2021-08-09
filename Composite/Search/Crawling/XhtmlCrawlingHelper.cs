@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -105,7 +105,7 @@ namespace Composite.Search.Crawling
                 return;
             }
 
-            if (element.Name.LocalName == "script" || element.Name.LocalName == "noscript")
+            if (element.Name.LocalName == "script" || element.Name.LocalName == "noscript" || element.Name.LocalName == "style")
             {
                 return;
             }
