@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -62,8 +62,6 @@ namespace Composite.Core.WebClient.Media
 
             string imageKey = file.CompositePath;
 
-            bool isNativeProvider = file is FileSystemFileBase;
-
             string imageSizeCacheKey = "ShowMedia.ashx image size " + imageKey;
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
 
@@ -87,7 +85,11 @@ namespace Composite.Core.WebClient.Media
                     imageSize = calculatedSize;
 
                     // We can provider cache dependency only for the native media provider
-                    var cacheDependency = isNativeProvider ? new CacheDependency((file as FileSystemFileBase).SystemPath) : null;
+                    CacheDependency cacheDependency = null;
+                    if (file is FileSystemFileBase fileSystemFile)
+                    {
+                        cacheDependency = new CacheDependency(fileSystemFile.SystemPath);
+                    }
 
                     HttpRuntime.Cache.Add(imageSizeCacheKey, imageSize, cacheDependency, DateTime.MaxValue, CacheExpirationTimeSpan, CacheItemPriority.Normal, null);
                 }
@@ -108,7 +110,7 @@ namespace Composite.Core.WebClient.Media
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
                 string fileExtension = _ImageFormat2Extension[targetImageFormat];
-                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}_{4}.{5}", newWidth, newHeight, filePathHash, centerCroppedString, resizingOptions.Quality, fileExtension);
+                string resizedImageFileName = $"{newWidth}x{newHeight}_{filePathHash}{centerCroppedString}_{resizingOptions.Quality}.{fileExtension}";
 
                 string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
@@ -132,15 +134,8 @@ namespace Composite.Core.WebClient.Media
             }
             finally
             {
-                if (bitmap != null)
-                {
-                    bitmap.Dispose();
-                }
-
-                if (fileStream != null)
-                {
-                    fileStream.Dispose();
-                }
+                bitmap?.Dispose();
+                fileStream?.Dispose();
             }
         }
 
@@ -160,13 +155,13 @@ namespace Composite.Core.WebClient.Media
 
             centerCrop = false;
 
-            // If both height and width are defined - we have "scalling"
+            // If both height and width are defined - we have "scaling"
             if (resizingOptions.Height != null && resizingOptions.Width != null)
             {
                 newHeight = (int)resizingOptions.Height;
                 newWidth = (int)resizingOptions.Width;
 
-                // we do not allow scalling to a size, bigger than original one
+                // we do not allow scaling to a size, bigger than original one
                 if (newHeight > height)
                 {
                     newHeight = height;
@@ -226,7 +221,7 @@ namespace Composite.Core.WebClient.Media
             newWidth = width;
             newHeight = height;
 
-            // If image doesn't fit to bondaries "maxWidth X maxHeight", downsizing it
+            // If image doesn't fit to boundaries "maxWidth X maxHeight", downsizing it
             int? maxWidth = resizingOptions.Width;
             if (resizingOptions.MaxWidth != null && (maxWidth == null || resizingOptions.MaxWidth < maxWidth))
             {
@@ -262,9 +257,9 @@ namespace Composite.Core.WebClient.Media
             {
                 if (imageFormat.Guid == ImageFormat.Jpeg.Guid)
                 {
-                    EncoderParameters parameters = new EncoderParameters(1);
+                    var parameters = new EncoderParameters(1);
 
-                    // Setting image quality, the deafult value is 75
+                    // Setting image quality, the default value is 75
                     parameters.Param[0] = new EncoderParameter(
                         System.Drawing.Imaging.Encoder.Quality, quality);
 
@@ -371,16 +366,15 @@ namespace Composite.Core.WebClient.Media
         public class SupportedImageFormats
         {
             /// <exclude />
-            public static ImageFormat JPG { get { return ImageFormat.Jpeg; } }
+            public static ImageFormat JPG => ImageFormat.Jpeg;
             /// <exclude />
-            public static ImageFormat PNG { get { return ImageFormat.Png; } }
+            public static ImageFormat PNG => ImageFormat.Png;
             /// <exclude />
-            public static ImageFormat TIFF { get { return ImageFormat.Tiff; } }
+            public static ImageFormat TIFF => ImageFormat.Tiff;
             /// <exclude />
-            public static ImageFormat GIF { get { return ImageFormat.Gif; } }
+            public static ImageFormat GIF => ImageFormat.Gif;
             /// <exclude />
-            public static ImageFormat BMP { get { return ImageFormat.Bmp; } }
-
+            public static ImageFormat BMP => ImageFormat.Bmp;
         }
     }
 }
