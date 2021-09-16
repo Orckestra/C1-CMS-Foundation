@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -181,8 +180,6 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             return;
         }
 
-        context.Response.ContentType = GetMimeType(file);
-
         string encodedFileName = file.FileName.Replace("\"", "_");
         if (context.Request.Browser != null && context.Request.Browser.IsBrowser("ie"))
         {
@@ -220,15 +217,19 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             FileOrStream source;
 
-            if (file.MimeType == "image/jpeg" || file.MimeType == "image/gif" || file.MimeType == "image/png"
-                || file.MimeType == "image/bmp" || file.MimeType == "image/tiff")
+            string mimeType = GetMimeType(file);
+            string outputMimeType;
+            if (ImageResizer.SourceMediaTypeSupported(mimeType))
             {
-                source = ProcessImageResizing(context, file);
+                source = ProcessImageResizing(context, file, mimeType, out outputMimeType);
             }
             else
             {
                 source = new FileOrStream(file);
+                outputMimeType = mimeType;
             }
+
+            context.Response.ContentType = outputMimeType;
 
             long? length = null;
             bool canSeek;
@@ -428,7 +429,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 if (beginOffset == null)
                 {
-                    Verify.That(endOffset <= streamLength, "The segment is bigger than the lenght of the file");
+                    Verify.That(endOffset <= streamLength, "The segment is bigger than the length of the file");
 
                     result.Add(new Range(streamLength - endOffset.Value, endOffset.Value));
                     continue;
@@ -519,57 +520,43 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
 
 
-    public bool IsReusable
+    public bool IsReusable { get { return true; } }
+
+    private static string GetResizedImageMimeType(string mimeType)
     {
-        get
+        if (mimeType == MimeTypeInfo.Jpeg
+            || mimeType == MimeTypeInfo.Png
+            || mimeType == MimeTypeInfo.Tiff
+            || mimeType == MimeTypeInfo.Bmp)
         {
-            return false;
+            return mimeType;
         }
+
+        if (mimeType == MimeTypeInfo.Gif)
+        {
+            // Returning image in PNG format because build-in GIF encoder produces images of a bad quality
+            return MimeTypeInfo.Png;
+        }
+
+        // Converting resized images to jpeg by default
+        return MimeTypeInfo.Jpeg;
     }
 
-    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file)
+    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file, string mimeType, out string resultMimeType)
     {
         var resizingOptions = ResizingOptions.Parse(context.Request.QueryString);
 
         if (resizingOptions == null || resizingOptions.IsEmpty)
         {
+            resultMimeType = mimeType;
             return new FileOrStream(file);
         }
 
-        //Determine the content type, and save
-        //what image type we have for later use
-
-        ImageFormat imgType;
-        if (file.MimeType == "image/jpeg")
-        {
-            imgType = ImageResizer.SupportedImageFormats.JPG;
-        }
-        else if (file.MimeType == "image/gif")
-        {
-            // Returning image in PNG format because build-in GIF encoder produces images of a bad quality
-            imgType = ImageResizer.SupportedImageFormats.PNG;
-        }
-        else if (file.MimeType == "image/png")
-        {
-            imgType = ImageResizer.SupportedImageFormats.PNG;
-        }
-        else if (file.MimeType == "image/tiff")
-        {
-            imgType = ImageResizer.SupportedImageFormats.TIFF;
-        }
-        else if (file.MimeType == "image/bmp")
-        {
-            imgType = ImageResizer.SupportedImageFormats.BMP;
-        }
-        else
-        {
-            // Converting resized images to jpeg by default
-            imgType = ImageFormat.Jpeg;
-        }
+        resultMimeType = GetResizedImageMimeType(mimeType);
 
         try
         {
-            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, imgType);
+            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, resultMimeType);
 
             return resizedImageFilePath != null
                 ? new FileOrStream(resizedImageFilePath)

@@ -14,20 +14,31 @@ using Composite.Data.Types;
 namespace Composite.Core.WebClient.Media
 {
     ///<summary>
-    ///Class that performs image resizing
+    /// Class that performs image resizing
     ///</summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ImageResizer
     {
         private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
-        private static Dictionary<ImageFormat, string> _ImageFormat2Extension = new Dictionary<ImageFormat, string>
-        {  
-            {ImageFormat.Png, "png"},
-            {ImageFormat.Gif, "gif"}, 
-            {ImageFormat.Jpeg, "jpg"}, 
-            {ImageFormat.Bmp, "bmp"}, 
-            {ImageFormat.Tiff, "tiff"}
+        private class MediaTypeInfo
+        {
+            public MediaTypeInfo(string extension, ImageFormat imageFormat)
+            {
+                Extension = extension;
+                ImageFormat = imageFormat;
+            }
+            public string Extension { get; }
+            public ImageFormat ImageFormat { get; }
+        }
+
+        private static Dictionary<string, MediaTypeInfo> MediaTypeInfoMap = new Dictionary<string, MediaTypeInfo>
+        {
+            {MimeTypeInfo.Jpeg, new MediaTypeInfo("jpg", ImageFormat.Jpeg)},
+            {MimeTypeInfo.Png, new MediaTypeInfo("png", ImageFormat.Png)},
+            {MimeTypeInfo.Gif, new MediaTypeInfo("gif", ImageFormat.Gif)},
+            {MimeTypeInfo.Tiff, new MediaTypeInfo("tiff", ImageFormat.Tiff)},
+            {MimeTypeInfo.Bmp, new MediaTypeInfo("bmp", ImageFormat.Bmp)}
         };
 
         private static ImageCodecInfo JpegCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == ImageFormat.Jpeg.Guid);
@@ -43,12 +54,12 @@ namespace Composite.Core.WebClient.Media
         /// <param name="httpServerUtility">An instance of <see cref="System.Web.HttpServerUtility" />.</param>
         /// <param name="file">The media file.</param>
         /// <param name="resizingOptions">The resizing options.</param>
-        /// <param name="targetImageFormat">The target image format.</param>
+        /// <param name="targetMediaType">The media type for the resized image.</param>
         /// <returns>A full file path to a resized image; null if there's no need to resize the image</returns>
-        public static string GetResizedImage(HttpServerUtility httpServerUtility, IMediaFile file, ResizingOptions resizingOptions, ImageFormat targetImageFormat)
+        public static string GetResizedImage(HttpServerUtility httpServerUtility, IMediaFile file, ResizingOptions resizingOptions, string targetMediaType)
         {
             Verify.ArgumentNotNull(file, "file");
-            Verify.That(ImageFormatIsSupported(targetImageFormat), "Unsupported image format '{0}'", targetImageFormat);
+            Verify.That(TargetMediaTypeSupported(targetMediaType), "Unsupported media type '{0}'", targetMediaType);
 
             if (_resizedImagesDirectoryPath == null)
             {
@@ -62,7 +73,7 @@ namespace Composite.Core.WebClient.Media
 
             string imageKey = file.CompositePath;
 
-            string imageSizeCacheKey = "ShowMedia.ashx image size " + imageKey;
+            string imageSizeCacheKey = nameof(ImageResizer) + imageKey;
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
 
             Bitmap bitmap = null;
@@ -109,7 +120,9 @@ namespace Composite.Core.WebClient.Media
 
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
-                string fileExtension = _ImageFormat2Extension[targetImageFormat];
+                var mediaTypeInfo = MediaTypeInfoMap[targetMediaType];
+
+                string fileExtension = mediaTypeInfo.Extension;
                 string resizedImageFileName = $"{newWidth}x{newHeight}_{filePathHash}{centerCroppedString}_{resizingOptions.Quality}.{fileExtension}";
 
                 string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
@@ -122,7 +135,7 @@ namespace Composite.Core.WebClient.Media
                         bitmap = new Bitmap(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat, resizingOptions.Quality);
+                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, mediaTypeInfo.ImageFormat, resizingOptions.Quality);
 
                     if (file.LastWriteTime.HasValue)
                     {
@@ -355,26 +368,26 @@ namespace Composite.Core.WebClient.Media
                 (int)Math.Ceiling(height - delta));
         }
 
-
-
-        private static bool ImageFormatIsSupported(ImageFormat imageFormat)
+        /// <summary>
+        /// Returns a value indicating whether an image of a given media type can be resized.
+        /// </summary>
+        /// <param name="mediaType">A media type.</param>
+        public static bool SourceMediaTypeSupported(string mediaType)
         {
-            return _ImageFormat2Extension.ContainsKey(imageFormat);
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+
+            return MediaTypeInfoMap.ContainsKey(mediaType);
         }
 
-        /// <exclude />
-        public class SupportedImageFormats
+        /// <summary>
+        /// Returns a value indicating whether resized imaged can be saved in the specified media type.
+        /// </summary>
+        /// <param name="mediaType">A media type.</param>
+        public static bool TargetMediaTypeSupported(string mediaType)
         {
-            /// <exclude />
-            public static ImageFormat JPG => ImageFormat.Jpeg;
-            /// <exclude />
-            public static ImageFormat PNG => ImageFormat.Png;
-            /// <exclude />
-            public static ImageFormat TIFF => ImageFormat.Tiff;
-            /// <exclude />
-            public static ImageFormat GIF => ImageFormat.Gif;
-            /// <exclude />
-            public static ImageFormat BMP => ImageFormat.Bmp;
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+
+            return MediaTypeInfoMap.ContainsKey(mediaType);
         }
     }
 }
