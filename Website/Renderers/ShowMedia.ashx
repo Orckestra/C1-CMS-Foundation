@@ -26,6 +26,15 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
     private const int CopyBufferSize = 8192;
     private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
 
+    private static readonly string[] MediaTypesBrowserCanView = new[]
+    {
+        MimeTypeInfo.Flash,
+        MimeTypeInfo.Jpeg,
+        MimeTypeInfo.Png,
+        MimeTypeInfo.Gif,
+        MimeTypeInfo.Bmp
+    };
+
     private class Range
     {
         public Range(long offset, long length)
@@ -188,7 +197,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
 
         bool download = (string.IsNullOrEmpty(context.Request["download"]) ?
-            IsWebFormatImage(file) == false :
+            !CabBePreviewedInBrowser(file.MimeType) :
             context.Request["download"] != "false");
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
@@ -217,19 +226,20 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             FileOrStream source;
 
-            string mimeType = GetMimeType(file);
-            string outputMimeType;
-            if (ImageResizer.SourceMediaTypeSupported(mimeType))
+            string mediaType = GetMediaType(file);
+            string outputMediaType;
+
+            if (ImageResizer.SourceMediaTypeSupported(mediaType))
             {
-                source = ProcessImageResizing(context, file, mimeType, out outputMimeType);
+                source = ProcessImageResizing(context, file, mediaType, out outputMediaType);
             }
             else
             {
                 source = new FileOrStream(file);
-                outputMimeType = mimeType;
+                outputMediaType = mediaType;
             }
 
-            context.Response.ContentType = outputMimeType;
+            context.Response.ContentType = outputMediaType;
 
             long? length = null;
             bool canSeek;
@@ -491,72 +501,69 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         return null;
     }
 
-    private static string GetMimeType(IMediaFile file)
+    private static string GetMediaType(IMediaFile file)
     {
-        string mimeType = file.MimeType;
+        string mediaType = file.MimeType;
 
-        if (mimeType == MimeTypeInfo.Default)
+        if (mediaType == MimeTypeInfo.Default)
         {
-            mimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName.ToLowerInvariant()));
+            mediaType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName.ToLowerInvariant()));
         }
 
-        return mimeType;
+        return mediaType;
     }
 
 
-    private static bool IsWebFormatImage(IMediaFile file)
+    private static bool CabBePreviewedInBrowser(string mediaType)
     {
-        switch (file.MimeType)
-        {
-            case "application/x-shockwave-flash":
-            case "image/png":
-            case "image/gif":
-            case "image/jpeg":
-                return true;
-            default:
-                return false;
-        }
+        return MediaTypesBrowserCanView.Contains(mediaType);
     }
-
 
 
     public bool IsReusable { get { return true; } }
 
-    private static string GetResizedImageMimeType(string mimeType)
+    private static string GetResizedImageMediaType(string mediaType)
     {
-        if (mimeType == MimeTypeInfo.Jpeg
-            || mimeType == MimeTypeInfo.Png
-            || mimeType == MimeTypeInfo.Tiff
-            || mimeType == MimeTypeInfo.Bmp)
-        {
-            return mimeType;
-        }
-
-        if (mimeType == MimeTypeInfo.Gif)
+        if (mediaType == MimeTypeInfo.Gif)
         {
             // Returning image in PNG format because build-in GIF encoder produces images of a bad quality
             return MimeTypeInfo.Png;
+        }
+
+        if (mediaType == MimeTypeInfo.Bmp)
+        {
+            return MimeTypeInfo.Jpeg;
+        }
+
+        if (ImageResizer.TargetMediaTypeSupported(mediaType))
+        {
+            return mediaType;
         }
 
         // Converting resized images to jpeg by default
         return MimeTypeInfo.Jpeg;
     }
 
-    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file, string mimeType, out string resultMimeType)
+    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file, string mediaType, out string resizedImageMediaType)
     {
         var resizingOptions = ResizingOptions.Parse(context.Request.QueryString);
 
-        if (resizingOptions == null || resizingOptions.IsEmpty)
+        var preferredMediaType = resizingOptions.MediaType;
+
+        if (resizingOptions == null || resizingOptions.IsEmpty
+            || (preferredMediaType != null && !ImageResizer.TargetMediaTypeSupported(preferredMediaType)))
         {
-            resultMimeType = mimeType;
+            resizedImageMediaType = mediaType;
             return new FileOrStream(file);
         }
 
-        resultMimeType = GetResizedImageMimeType(mimeType);
+        var targetImageMediaType = GetResizedImageMediaType(preferredMediaType ?? mediaType);
 
         try
         {
-            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, resultMimeType);
+            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, targetImageMediaType);
+
+            resizedImageMediaType = resizedImageFilePath != null ? targetImageMediaType : mediaType;
 
             return resizedImageFilePath != null
                 ? new FileOrStream(resizedImageFilePath)
@@ -566,6 +573,8 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             Log.LogVerbose("Composite.Media.ImageResize", ex.Message);
         }
+
+        resizedImageMediaType = mediaType;
         return new FileOrStream(file);
     }
 

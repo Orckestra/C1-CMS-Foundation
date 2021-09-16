@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Composite.Core.WebClient.Media
         private int? _qualityOverride;
 
         /// <summary>
-        /// Image heigth
+        /// Image height
         /// </summary>
         public int? Height { get; set; }
 
@@ -76,6 +76,12 @@ namespace Composite.Core.WebClient.Media
         public ResizingAction ResizingAction { get; set; }
 
         /// <summary>
+        /// The preferred media type for the generated resized image.
+        /// If the media type isn't supported, the original image will be returned.
+        /// </summary>
+        public string MediaType { get; set; }
+
+        /// <summary>
         /// Indicates whether any options were specified
         /// </summary>
         public bool IsEmpty => Height == null && Width == null && MaxHeight == null && MaxWidth == null && _qualityOverride == null;
@@ -126,6 +132,8 @@ namespace Composite.Core.WebClient.Media
                 {
                     ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
                 }
+
+                MediaType = (string) e.Attribute("mediaType");
             }
         }
 
@@ -183,6 +191,12 @@ namespace Composite.Core.WebClient.Media
             else
             {
                 result.ResizingAction = ResizingAction.Stretch;
+            }
+
+            var mediaType = queryString["mt"];
+            if (!string.IsNullOrEmpty(mediaType))
+            {
+                result.MediaType = mediaType;
             }
 
             return result;
@@ -251,6 +265,12 @@ namespace Composite.Core.WebClient.Media
             {
                 sb.Append(sb.Length == 0 ? String.Empty : "&");
                 sb.Append("action=").Append(ResizingAction.ToString().ToLowerInvariant());
+            }
+
+            if (!string.IsNullOrWhiteSpace(MediaType))
+            {
+                sb.Append(sb.Length == 0 ? String.Empty : "&");
+                sb.Append("mt=").Append(MediaType);
             }
 
             return sb.ToString();
