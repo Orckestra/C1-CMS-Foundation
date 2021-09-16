@@ -205,7 +205,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
 
         bool download = (string.IsNullOrEmpty(context.Request["download"]) ?
-            !CabBePreviewedInBrowser(file.MimeType) :
+            !CabBePreviewedInBrowser(context, file.MimeType) :
             context.Request["download"] != "false");
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
@@ -531,9 +531,9 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
     }
 
 
-    private static bool CabBePreviewedInBrowser(string mediaType)
+    private static bool CabBePreviewedInBrowser(HttpContext context, string mediaType)
     {
-        return MediaTypesBrowserCanView.Contains(mediaType);
+        return MediaTypesBrowserCanView.Contains(mediaType) || context.Request.AcceptTypes.Contains(mediaType);
     }
 
 
