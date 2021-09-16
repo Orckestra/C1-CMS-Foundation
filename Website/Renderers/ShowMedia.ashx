@@ -182,13 +182,8 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         return false;
     }
 
-    private static void ValidateAndSend(HttpContext context, IMediaFile file)
+    private static void AddContentDispositionHeader(HttpContext context, IMediaFile file, string sourceMediaType, string resultMediaType)
     {
-        if (ExecuteResponseHandlers(context, file))
-        {
-            return;
-        }
-
         string encodedFileName = file.FileName.Replace("\"", "_");
         if (context.Request.Browser != null && context.Request.Browser.IsBrowser("ie"))
         {
@@ -196,12 +191,32 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             encodedFileName = HttpUtility.UrlEncode(encodedFileName).Replace("+", "%20");
         }
 
+        if (sourceMediaType != resultMediaType)
+        {
+            var originalExtension = MimeTypeInfo.GetExtensionFromMimeType(sourceMediaType);
+            var resultExtension = MimeTypeInfo.GetExtensionFromMimeType(resultMediaType);
+
+            if(!string.IsNullOrEmpty(originalExtension) && !string.IsNullOrEmpty(resultExtension) && originalExtension != resultExtension
+                && encodedFileName.EndsWith("." + originalExtension))
+            {
+                encodedFileName = encodedFileName.Substring(0, encodedFileName.Length - originalExtension.Length)
+                                  + resultExtension;
+            }
+        }
+
         bool download = (string.IsNullOrEmpty(context.Request["download"]) ?
             !CabBePreviewedInBrowser(file.MimeType) :
             context.Request["download"] != "false");
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
+    }
 
+    private static void ValidateAndSend(HttpContext context, IMediaFile file)
+    {
+        if (ExecuteResponseHandlers(context, file))
+        {
+            return;
+        }
 
         bool checkIfModifiedSince = false;
 
@@ -240,6 +255,8 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             }
 
             context.Response.ContentType = outputMediaType;
+
+            AddContentDispositionHeader(context, file, mediaType, outputMediaType);
 
             long? length = null;
             bool canSeek;
