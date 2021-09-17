@@ -567,7 +567,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         var preferredMediaType = resizingOptions.MediaType;
 
-        if (resizingOptions == null || resizingOptions.IsEmpty
+        if (resizingOptions.IsEmpty
             || (preferredMediaType != null && !ImageResizer.TargetMediaTypeSupported(preferredMediaType)))
         {
             resizedImageMediaType = mediaType;
@@ -578,7 +578,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         try
         {
-            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, targetImageMediaType);
+            string resizedImageFilePath = ImageResizer.GetResizedImage(file, resizingOptions, mediaType, targetImageMediaType);
 
             resizedImageMediaType = resizedImageFilePath != null ? targetImageMediaType : mediaType;
 

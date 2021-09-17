@@ -258,6 +258,8 @@
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\Serialization\CompositeSerializationBinder.cs" />
     <Compile Include="Core\Types\CSharpCodeProviderFactory.cs" />
+    <Compile Include="Core\WebClient\Media\DefaultImageFileFormatProvider.cs" />
+    <Compile Include="Core\WebClient\Media\IImageFileFormatProvider.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewContext.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />

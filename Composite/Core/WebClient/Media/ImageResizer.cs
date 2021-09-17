@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
+using System.Web.Management;
 using Composite.Core.IO;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
@@ -21,60 +23,81 @@ namespace Composite.Core.WebClient.Media
     public static class ImageResizer
     {
         private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
-        private class MediaTypeInfo
+
+        private static Dictionary<string, IImageFileFormatProvider> _imageFormatProviders;
+
+        private static Dictionary<string, IImageFileFormatProvider> ImageFormatProviders
         {
-            public MediaTypeInfo(string extension, ImageFormat imageFormat)
+            get
             {
-                Extension = extension;
-                ImageFormat = imageFormat;
+                if (_imageFormatProviders == null)
+                {
+                    var defaultProviders = DefaultImageFileFormatProvider.GetDefaultProviders().ToList();
+                    var customProviders = ServiceLocator.GetServices<IImageFileFormatProvider>().ToList();
+
+                    var result = defaultProviders.ToDictionary(_ => _.MediaType);
+                    foreach (var provider in customProviders)
+                    {
+                        result[provider.MediaType] = provider;
+                    }
+
+                    _imageFormatProviders = result;
+                }
+
+                return _imageFormatProviders;
             }
-            public string Extension { get; }
-            public ImageFormat ImageFormat { get; }
         }
-
-        private static Dictionary<string, MediaTypeInfo> MediaTypeInfoMap = new Dictionary<string, MediaTypeInfo>
-        {
-            {MimeTypeInfo.Jpeg, new MediaTypeInfo("jpg", ImageFormat.Jpeg)},
-            {MimeTypeInfo.Png, new MediaTypeInfo("png", ImageFormat.Png)},
-            {MimeTypeInfo.Gif, new MediaTypeInfo("gif", ImageFormat.Gif)},
-            {MimeTypeInfo.Tiff, new MediaTypeInfo("tiff", ImageFormat.Tiff)},
-            {MimeTypeInfo.Bmp, new MediaTypeInfo("bmp", ImageFormat.Bmp)}
-        };
-
-        private static ImageCodecInfo JpegCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == ImageFormat.Jpeg.Guid);
 
         private static readonly TimeSpan CacheExpirationTimeSpan = new TimeSpan(1, 0, 0, 0);
 
         private static string _resizedImagesDirectoryPath;
 
+        private static string ResizedImagesDirectoryPath
+        {
+            get
+            {
+                if (_resizedImagesDirectoryPath == null)
+                {
+                    _resizedImagesDirectoryPath = HostingEnvironment.MapPath(ResizedImagesCacheDirectory);
+
+                    if (!C1Directory.Exists(_resizedImagesDirectoryPath))
+                    {
+                        C1Directory.CreateDirectory(_resizedImagesDirectoryPath);
+                    }
+                }
+
+                return _resizedImagesDirectoryPath;
+            }
+        }
 
         /// <summary>
         /// Gets the resized image.
         /// </summary>
-        /// <param name="httpServerUtility">An instance of <see cref="System.Web.HttpServerUtility" />.</param>
         /// <param name="file">The media file.</param>
         /// <param name="resizingOptions">The resizing options.</param>
+        /// <param name="sourceMediaType">The media type of the image.</param>
         /// <param name="targetMediaType">The media type for the resized image.</param>
         /// <returns>A full file path to a resized image; null if there's no need to resize the image</returns>
-        public static string GetResizedImage(HttpServerUtility httpServerUtility, IMediaFile file, ResizingOptions resizingOptions, string targetMediaType)
+        public static string GetResizedImage(IMediaFile file, ResizingOptions resizingOptions,
+                                             string sourceMediaType, string targetMediaType)
         {
-            Verify.ArgumentNotNull(file, "file");
-            Verify.That(TargetMediaTypeSupported(targetMediaType), "Unsupported media type '{0}'", targetMediaType);
+            Verify.ArgumentNotNull(file, nameof(file));
+            Verify.ArgumentNotNullOrEmpty(sourceMediaType, nameof(sourceMediaType));
+            Verify.ArgumentNotNullOrEmpty(targetMediaType, nameof(targetMediaType));
 
-            if (_resizedImagesDirectoryPath == null)
-            {
-                _resizedImagesDirectoryPath = httpServerUtility.MapPath(ResizedImagesCacheDirectory);
+            if (!ImageFormatProviders.TryGetValue(sourceMediaType, out var sourceImageFormatProvider))
+                throw new ArgumentException($"Unsupported media type '{sourceMediaType}'", nameof(sourceMediaType));
 
-                if (!C1Directory.Exists(_resizedImagesDirectoryPath))
-                {
-                    C1Directory.CreateDirectory(_resizedImagesDirectoryPath);
-                }
-            }
+            if (!ImageFormatProviders.TryGetValue(targetMediaType, out var imageFileFormatProvider))
+                throw new ArgumentException($"Unsupported media type '{targetMediaType}'", nameof(targetMediaType));
+
 
             string imageKey = file.CompositePath;
 
             string imageSizeCacheKey = nameof(ImageResizer) + imageKey;
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
+
+            Func<Stream, Bitmap> loadImageFunc = sourceImageFormatProvider.LoadImageFromStream;
 
             Bitmap bitmap = null;
             Stream fileStream = null;
@@ -90,7 +113,7 @@ namespace Composite.Core.WebClient.Media
                         fileStream.Dispose();
                         fileStream = file.GetReadStream();
 
-                        bitmap = new Bitmap(fileStream);
+                        bitmap = loadImageFunc(fileStream);
                         calculatedSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
                     }
                     imageSize = calculatedSize;
@@ -105,9 +128,8 @@ namespace Composite.Core.WebClient.Media
                     HttpRuntime.Cache.Add(imageSizeCacheKey, imageSize, cacheDependency, DateTime.MaxValue, CacheExpirationTimeSpan, CacheItemPriority.Normal, null);
                 }
 
-                int newWidth, newHeight;
-                bool centerCrop;
-                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out centerCrop);
+                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions,
+                                                  out int newWidth, out int newHeight, out bool centerCrop);
 
                 needToResize = needToResize || resizingOptions.CustomQuality;
 
@@ -120,22 +142,24 @@ namespace Composite.Core.WebClient.Media
 
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
-                var mediaTypeInfo = MediaTypeInfoMap[targetMediaType];
+                string fileExtension = imageFileFormatProvider.FileExtension;
+                string qualityCacheKeyPart = imageFileFormatProvider.CanSetCompressionQuality
+                    ? $"_{resizingOptions.Quality}"
+                    : "";
 
-                string fileExtension = mediaTypeInfo.Extension;
-                string resizedImageFileName = $"{newWidth}x{newHeight}_{filePathHash}{centerCroppedString}_{resizingOptions.Quality}.{fileExtension}";
+                string resizedImageFileName = $"{newWidth}x{newHeight}_{filePathHash}{centerCroppedString}{qualityCacheKeyPart}.{fileExtension}";
 
-                string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
+                string imageFullPath = Path.Combine(ResizedImagesDirectoryPath, resizedImageFileName);
 
                 if (!C1File.Exists(imageFullPath) || C1File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
                 {
                     if (bitmap == null)
                     {
                         fileStream = file.GetReadStream();
-                        bitmap = new Bitmap(fileStream);
+                        bitmap = loadImageFunc(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, mediaTypeInfo.ImageFormat, resizingOptions.Quality);
+                    ResizeImage(bitmap, imageFullPath, imageFileFormatProvider, newWidth, newHeight, centerCrop, resizingOptions.Quality);
 
                     if (file.LastWriteTime.HasValue)
                     {
@@ -263,24 +287,18 @@ namespace Composite.Core.WebClient.Media
             return newWidth != width || newHeight != height;
         }
 
-
-        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat, int quality)
+        private static void ResizeImage(Bitmap image, string outputFilePath, IImageFileFormatProvider imageFormatProvider,
+                                        int newWidth, int newHeight, bool centerCrop, int quality)
         {
             using (Bitmap resizedImage = ResizeImage(image, newWidth, newHeight, centerCrop))
             {
-                if (imageFormat.Guid == ImageFormat.Jpeg.Guid)
+                if (imageFormatProvider.CanSetCompressionQuality)
                 {
-                    var parameters = new EncoderParameters(1);
-
-                    // Setting image quality, the default value is 75
-                    parameters.Param[0] = new EncoderParameter(
-                        System.Drawing.Imaging.Encoder.Quality, quality);
-
-                    resizedImage.Save(outputFilePath, JpegCodecInfo, parameters);
+                    imageFormatProvider.SaveImageToFile(resizedImage, outputFilePath, quality);
                 }
                 else
                 {
-                    resizedImage.Save(outputFilePath, imageFormat);
+                    imageFormatProvider.SaveImageToFile(resizedImage, outputFilePath);
                 }
             }
         }
@@ -376,7 +394,7 @@ namespace Composite.Core.WebClient.Media
         {
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
-            return MediaTypeInfoMap.ContainsKey(mediaType);
+            return ImageFormatProviders.ContainsKey(mediaType);
         }
 
         /// <summary>
@@ -387,7 +405,7 @@ namespace Composite.Core.WebClient.Media
         {
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
-            return MediaTypeInfoMap.ContainsKey(mediaType);
+            return ImageFormatProviders.ContainsKey(mediaType);
         }
     }
 }
