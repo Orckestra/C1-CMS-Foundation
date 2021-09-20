@@ -8,7 +8,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
-using System.Web.Management;
 using Composite.Core.IO;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
@@ -30,21 +29,14 @@ namespace Composite.Core.WebClient.Media
         {
             get
             {
-                if (_imageFormatProviders == null)
-                {
-                    var defaultProviders = DefaultImageFileFormatProvider.GetDefaultProviders().ToList();
-                    var customProviders = ServiceLocator.GetServices<IImageFileFormatProvider>().ToList();
+                if (_imageFormatProviders != null) return _imageFormatProviders;
 
-                    var result = defaultProviders.ToDictionary(_ => _.MediaType);
-                    foreach (var provider in customProviders)
-                    {
-                        result[provider.MediaType] = provider;
-                    }
+                var customProviders = ServiceLocator.GetServices<IImageFileFormatProvider>().ToList();
 
-                    _imageFormatProviders = result;
-                }
+                var result = new Dictionary<string, IImageFileFormatProvider>();
+                customProviders.ForEach(provider => result[provider.MediaType] = provider);
 
-                return _imageFormatProviders;
+                return _imageFormatProviders = result;
             }
         }
 
@@ -105,18 +97,26 @@ namespace Composite.Core.WebClient.Media
             {
                 if (imageSize == null)
                 {
-                    fileStream = file.GetReadStream();
-
-                    Size calculatedSize;
-                    if (!ImageSizeReader.TryGetSize(fileStream, out calculatedSize))
+                    if (sourceImageFormatProvider.CanReadImageSize)
                     {
-                        fileStream.Dispose();
                         fileStream = file.GetReadStream();
+                        if (sourceImageFormatProvider.TryGetSize(fileStream, out var imageSizeFromProvider))
+                        {
+                            imageSize = imageSizeFromProvider;
+                        }
 
-                        bitmap = loadImageFunc(fileStream);
-                        calculatedSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                        fileStream.Close();
+                        fileStream.Dispose();
+                        fileStream = null;
                     }
-                    imageSize = calculatedSize;
+
+                    if (imageSize == null)
+                    {
+                        fileStream = file.GetReadStream();
+                        bitmap = loadImageFunc(fileStream);
+
+                        imageSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                    }
 
                     // We can provider cache dependency only for the native media provider
                     CacheDependency cacheDependency = null;
@@ -143,15 +143,15 @@ namespace Composite.Core.WebClient.Media
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
                 string fileExtension = imageFileFormatProvider.FileExtension;
-                string qualityCacheKeyPart = imageFileFormatProvider.CanSetCompressionQuality
+                string qualityCacheKeyPart = imageFileFormatProvider.CanSetImageQuality
                     ? $"_{resizingOptions.Quality}"
                     : "";
 
                 string resizedImageFileName = $"{newWidth}x{newHeight}_{filePathHash}{centerCroppedString}{qualityCacheKeyPart}.{fileExtension}";
 
-                string imageFullPath = Path.Combine(ResizedImagesDirectoryPath, resizedImageFileName);
+                string resizedImageFullPath = Path.Combine(ResizedImagesDirectoryPath, resizedImageFileName);
 
-                if (!C1File.Exists(imageFullPath) || C1File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
+                if (!C1File.Exists(resizedImageFullPath) || C1File.GetLastWriteTime(resizedImageFullPath) != file.LastWriteTime)
                 {
                     if (bitmap == null)
                     {
@@ -159,15 +159,20 @@ namespace Composite.Core.WebClient.Media
                         bitmap = loadImageFunc(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, imageFileFormatProvider, newWidth, newHeight, centerCrop, resizingOptions.Quality);
+                    using (Bitmap resizedImage = ResizeImage(bitmap, newWidth, newHeight, centerCrop))
+                    {
+                        int? imageQuality = imageFileFormatProvider.CanSetImageQuality ? (int?)resizingOptions.Quality : null;
+
+                        imageFileFormatProvider.SaveImageToFile(resizedImage, resizedImageFullPath, imageQuality);
+                    }
 
                     if (file.LastWriteTime.HasValue)
                     {
-                        C1File.SetLastWriteTime(imageFullPath, file.LastWriteTime.Value);
+                        C1File.SetLastWriteTime(resizedImageFullPath, file.LastWriteTime.Value);
                     }
                 }
 
-                return imageFullPath;
+                return resizedImageFullPath;
             }
             finally
             {
@@ -287,21 +292,6 @@ namespace Composite.Core.WebClient.Media
             return newWidth != width || newHeight != height;
         }
 
-        private static void ResizeImage(Bitmap image, string outputFilePath, IImageFileFormatProvider imageFormatProvider,
-                                        int newWidth, int newHeight, bool centerCrop, int quality)
-        {
-            using (Bitmap resizedImage = ResizeImage(image, newWidth, newHeight, centerCrop))
-            {
-                if (imageFormatProvider.CanSetCompressionQuality)
-                {
-                    imageFormatProvider.SaveImageToFile(resizedImage, outputFilePath, quality);
-                }
-                else
-                {
-                    imageFormatProvider.SaveImageToFile(resizedImage, outputFilePath);
-                }
-            }
-        }
 
         /// <summary>
         /// Resizes an image

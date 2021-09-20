@@ -21,7 +21,20 @@ namespace Composite.Core.WebClient.Media
         /// <summary>
         /// Indicates whether the provider allows specifying quality percentage when saving an image.
         /// </summary>
-        bool CanSetCompressionQuality { get; }
+        bool CanSetImageQuality { get; }
+
+        /// <summary>
+        /// Indicates whether the provider allows reading image dimensions from the beginning of the stream.
+        /// </summary>
+        bool CanReadImageSize { get; }
+
+        /// <summary>
+        /// Tries to read image's size from the file header.
+        /// </summary>
+        /// <param name="imageStream">The input stream with an image.</param>
+        /// <param name="size">The size of the image</param>
+        /// <returns><value>True</value> if the image size was extracted successfully.</returns>
+        bool TryGetSize(Stream imageStream, out Size size);
 
         /// <summary>
         /// Loads a <see cref="Bitmap"/> out of stream .
