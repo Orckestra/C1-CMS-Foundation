@@ -38,7 +38,14 @@ namespace Composite.Core.WebClient.Media
                 var customProviders = ServiceLocator.GetServices<IImageFileFormatProvider>().ToList();
 
                 var result = new Dictionary<string, IImageFileFormatProvider>();
-                customProviders.ForEach(provider => result[provider.MediaType] = provider);
+                customProviders.ForEach(provider =>
+                {
+                    var mediaType = provider.MediaType;
+                    if (string.IsNullOrWhiteSpace(mediaType))
+                        throw new InvalidOperationException($"Empty MediaType returned by provider {provider.GetType().FullName}");
+
+                    result[mediaType] = provider;
+                });
 
                 return _imageFormatProviders = result;
             }

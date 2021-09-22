@@ -10,9 +10,9 @@ namespace Composite.Core.WebClient.Media
 
         public DefaultImageFileFormatProvider(string mediaType, string extension, Action<Bitmap, string, int?> saveAction, bool canSetImageQuality = false)
         {
-            MediaType = mediaType;
-            FileExtension = extension;
-            _saveAction = saveAction;
+            MediaType = mediaType ?? throw new ArgumentNullException(nameof(mediaType));
+            FileExtension = extension ?? throw new ArgumentNullException(nameof(extension));
+            _saveAction = saveAction ?? throw new ArgumentNullException(nameof(saveAction));
             CanSetImageQuality = canSetImageQuality;
         }
 
