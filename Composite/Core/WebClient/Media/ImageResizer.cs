@@ -1,12 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
 using Composite.Core.IO;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
@@ -14,58 +17,90 @@ using Composite.Data.Types;
 namespace Composite.Core.WebClient.Media
 {
     ///<summary>
-    ///Class that performs image resizing
+    /// Class that performs image resizing
     ///</summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ImageResizer
     {
-        private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
-        private static Dictionary<ImageFormat, string> _ImageFormat2Extension = new Dictionary<ImageFormat, string>
-        {  
-            {ImageFormat.Png, "png"},
-            {ImageFormat.Gif, "gif"}, 
-            {ImageFormat.Jpeg, "jpg"}, 
-            {ImageFormat.Bmp, "bmp"}, 
-            {ImageFormat.Tiff, "tiff"}
-        };
+        private static readonly MD5 _hashAlgorithm = MD5.Create();
 
-        private static ImageCodecInfo JpegCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == ImageFormat.Jpeg.Guid);
+        private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
+
+        private static Dictionary<string, IImageFileFormatProvider> _imageFormatProviders;
+
+        private static Dictionary<string, IImageFileFormatProvider> ImageFormatProviders
+        {
+            get
+            {
+                if (_imageFormatProviders != null) return _imageFormatProviders;
+
+                var customProviders = ServiceLocator.GetServices<IImageFileFormatProvider>().ToList();
+
+                var result = new Dictionary<string, IImageFileFormatProvider>();
+                customProviders.ForEach(provider =>
+                {
+                    var mediaType = provider.MediaType;
+                    if (string.IsNullOrWhiteSpace(mediaType))
+                        throw new InvalidOperationException($"Empty MediaType returned by provider {provider.GetType().FullName}");
+
+                    result[mediaType] = provider;
+                });
+
+                return _imageFormatProviders = result;
+            }
+        }
 
         private static readonly TimeSpan CacheExpirationTimeSpan = new TimeSpan(1, 0, 0, 0);
 
         private static string _resizedImagesDirectoryPath;
 
+        private static string ResizedImagesDirectoryPath
+        {
+            get
+            {
+                if (_resizedImagesDirectoryPath == null)
+                {
+                    _resizedImagesDirectoryPath = HostingEnvironment.MapPath(ResizedImagesCacheDirectory);
+
+                    if (!C1Directory.Exists(_resizedImagesDirectoryPath))
+                    {
+                        C1Directory.CreateDirectory(_resizedImagesDirectoryPath);
+                    }
+                }
+
+                return _resizedImagesDirectoryPath;
+            }
+        }
 
         /// <summary>
         /// Gets the resized image.
         /// </summary>
-        /// <param name="httpServerUtility">An instance of <see cref="System.Web.HttpServerUtility" />.</param>
         /// <param name="file">The media file.</param>
         /// <param name="resizingOptions">The resizing options.</param>
-        /// <param name="targetImageFormat">The target image format.</param>
+        /// <param name="sourceMediaType">The media type of the image.</param>
+        /// <param name="targetMediaType">The media type for the resized image.</param>
         /// <returns>A full file path to a resized image; null if there's no need to resize the image</returns>
-        public static string GetResizedImage(HttpServerUtility httpServerUtility, IMediaFile file, ResizingOptions resizingOptions, ImageFormat targetImageFormat)
+        public static string GetResizedImage(IMediaFile file, ResizingOptions resizingOptions,
+                                             string sourceMediaType, string targetMediaType)
         {
-            Verify.ArgumentNotNull(file, "file");
-            Verify.That(ImageFormatIsSupported(targetImageFormat), "Unsupported image format '{0}'", targetImageFormat);
+            Verify.ArgumentNotNull(file, nameof(file));
+            Verify.ArgumentNotNullOrEmpty(sourceMediaType, nameof(sourceMediaType));
+            Verify.ArgumentNotNullOrEmpty(targetMediaType, nameof(targetMediaType));
 
-            if (_resizedImagesDirectoryPath == null)
-            {
-                _resizedImagesDirectoryPath = httpServerUtility.MapPath(ResizedImagesCacheDirectory);
+            if (!ImageFormatProviders.TryGetValue(sourceMediaType, out var sourceImageFormatProvider))
+                throw new ArgumentException($"Unsupported media type '{sourceMediaType}'", nameof(sourceMediaType));
 
-                if (!C1Directory.Exists(_resizedImagesDirectoryPath))
-                {
-                    C1Directory.CreateDirectory(_resizedImagesDirectoryPath);
-                }
-            }
+            if (!ImageFormatProviders.TryGetValue(targetMediaType, out var imageFileFormatProvider))
+                throw new ArgumentException($"Unsupported media type '{targetMediaType}'", nameof(targetMediaType));
+
 
             string imageKey = file.CompositePath;
 
-            bool isNativeProvider = file is FileSystemFileBase;
-
-            string imageSizeCacheKey = "ShowMedia.ashx image size " + imageKey;
+            string imageSizeCacheKey = nameof(ImageResizer) + imageKey;
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
+
+            Func<Stream, Bitmap> loadImageFunc = sourceImageFormatProvider.LoadImageFromStream;
 
             Bitmap bitmap = null;
             Stream fileStream = null;
@@ -73,28 +108,39 @@ namespace Composite.Core.WebClient.Media
             {
                 if (imageSize == null)
                 {
-                    fileStream = file.GetReadStream();
-
-                    Size calculatedSize;
-                    if (!ImageSizeReader.TryGetSize(fileStream, out calculatedSize))
+                    if (sourceImageFormatProvider.CanReadImageSize)
                     {
-                        fileStream.Dispose();
                         fileStream = file.GetReadStream();
+                        if (sourceImageFormatProvider.TryGetSize(fileStream, out var imageSizeFromProvider))
+                        {
+                            imageSize = imageSizeFromProvider;
+                        }
 
-                        bitmap = new Bitmap(fileStream);
-                        calculatedSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                        fileStream.Close();
+                        fileStream.Dispose();
+                        fileStream = null;
                     }
-                    imageSize = calculatedSize;
+
+                    if (imageSize == null)
+                    {
+                        fileStream = file.GetReadStream();
+                        bitmap = loadImageFunc(fileStream);
+
+                        imageSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                    }
 
                     // We can provider cache dependency only for the native media provider
-                    var cacheDependency = isNativeProvider ? new CacheDependency((file as FileSystemFileBase).SystemPath) : null;
+                    CacheDependency cacheDependency = null;
+                    if (file is FileSystemFileBase fileSystemFile)
+                    {
+                        cacheDependency = new CacheDependency(fileSystemFile.SystemPath);
+                    }
 
                     HttpRuntime.Cache.Add(imageSizeCacheKey, imageSize, cacheDependency, DateTime.MaxValue, CacheExpirationTimeSpan, CacheItemPriority.Normal, null);
                 }
 
-                int newWidth, newHeight;
-                bool centerCrop;
-                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out centerCrop);
+                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions,
+                                                  out int newWidth, out int newHeight, out bool centerCrop);
 
                 needToResize = needToResize || resizingOptions.CustomQuality;
 
@@ -103,45 +149,55 @@ namespace Composite.Core.WebClient.Media
                     return null;
                 }
 
-                int filePathHash = imageKey.GetHashCode();
+                string mediaFileHash = GetMediaHash(imageKey);
 
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
-                string fileExtension = _ImageFormat2Extension[targetImageFormat];
-                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}_{4}.{5}", newWidth, newHeight, filePathHash, centerCroppedString, resizingOptions.Quality, fileExtension);
+                string fileExtension = imageFileFormatProvider.FileExtension;
+                string qualityCacheKeyPart = imageFileFormatProvider.CanSetImageQuality
+                    ? $"_{resizingOptions.Quality}"
+                    : "";
 
-                string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
+                string resizedImageFileName = $"{newWidth}x{newHeight}{centerCroppedString}_{mediaFileHash}{qualityCacheKeyPart}.{fileExtension}";
 
-                if (!C1File.Exists(imageFullPath) || C1File.GetLastWriteTime(imageFullPath) != file.LastWriteTime)
+                string resizedImageFullPath = Path.Combine(ResizedImagesDirectoryPath, resizedImageFileName);
+
+                if (!C1File.Exists(resizedImageFullPath) || C1File.GetLastWriteTime(resizedImageFullPath) != file.LastWriteTime)
                 {
                     if (bitmap == null)
                     {
                         fileStream = file.GetReadStream();
-                        bitmap = new Bitmap(fileStream);
+                        bitmap = loadImageFunc(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat, resizingOptions.Quality);
+                    using (Bitmap resizedImage = ResizeImage(bitmap, newWidth, newHeight, centerCrop))
+                    {
+                        int? imageQuality = imageFileFormatProvider.CanSetImageQuality ? (int?)resizingOptions.Quality : null;
+
+                        imageFileFormatProvider.SaveImageToFile(resizedImage, resizedImageFullPath, imageQuality);
+                    }
 
                     if (file.LastWriteTime.HasValue)
                     {
-                        C1File.SetLastWriteTime(imageFullPath, file.LastWriteTime.Value);
+                        C1File.SetLastWriteTime(resizedImageFullPath, file.LastWriteTime.Value);
                     }
                 }
 
-                return imageFullPath;
+                return resizedImageFullPath;
             }
             finally
             {
-                if (bitmap != null)
-                {
-                    bitmap.Dispose();
-                }
-
-                if (fileStream != null)
-                {
-                    fileStream.Dispose();
-                }
+                bitmap?.Dispose();
+                fileStream?.Dispose();
             }
+        }
+
+        private static string GetMediaHash(string mediaKeyPath)
+        {
+            var bytes = Encoding.UTF8.GetBytes(mediaKeyPath);
+            var hash = _hashAlgorithm.ComputeHash(bytes);
+            var guid = new Guid(hash);
+            return UrlUtils.CompressGuid(guid).Substring(10);
         }
 
         private static bool CalculateSize(int width, int height, ResizingOptions resizingOptions, out int newWidth, out int newHeight, out bool centerCrop)
@@ -160,13 +216,13 @@ namespace Composite.Core.WebClient.Media
 
             centerCrop = false;
 
-            // If both height and width are defined - we have "scalling"
+            // If both height and width are defined - we have "scaling"
             if (resizingOptions.Height != null && resizingOptions.Width != null)
             {
                 newHeight = (int)resizingOptions.Height;
                 newWidth = (int)resizingOptions.Width;
 
-                // we do not allow scalling to a size, bigger than original one
+                // we do not allow scaling to a size, bigger than original one
                 if (newHeight > height)
                 {
                     newHeight = height;
@@ -226,7 +282,7 @@ namespace Composite.Core.WebClient.Media
             newWidth = width;
             newHeight = height;
 
-            // If image doesn't fit to bondaries "maxWidth X maxHeight", downsizing it
+            // If image doesn't fit to boundaries "maxWidth X maxHeight", downsizing it
             int? maxWidth = resizingOptions.Width;
             if (resizingOptions.MaxWidth != null && (maxWidth == null || resizingOptions.MaxWidth < maxWidth))
             {
@@ -255,27 +311,6 @@ namespace Composite.Core.WebClient.Media
             return newWidth != width || newHeight != height;
         }
 
-
-        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat, int quality)
-        {
-            using (Bitmap resizedImage = ResizeImage(image, newWidth, newHeight, centerCrop))
-            {
-                if (imageFormat.Guid == ImageFormat.Jpeg.Guid)
-                {
-                    EncoderParameters parameters = new EncoderParameters(1);
-
-                    // Setting image quality, the deafult value is 75
-                    parameters.Param[0] = new EncoderParameter(
-                        System.Drawing.Imaging.Encoder.Quality, quality);
-
-                    resizedImage.Save(outputFilePath, JpegCodecInfo, parameters);
-                }
-                else
-                {
-                    resizedImage.Save(outputFilePath, imageFormat);
-                }
-            }
-        }
 
         /// <summary>
         /// Resizes an image
@@ -360,27 +395,26 @@ namespace Composite.Core.WebClient.Media
                 (int)Math.Ceiling(height - delta));
         }
 
-
-
-        private static bool ImageFormatIsSupported(ImageFormat imageFormat)
+        /// <summary>
+        /// Returns a value indicating whether an image of a given media type can be resized.
+        /// </summary>
+        /// <param name="mediaType">A media type.</param>
+        public static bool SourceMediaTypeSupported(string mediaType)
         {
-            return _ImageFormat2Extension.ContainsKey(imageFormat);
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
+
+            return ImageFormatProviders.ContainsKey(mediaType);
         }
 
-        /// <exclude />
-        public class SupportedImageFormats
+        /// <summary>
+        /// Returns a value indicating whether resized imaged can be saved in the specified media type.
+        /// </summary>
+        /// <param name="mediaType">A media type.</param>
+        public static bool TargetMediaTypeSupported(string mediaType)
         {
-            /// <exclude />
-            public static ImageFormat JPG { get { return ImageFormat.Jpeg; } }
-            /// <exclude />
-            public static ImageFormat PNG { get { return ImageFormat.Png; } }
-            /// <exclude />
-            public static ImageFormat TIFF { get { return ImageFormat.Tiff; } }
-            /// <exclude />
-            public static ImageFormat GIF { get { return ImageFormat.Gif; } }
-            /// <exclude />
-            public static ImageFormat BMP { get { return ImageFormat.Bmp; } }
+            if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
+            return ImageFormatProviders.ContainsKey(mediaType);
         }
     }
 }

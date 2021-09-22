@@ -18,6 +18,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Media;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
@@ -101,6 +102,7 @@ namespace Composite.Core.WebClient
             services.AddRoutedData();
             services.AddDataActionTokenResolver();
             services.AddDefaultSearchDocumentSourceProviders();
+            services.AddDefaultImageFileFormatProviders();
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
