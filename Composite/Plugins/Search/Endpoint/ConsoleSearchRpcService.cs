@@ -130,7 +130,7 @@ namespace Composite.Plugins.Search.Endpoint
 
                 var result = await _searchProvider.SearchAsync(searchQuery);
 
-                var items = result.Items.Evaluate();
+                var items = result?.Items?.Evaluate() ?? Array.Empty<SearchResultItem>();
                 if (!items.Any())
                 {
                     return new ConsoleSearchResult

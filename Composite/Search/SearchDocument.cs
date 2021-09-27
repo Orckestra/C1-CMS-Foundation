@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Composite.C1Console.Security;
 
 namespace Composite.Search
@@ -97,5 +97,10 @@ namespace Composite.Search
         /// Field values that is preserved in the index and will be used in faceted search.
         /// </summary>
         public IDictionary<string, string[]> FacetFieldValues { get; set; }
+
+        /// <summary>
+        /// A factor by which a search document should be boosted index time.
+        /// </summary>
+        public float Boost { get; set; } = 1;
     }
 }

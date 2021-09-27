@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -66,6 +66,11 @@ namespace Composite.Search.Crawling
         /// The document url. Setting a not empty value makes the document searchable from the frontend.
         /// </summary>
         public string Url { get; set; }
+
+        /// <summary>
+        /// A factor by which a search document should be boosted index time.
+        /// </summary>
+        public float Boost { get; set; } = 1;
 
         /// <summary>
         /// Sets the interface type, name of which will be used for populating the "Data Type" column in the search results.
@@ -223,6 +228,7 @@ namespace Composite.Search.Crawling
                 ElementBundleName = versionName,
                 FullText = _textParts,
                 Url = Url,
+                Boost = Boost,
                 FieldValues = _fieldValues
                     .ExcludeDuplicateKeys(pair => pair.Key)
                     .ToDictionary(pair => pair.Key, pair => pair.Value),
