@@ -193,7 +193,15 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         if (sourceMediaType != resultMediaType)
         {
-            var originalExtension = MimeTypeInfo.GetExtensionFromMimeType(sourceMediaType);
+            string originalExtension = "";
+
+            try
+            {
+                originalExtension = Path.GetExtension(encodedFileName);
+                if (originalExtension.StartsWith(".")) originalExtension = originalExtension.Substring(1);
+            }
+            catch {}
+
             var resultExtension = MimeTypeInfo.GetExtensionFromMimeType(resultMediaType);
 
             if(!string.IsNullOrEmpty(originalExtension) && !string.IsNullOrEmpty(resultExtension) && originalExtension != resultExtension
