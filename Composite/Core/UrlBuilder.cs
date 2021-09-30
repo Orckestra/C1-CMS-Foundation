@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -68,8 +68,9 @@ namespace Composite.Core
                     string key = DefaultHttpEncoder.UrlDecode(encodedKey);
                     string value = DefaultHttpEncoder.UrlDecode(encodedValue);
 
+                    // For media URLs we need to support "/" character in a query parameter value
                     badUrl = DefaultHttpEncoder.UrlEncode(key) != encodedKey.Replace("%20", "+")
-                             || DefaultHttpEncoder.UrlEncode(value) != encodedValue.Replace("%20", "+");
+                             || DefaultHttpEncoder.UrlEncode(value) != encodedValue.Replace("%20", "+").Replace("/", "%2f");
 
                     if (!badUrl)
                     {
