@@ -28,8 +28,6 @@ namespace Composite.Search.Crawling
 
         private IPage _currentPage;
 
-        private static readonly MD5 HashingAlgorithm = MD5.Create();
-
         /// <summary>
         /// Creates a new instance of <see cref="SearchDocumentBuilder"/>.
         /// </summary>
@@ -268,9 +266,9 @@ namespace Composite.Search.Crawling
         internal static string GetEntityTokenHash(EntityToken entityToken)
         {
             var entityTokenString = EntityTokenSerializer.Serialize(entityToken);
-            var bytes = Encoding.UTF8.GetBytes(entityTokenString);
+            var md5Hash  = HashingHelper.ComputeMD5Hash(entityTokenString, Encoding.UTF8);
 
-            return UrlUtils.CompressGuid(new Guid(HashingAlgorithm.ComputeHash(bytes)));
+            return UrlUtils.CompressGuid(md5Hash);
         }
 
         /// <summary>

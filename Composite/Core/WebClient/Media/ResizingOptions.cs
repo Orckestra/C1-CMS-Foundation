@@ -28,8 +28,6 @@ namespace Composite.Core.WebClient.Media
 
         private int? _qualityOverride;
 
-        private static readonly MD5 HashingAlgorithm = MD5.Create();
-
         /// <summary>
         /// Image height
         /// </summary>
@@ -318,7 +316,7 @@ namespace Composite.Core.WebClient.Media
         public string GetSecureHash(Guid mediaId)
         {
             var value = mediaId + this.ToString() + GetHashSalt();
-            var hash = new Guid(HashingAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(value)));
+            var hash = HashingHelper.ComputeMD5Hash(value, Encoding.UTF8);
             return hash.ToString().Substring(0, 5);
         }
     }
