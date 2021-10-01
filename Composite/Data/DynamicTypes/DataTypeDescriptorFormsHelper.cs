@@ -15,6 +15,7 @@ using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.PublishScheduling;
+using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
@@ -785,10 +786,10 @@ namespace Composite.Data.DynamicTypes
             }
             else
             {
-                if (_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
+                if (_showPublicationStatusSelector && _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                 {
-                    fieldNameToBindingNameMapper.Add("PublishDate", "PublishDate");
-                    fieldNameToBindingNameMapper.Add("UnpublishDate", "UnpublishDate");
+                    fieldNameToBindingNameMapper.Add(nameof(IPublishSchedule.PublishDate), nameof(IPublishSchedule.PublishDate));
+                    fieldNameToBindingNameMapper.Add(nameof(IUnpublishSchedule.UnpublishDate), nameof(IUnpublishSchedule.UnpublishDate));
                 }
 
                 Func<XElement, IEnumerable<XAttribute>> getBindingsFunc =
