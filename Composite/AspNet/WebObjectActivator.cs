@@ -16,7 +16,11 @@ namespace Composite.AspNet
         public object GetService(Type serviceType)
         {
             var service = _inner.GetService(serviceType);
-            if (service == null)
+
+            // Multiple types from System.Web.dll have internal constructors
+            // Ignoring those types to have a better debugging experience
+            if (service == null
+                && serviceType.Assembly != typeof(System.Web.IHttpModule).Assembly)
             {
                 try
                 {
@@ -24,11 +28,10 @@ namespace Composite.AspNet
                 }
                 catch (InvalidOperationException)
                 {
-                    service = Activator.CreateInstance(serviceType, true);
                 }
             }
 
-            return service;
+            return service ?? Activator.CreateInstance(serviceType, true);
         }
     }
 }
