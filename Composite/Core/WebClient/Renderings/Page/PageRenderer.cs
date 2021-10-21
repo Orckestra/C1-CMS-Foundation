@@ -20,6 +20,7 @@ using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
+using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching;
 using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
@@ -573,17 +574,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if (element.Name != XName_function)
             {
-                var children = element.Elements();
-                if (element.Elements(XName_function).Any())
-                {
-                    // Allows replacing the function elements without breaking the iterator
-                    children = children.ToList(); 
-                }
+                var nonNestedDescFunctions = FindNonNestedFunctionDescendants(element);
 
                 bool allChildrenExecuted = true;
-                foreach (var childElement in children)
+                foreach (var functionElement in nonNestedDescFunctions)
                 {
-                    if (!ExecuteFunctionsRecursively(childElement, functionContext, functionShouldBeExecuted))
+                    if (!ExecuteFunctionsRecursively(functionElement, functionContext, functionShouldBeExecuted))
                     {
                         allChildrenExecuted = false;
                     }
@@ -678,17 +674,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if (element.Name != XName_function)
             {
-                var children = element.Elements();
-                if (element.Elements(XName_function).Any())
-                {
-                    // Allows replacing the function elements without breaking the iterator
-                    children = children.ToList();
-                }
+                var nonNestedDescFunctions = FindNonNestedFunctionDescendants(element);
 
                 bool allChildrenExecuted = true;
-                foreach (var childElement in children)
+                foreach (var functionElement in nonNestedDescFunctions)
                 {
-                    if (!await ExecuteFunctionsRecursivelyAsync(childElement, functionContext, functionShouldBeExecuted))
+                    if (!await ExecuteFunctionsRecursivelyAsync(functionElement, functionContext, functionShouldBeExecuted))
                     {
                         allChildrenExecuted = false;
                     }
@@ -930,6 +921,32 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 DisableAspNetPostback(child, out formDisabled);
                 if (formDisabled) break;
+            }
+        }
+
+        internal static IEnumerable<XElement> FindNonNestedFunctionDescendants(XElement element)
+        {
+            List<XElement> list = null;
+
+            FindNonNestedFunctionDescendants(element, ref list);
+
+            return list ?? Enumerable.Empty<XElement>();
+        }
+
+        private static void FindNonNestedFunctionDescendants(XElement element, ref List<XElement> list)
+        {
+            foreach (var childElement in element.Elements())
+            {
+                if (childElement.Name == XName_function)
+                {
+                    if (list == null) list = new List<XElement>();
+
+                    list.Add(childElement);
+                }
+                else
+                {
+                    FindNonNestedFunctionDescendants(childElement, ref list);
+                }
             }
         }
     }

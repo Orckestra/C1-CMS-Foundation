@@ -24,10 +24,7 @@ namespace Composite.Functions
         private readonly IFunction _function;
 
         /// <exclude />
-        protected override IMetaFunction HostedFunction
-        {
-            get { return _function; }
-        }
+        protected override IMetaFunction HostedFunction => _function;
 
 
         /// <exclude />
@@ -46,11 +43,62 @@ namespace Composite.Functions
         }
 
 
+        private ParameterList BuildParameterList(FunctionContextContainer contextContainer, string functionName)
+        {
+            var parameters = new ParameterList(contextContainer);
+
+            foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
+            {
+                List<BaseParameterRuntimeTreeNode> parameterTreeNodes = this.Parameters.Where(ptn => ptn.Name == parameterProfile.Name).ToList();
+
+                if (parameterTreeNodes.Count > 0)
+                {
+                    parameters.AddLazyParameter(parameterProfile.Name, parameterTreeNodes[0], parameterProfile.Type);
+                    continue;
+                }
+
+                if (parameterProfile.Type.IsGenericType
+                    && parameterProfile.Type.GetGenericTypeDefinition() == typeof(NullableDataReference<>))
+                {
+                    parameters.AddConstantParameter(parameterProfile.Name, null, parameterProfile.Type);
+                    continue;
+                }
+
+                if (parameterProfile.IsRequired)
+                {
+                    var injectedValue = TryGetInjectedValue(parameterProfile.Type);
+
+                    if (injectedValue == null)
+                    {
+                        throw new ArgumentException("Missing parameter '{0}' (type of {1})".FormatWith(parameterProfile.Name, parameterProfile.Type.FullName));
+                    }
+
+                    parameters.AddConstantParameter(parameterProfile.Name, injectedValue, parameterProfile.Type);
+                    continue;
+                }
+
+                BaseValueProvider valueProvider = parameterProfile.FallbackValueProvider;
+
+                object value;
+                try
+                {
+                    value = valueProvider.GetValue(contextContainer);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException($"Failed to get value for parameter '{parameterProfile.Name}' in function '{functionName}'.", ex);
+                }
+                parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
+            }
+
+            return parameters;
+        }
+
 
         /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            if (contextContainer == null) throw new ArgumentNullException(nameof(contextContainer));
 
             string functionName = _function.CompositeName() ?? "<unknown function>";
 
@@ -60,51 +108,7 @@ namespace Composite.Functions
 
                 try
                 {
-                    var parameters = new ParameterList(contextContainer);
-
-                    foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
-                    {
-                        List<BaseParameterRuntimeTreeNode> parameterTreeNodes = this.Parameters.Where(ptn => ptn.Name == parameterProfile.Name).ToList();
-
-                        if (parameterTreeNodes.Count > 0)
-                        {
-                            parameters.AddLazyParameter(parameterProfile.Name, parameterTreeNodes[0], parameterProfile.Type);
-                            continue;
-                        }
-
-                        if (parameterProfile.Type.IsGenericType
-                            && parameterProfile.Type.GetGenericTypeDefinition() == typeof(NullableDataReference<>))
-                        {
-                            parameters.AddConstantParameter(parameterProfile.Name, null, parameterProfile.Type);
-                            continue;
-                        }
-
-                        if (parameterProfile.IsRequired)
-                        {
-                            var injectedValue = TryGetInjectedValue(parameterProfile.Type);
-
-                            if (injectedValue == null)
-                            {
-                                throw new ArgumentException("Missing parameter '{0}' (type of {1})".FormatWith(parameterProfile.Name, parameterProfile.Type.FullName));
-                            }
-
-                            parameters.AddConstantParameter(parameterProfile.Name, injectedValue, parameterProfile.Type);
-                            continue;
-                        }
-
-                        BaseValueProvider valueProvider = parameterProfile.FallbackValueProvider;
-
-                        object value;
-                        try
-                        {
-                            value = valueProvider.GetValue(contextContainer);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new InvalidOperationException($"Failed to get value for parameter '{parameterProfile.Name}' in function '{functionName}'.", ex);
-                        }
-                        parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
-                    }
+                    var parameters = BuildParameterList(contextContainer, functionName);
 
                     object result;
 
@@ -143,10 +147,10 @@ namespace Composite.Functions
             }
         }
 
+        /// <inheritdoc />
         public async Task<object> GetValueAsync(FunctionContextContainer contextContainer)
         {
-            // TODO: remove code duplication
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            if (contextContainer == null) throw new ArgumentNullException(nameof(contextContainer));
 
             string functionName = _function.CompositeName() ?? "<unknown function>";
 
@@ -156,51 +160,7 @@ namespace Composite.Functions
 
                 try
                 {
-                    var parameters = new ParameterList(contextContainer);
-
-                    foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
-                    {
-                        List<BaseParameterRuntimeTreeNode> parameterTreeNodes = this.Parameters.Where(ptn => ptn.Name == parameterProfile.Name).ToList();
-
-                        if (parameterTreeNodes.Count > 0)
-                        {
-                            parameters.AddLazyParameter(parameterProfile.Name, parameterTreeNodes[0], parameterProfile.Type);
-                            continue;
-                        }
-
-                        if (parameterProfile.Type.IsGenericType
-                            && parameterProfile.Type.GetGenericTypeDefinition() == typeof(NullableDataReference<>))
-                        {
-                            parameters.AddConstantParameter(parameterProfile.Name, null, parameterProfile.Type);
-                            continue;
-                        }
-
-                        if (parameterProfile.IsRequired)
-                        {
-                            var injectedValue = TryGetInjectedValue(parameterProfile.Type);
-
-                            if (injectedValue == null)
-                            {
-                                throw new ArgumentException("Missing parameter '{0}' (type of {1})".FormatWith(parameterProfile.Name, parameterProfile.Type.FullName));
-                            }
-
-                            parameters.AddConstantParameter(parameterProfile.Name, injectedValue, parameterProfile.Type);
-                            continue;
-                        }
-
-                        BaseValueProvider valueProvider = parameterProfile.FallbackValueProvider;
-
-                        object value;
-                        try
-                        {
-                            value = valueProvider.GetValue(contextContainer);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new InvalidOperationException($"Failed to get value for parameter '{parameterProfile.Name}' in function '{functionName}'.", ex);
-                        }
-                        parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
-                    }
+                    var parameters = BuildParameterList(contextContainer, functionName);
 
                     object result;
 
@@ -276,7 +236,7 @@ namespace Composite.Functions
         public override XElement Serialize()
         {
             // ensure "f:function" naming:
-            XElement element = XElement.Parse(string.Format(@"<f:{0} xmlns:f=""{1}"" />", FunctionTreeConfigurationNames.FunctionTagName, FunctionTreeConfigurationNames.NamespaceName));
+            var element = XElement.Parse($@"<f:{FunctionTreeConfigurationNames.FunctionTagName} xmlns:f=""{FunctionTreeConfigurationNames.NamespaceName}"" />");
 
             element.Add(new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, _function.CompositeName()));
 
