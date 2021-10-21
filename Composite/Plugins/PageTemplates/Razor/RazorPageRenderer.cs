@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.WebPages;
@@ -14,7 +15,7 @@ using Composite.Functions;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
-    internal class RazorPageRenderer : IPageRenderer, ISlimPageRenderer
+    internal class RazorPageRenderer : IPageRenderer, ISlimPageRenderer, IAsyncPageRenderer
     {
         private readonly Hashtable<Guid, TemplateRenderingInfo> _renderingInfo;
         private readonly Hashtable<Guid, Exception> _loadingExceptions;
@@ -39,6 +40,18 @@ namespace Composite.Plugins.PageTemplates.Razor
         }
 
         public XDocument Render(PageContentToRender contentToRender, FunctionContextContainer functionContextContainer)
+        {
+            return RenderInternalAsync(contentToRender, functionContextContainer, true)
+                .ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        public Task<XDocument> RenderAsync(PageContentToRender contentToRender, FunctionContextContainer functionContextContainer)
+        {
+            return RenderInternalAsync(contentToRender, functionContextContainer, false);
+        }
+
+
+        public async Task<XDocument> RenderInternalAsync(PageContentToRender contentToRender, FunctionContextContainer functionContextContainer, bool sync)
         {
             Guid templateId = contentToRender.Page.TemplateId;
             var renderingInfo = _renderingInfo[templateId];
@@ -67,8 +80,18 @@ namespace Composite.Plugins.PageTemplates.Razor
 
                 using (Profiler.Measure("Evaluating placeholders"))
                 {
-                    TemplateDefinitionHelper.BindPlaceholders(webPage, contentToRender, renderingInfo.PlaceholderProperties,
-                        functionContextContainer);
+                    if (sync)
+                    {
+                        TemplateDefinitionHelper.BindPlaceholders(webPage, contentToRender, renderingInfo.PlaceholderProperties,
+                            functionContextContainer);
+                    }
+                    else
+                    {
+                        await TemplateDefinitionHelper.BindPlaceholdersAsync(webPage, contentToRender, renderingInfo.PlaceholderProperties,
+                            functionContextContainer).ConfigureAwait(false);
+
+                        functionContextContainer.RestoreContext();
+                    }
                 }
 
                 // Executing razor code

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -82,7 +82,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             }
 		}
 
-        private void EmbedExecutionExceptionSourceCode(Exception ex)
+        internal void EmbedExecutionExceptionSourceCode(Exception ex)
         {
             if (ex is ThreadAbortException
                    || ex is StackOverflowException

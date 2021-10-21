@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Composite.Core.Xml;
@@ -10,14 +11,53 @@ using Composite.C1Console.Security;
 
 namespace Composite.Functions.Foundation.PluginFacades
 {
+    internal sealed class AsyncFunctionWrapper : FunctionWrapper, IAsyncFunction
+    {
+        private static readonly string LogTitle = nameof(AsyncFunctionWrapper);
+
+        private readonly IAsyncFunction _asyncFunction;
+
+        internal AsyncFunctionWrapper(IAsyncFunction functionToWrap): base(functionToWrap)
+        {
+            _asyncFunction = functionToWrap;
+        }
+
+        public async Task<object> ExecuteAsync(ParameterList parameters, FunctionContextContainer context)
+        {
+            try
+            {
+                //var dynamicMethod = DynamicMethodHelper.GetDynamicMethod("<C1 async function> " + _functionToWrap.CompositeName());
+
+                //return dynamicMethod(() => _functionToWrap.Execute(parameters, context));
+
+                return await _asyncFunction.ExecuteAsync(parameters, context).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                // TODO: reduce code duplication
+                if (_functionToWrap.ReturnType == typeof(XhtmlDocument) || (_functionToWrap.ReturnType == typeof(void) && ex is HttpCompileException))
+                {
+                    if (context.ProcessException(_functionToWrap.CompositeName(), ex, LogTitle, out XElement errorBoxHtml))
+                    {
+                        var errorInfoDocument = new XhtmlDocument();
+                        errorInfoDocument.Body.Add(errorBoxHtml);
+                        return errorInfoDocument;
+                    }
+                }
+
+                throw;
+            }
+        }
+    }
+
     /// <summary>
     /// This class is used for catching exceptions from plugins and handling them correctly
     /// </summary>
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
-    internal sealed class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo, IDynamicFunction
+    internal class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo, IDynamicFunction
     {
         private static readonly string LogTitle = typeof (FunctionWrapper).Name;
-        private readonly IFunction _functionToWrap;
+        protected readonly IFunction _functionToWrap;
 
 
         internal FunctionWrapper(IFunction functionToWrap)

@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using Composite.AspNet.Caching;
@@ -14,10 +16,28 @@ namespace Composite.AspNet
     /// <summary>
     /// Renders page templates without building a Web Form's control tree.
     /// Contains a custom implementation of "donut caching".
+    /// Allows execution of async C1 functions.
+    /// </summary>
+    internal class CmsPageHttpAsyncHandler : HttpTaskAsyncHandler
+    {
+        public override Task ProcessRequestAsync(HttpContext context)
+        {
+            return CmsPageHttpHandler.ProcessRequestInternal(context, sync: false);
+        }
+    }
+
+    /// <summary>
+    /// Renders page templates without building a Web Form's control tree.
+    /// Contains a custom implementation of "donut caching".
     /// </summary>
     internal class CmsPageHttpHandler: IHttpHandler
     {
         public void ProcessRequest(HttpContext context)
+        {
+            ProcessRequestInternal(context, sync: true).GetAwaiter().GetResult();
+        }
+
+        internal static async Task ProcessRequestInternal(HttpContext context, bool sync)
         {
             OutputCacheHelper.InitializeFullPageCaching(context);
 
@@ -71,12 +91,26 @@ namespace Composite.AspNet
 
                     var slimRenderer = (ISlimPageRenderer) renderer;
 
-                    using (Profiler.Measure($"{nameof(ISlimPageRenderer)}.Render"))
+                    if (sync)
                     {
-                        document = slimRenderer.Render(renderingContext.PageContentToRender, functionContext);
+                        using (Profiler.Measure($"{nameof(ISlimPageRenderer)}.{nameof(ISlimPageRenderer.Render)}"))
+                        {
+                            document = slimRenderer.Render(renderingContext.PageContentToRender, functionContext);
+                        }
+                    }
+                    else
+                    {
+                        var asyncRenderer = (IAsyncPageRenderer)slimRenderer;
+
+                        using (Profiler.Measure($"{nameof(IAsyncPageRenderer)}.{nameof(IAsyncPageRenderer.RenderAsync)}"))
+                        {
+                            document = await asyncRenderer.RenderAsync(renderingContext.PageContentToRender, functionContext).ConfigureAwait(false);
+                        }
                     }
 
-                    allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext);
+                    allFunctionsExecuted = sync
+                        ? PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext)
+                        : await PageRenderer.ExecuteCacheableFunctionsAsync(document.Root, functionContext).ConfigureAwait(false);
 
                     if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCacheable(context))
                     {
@@ -94,9 +128,22 @@ namespace Composite.AspNet
 
                 if (!allFunctionsExecuted)
                 {
-                    using (Profiler.Measure("Executing embedded functions"))
+                    if (sync)
                     {
-                        PageRenderer.ExecuteEmbeddedFunctions(document.Root, functionContext);
+                        using (Profiler.Measure("Executing embedded functions"))
+                        {
+                            PageRenderer.ExecuteEmbeddedFunctions(document.Root, functionContext);
+                        }
+                    }
+                    else
+                    {
+                        using (Profiler.Measure("Executing embedded functions (async)"))
+                        {
+                            await PageRenderer.ExecuteEmbeddedFunctionsAsync(document.Root, functionContext)
+                                .ConfigureAwait(false);
+
+                            functionContext.RestoreContext();
+                        }
                     }
                 }
 

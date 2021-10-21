@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace Composite.Functions
@@ -16,6 +17,14 @@ namespace Composite.Functions
         object Execute(ParameterList parameters, FunctionContextContainer context);
 	}
 
+    /// <summary>
+    /// A C1 function that is executed asynchronously.
+    /// </summary>
+    public interface IAsyncFunction : IFunction
+    {
+        /// <exclude />
+        Task<object> ExecuteAsync(ParameterList parameters, FunctionContextContainer context);
+    }
 
     internal static class IFunctionOverloads
     {

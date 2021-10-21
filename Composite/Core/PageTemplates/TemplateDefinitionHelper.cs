@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -98,6 +99,21 @@ namespace Composite.Core.PageTemplates
             return pageTemplate;
         }
 
+        /// <summary>
+        /// Binds placeholders' content to the related properties on a template definition
+        /// </summary>
+        /// <param name="template">The template.</param>
+        /// <param name="pageContentToRender">The page rendering job.</param>
+        /// <param name="placeholderProperties">The placeholder properties.</param>
+        /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
+        public static void BindPlaceholders(IPageTemplate template,
+            PageContentToRender pageContentToRender,
+            IDictionary<string, PropertyInfo> placeholderProperties,
+            FunctionContextContainer functionContextContainer)
+        {
+            BindPlaceholdersInternalAsync(template, pageContentToRender, placeholderProperties, functionContextContainer, false)
+                .ConfigureAwait(false).GetAwaiter().GetResult();
+        }
 
         /// <summary>
         /// Binds placeholders' content to the related properties on a template definition
@@ -106,10 +122,19 @@ namespace Composite.Core.PageTemplates
         /// <param name="pageContentToRender">The page rendering job.</param>
         /// <param name="placeholderProperties">The placeholder properties.</param>
         /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
-        public static void BindPlaceholders(IPageTemplate template, 
-                                     PageContentToRender pageContentToRender,
-                                     IDictionary<string, PropertyInfo> placeholderProperties,
-                                     FunctionContextContainer functionContextContainer)
+        public static Task BindPlaceholdersAsync(IPageTemplate template,
+            PageContentToRender pageContentToRender,
+            IDictionary<string, PropertyInfo> placeholderProperties,
+            FunctionContextContainer functionContextContainer)
+        {
+            return BindPlaceholdersInternalAsync(template, pageContentToRender, placeholderProperties, functionContextContainer, false);
+        }
+
+        private static async Task BindPlaceholdersInternalAsync(IPageTemplate template, 
+             PageContentToRender pageContentToRender,
+             IDictionary<string, PropertyInfo> placeholderProperties,
+             FunctionContextContainer functionContextContainer,
+             bool sync)
         {
             Verify.ArgumentNotNull(template, "template");
             Verify.ArgumentNotNull(pageContentToRender, "pageContentToRender");
@@ -129,7 +154,9 @@ namespace Composite.Core.PageTemplates
 
                     using (Profiler.Measure($"Evaluating placeholder '{placeholderId}'"))
                     {
-                        allFunctionsExecuted = PageRenderer.ExecuteCacheableFunctions(placeholderXhtml.Root, functionContextContainer);
+                        allFunctionsExecuted = sync
+                            ? PageRenderer.ExecuteCacheableFunctions(placeholderXhtml.Root, functionContextContainer)
+                            : await PageRenderer.ExecuteCacheableFunctionsAsync(placeholderXhtml.Root, functionContextContainer).ConfigureAwait(false);
                     }
 
                     if (allFunctionsExecuted)

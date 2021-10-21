@@ -71,6 +71,13 @@ namespace Composite.Functions
         /// </summary>
         public bool SuppressXhtmlExceptions { get; set; }
 
+        internal HttpContext HttpContext { get; set; }
+
+        public void RestoreContext()
+        {
+            HttpContext.Current = HttpContext;
+        }
+
         /// <exclude />
         public object GetParameterValue(string parameterName, Type targetType)
         {
