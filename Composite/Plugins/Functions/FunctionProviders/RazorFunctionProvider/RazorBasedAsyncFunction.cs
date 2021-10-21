@@ -28,25 +28,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
         public async Task<object> ExecuteAsync(ParameterList parameters, FunctionContextContainer context)
         {
-            void SetParametersAction(WebPageBase webPageBase)
-            {
-                foreach (var param in parameters.AllParameterNames)
-                {
-                    var parameter = Parameters[param];
-
-                    object parameterValue = parameters.GetParameter(param);
-
-                    parameter.SetValue(webPageBase, parameterValue);
-                }
-            }
-
+            Action<WebPageBase> setParametersAction = page => SetParameters(page, parameters);
             Func<WebPageBase, Task> asyncAction = page => ((AsyncRazorFunction)page).InitializeAsync();
 
             try
             {
-                var result = await RazorHelper.ExecuteRazorPageAsync(VirtualPath, SetParametersAction, asyncAction, ReturnType, context);
-
-                return result;
+                return await RazorHelper.ExecuteRazorPageAsync(VirtualPath, setParametersAction, asyncAction, ReturnType, context);
             }
             catch (Exception ex)
             {

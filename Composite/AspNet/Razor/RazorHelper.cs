@@ -3,12 +3,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-//using System.Web.Instrumentation;
 using System.Web.WebPages;
 using System.Xml;
-using System.Xml.Linq;
-//using Composite.Core.Extensions;
-//using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Functions;
@@ -91,76 +87,11 @@ namespace Composite.AspNet.Razor
             Type resultType, 
             FunctionContextContainer functionContextContainer)
         {
-            HttpContext currentContext = HttpContext.Current;
-
-            var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
-            
-            // IEnumerable<PageExecutionListener> pageExecutionListeners;
-            HttpContextBase httpContext;
-
-            if (currentContext == null)
-            {
-                httpContext = new NoHttpRazorContext();
-                // pageExecutionListeners = new PageExecutionListener[0];
-            }
-            else
-            {
-                httpContext = new HttpContextWrapper(currentContext);
-                // pageExecutionListeners = httpContext.PageInstrumentation.ExecutionListeners;
-            }
-
-
-            var pageContext = new WebPageContext(httpContext, webPage, startPage);
-
-            if (functionContextContainer != null)
-            {
-                pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
-            }
-
+            var pageContext = BuildWebPageContext(webPage, functionContextContainer);
 
             setParameters?.Invoke(webPage);
 
-            var sb = new StringBuilder();
-            using (var writer = new StringWriter(sb))
-            {
-                //// PageExecutionContext enables "Browser Link" support
-                //var pageExecutionContext = new PageExecutionContext
-                //{
-                //    TextWriter = writer,
-                //    VirtualPath = PathUtil.Resolve(webPage.VirtualPath),
-                //    StartPosition = 0,
-                //    IsLiteral = true
-                //};
-
-                //pageExecutionListeners.ForEach(l => l.BeginContext(pageExecutionContext));
-
-                webPage.ExecutePageHierarchy(pageContext, writer);
-
-                //pageExecutionListeners.ForEach(l => l.EndContext(pageExecutionContext));
-            }
-
-            string output = sb.ToString();
-            
-
-			if (resultType == typeof(XhtmlDocument))
-			{
-			    if (string.IsNullOrWhiteSpace(output)) return new XhtmlDocument();
-
-				try
-                {
-                    return XhtmlDocument.ParseXhtmlFragment(output);
-				}
-				catch (XmlException ex)
-				{
-				    string[] codeLines = output.Split(new [] { Environment.NewLine, "\n" }, StringSplitOptions.None);
-
-				    XhtmlErrorFormatter.EmbedSourceCodeInformation(ex, codeLines, ex.LineNumber);
-
-				    throw;
-				}
-			}
-
-			return ValueTypeConverter.Convert(output, resultType);
+            return ExecutePageHierarchyAndParseOutput(webPage, pageContext, resultType);
         }
 
 
@@ -179,11 +110,24 @@ namespace Composite.AspNet.Razor
             Type resultType,
             FunctionContextContainer functionContextContainer)
         {
-            HttpContext currentContext = HttpContext.Current;
+            var pageContext = BuildWebPageContext(webPage, functionContextContainer);
 
+            setParameters?.Invoke(webPage);
+
+            await asyncAction(webPage);
+
+            return ExecutePageHierarchyAndParseOutput(webPage, pageContext, resultType);
+        }
+
+
+        private static WebPageContext BuildWebPageContext(WebPageBase webPage, FunctionContextContainer functionContextContainer)
+        {
             var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
 
-            var webPageHttpContext = currentContext == null ? (HttpContextBase) new NoHttpRazorContext() : new HttpContextWrapper(currentContext);
+            var currentHttpContext = HttpContext.Current;
+            var webPageHttpContext = currentHttpContext == null
+                ? (HttpContextBase) new NoHttpRazorContext()
+                : new HttpContextWrapper(currentHttpContext);
 
             var pageContext = new WebPageContext(webPageHttpContext, webPage, startPage);
 
@@ -192,11 +136,12 @@ namespace Composite.AspNet.Razor
                 pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
             }
 
+            return pageContext;
+        }
 
-            setParameters?.Invoke(webPage);
 
-            await asyncAction(webPage);
-
+        private static object ExecutePageHierarchyAndParseOutput(WebPageBase webPage, WebPageContext pageContext, Type resultType)
+        {
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))
             {

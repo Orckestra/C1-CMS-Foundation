@@ -56,23 +56,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             }
         }
 
-		public override object Execute(ParameterList parameters, FunctionContextContainer context)
-		{
-		    void SetParametersAction(WebPageBase webPageBase)
-		    {
-		        foreach (var param in parameters.AllParameterNames)
-		        {
-		            var parameter = Parameters[param];
-
-		            object parameterValue = parameters.GetParameter(param);
-
-		            parameter.SetValue(webPageBase, parameterValue);
-		        }
-		    }
-
-		    try
+        protected void SetParameters(WebPageBase webPageBase, ParameterList parameters)
+        {
+            foreach (var param in parameters.AllParameterNames)
             {
-                return RazorHelper.ExecuteRazorPage(VirtualPath, SetParametersAction, ReturnType, context);
+                var parameter = Parameters[param];
+
+                object parameterValue = parameters.GetParameter(param);
+
+                parameter.SetValue(webPageBase, parameterValue);
+            }
+        }
+
+        public override object Execute(ParameterList parameters, FunctionContextContainer context)
+        {
+            Action<WebPageBase> setParametersAction = page => SetParameters(page, parameters);
+
+            try
+            {
+                return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType, context);
             }
             catch (Exception ex)
             {

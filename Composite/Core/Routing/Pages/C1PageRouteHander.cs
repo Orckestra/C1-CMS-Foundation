@@ -104,7 +104,6 @@ namespace Composite.Core.Routing.Pages
                 var page = _pageUrlData.GetPage()
                     ?? throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
 
-                // TODO: introduct an on/off switch
                 if (IsAsyncPageRenderer(page.TemplateId))
                 {
                     return new CmsPageHttpAsyncHandler();
