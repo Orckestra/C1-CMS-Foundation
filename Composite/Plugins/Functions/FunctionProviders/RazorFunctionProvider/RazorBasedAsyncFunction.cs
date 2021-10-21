@@ -44,9 +44,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
             try
             {
-                var result = await RazorHelper
-                    .ExecuteRazorPageAsync(VirtualPath, SetParametersAction, asyncAction, ReturnType, context)
-                    .ConfigureAwait(false);
+                var result = await RazorHelper.ExecuteRazorPageAsync(VirtualPath, SetParametersAction, asyncAction, ReturnType, context);
 
                 return result;
             }

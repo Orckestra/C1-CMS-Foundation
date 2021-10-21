@@ -47,8 +47,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 XEmbedableMapper = mapper,
                 SuppressXhtmlExceptions = GlobalSettingsFacade.PrettifyRenderFunctionExceptions 
-                                            || PageRenderer.RenderingReason == RenderingReason.ScreenshotGeneration,
-                HttpContext = HttpContext.Current
+                                            || PageRenderer.RenderingReason == RenderingReason.ScreenshotGeneration
             };
 
             return contextContainer;
@@ -689,12 +688,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 bool allChildrenExecuted = true;
                 foreach (var childElement in children)
                 {
-                    var recursiveCallResult = await ExecuteFunctionsRecursivelyAsync(childElement, functionContext, functionShouldBeExecuted)
-                        .ConfigureAwait(false);
-
-                    functionContext.RestoreContext();
-
-                    if (!recursiveCallResult)
+                    if (!await ExecuteFunctionsRecursivelyAsync(childElement, functionContext, functionShouldBeExecuted))
                     {
                         allChildrenExecuted = false;
                     }
@@ -720,12 +714,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                         continue;
                     }
 
-                    var subtreeExecuted = await ExecuteFunctionsRecursivelyAsync(parameterNode, functionContext, functionShouldBeExecuted)
-                        .ConfigureAwait(false);
-
-                    functionContext.RestoreContext();
-
-                    if (!subtreeExecuted)
+                    if (!await ExecuteFunctionsRecursivelyAsync(parameterNode, functionContext, functionShouldBeExecuted))
                     {
                         allParametersEvaluated = false;
                     }
@@ -745,7 +734,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 // Executing a function call
                 var runtimeTreeNode = FunctionTreeBuilder.Build(element);
                 result = runtimeTreeNode is IAsyncRuntimeTreeNode asyncRuntimeTreeNode
-                    ? await asyncRuntimeTreeNode.GetValueAsync(functionContext).ConfigureAwait(false)
+                    ? await asyncRuntimeTreeNode.GetValueAsync(functionContext)
                     : runtimeTreeNode.GetValue(functionContext);
 
                 if (result != null)
@@ -755,10 +744,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     foreach (XElement xelement in GetXElements(result).ToList())
                     {
-                        var subtreeExecuted  = await ExecuteFunctionsRecursivelyAsync(xelement, functionContext, functionShouldBeExecuted)
-                            .ConfigureAwait(false);
-
-                        functionContext.RestoreContext();
+                        var subtreeExecuted  = await ExecuteFunctionsRecursivelyAsync(xelement, functionContext, functionShouldBeExecuted);
 
                         if (!subtreeExecuted)
                         {

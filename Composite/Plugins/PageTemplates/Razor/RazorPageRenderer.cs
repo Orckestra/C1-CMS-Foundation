@@ -88,9 +88,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                     else
                     {
                         await TemplateDefinitionHelper.BindPlaceholdersAsync(webPage, contentToRender, renderingInfo.PlaceholderProperties,
-                            functionContextContainer).ConfigureAwait(false);
-
-                        functionContextContainer.RestoreContext();
+                            functionContextContainer);
                     }
                 }
 

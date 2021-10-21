@@ -226,8 +226,7 @@ namespace Composite.Functions
 
                         if (_function is IAsyncFunction asyncFunction)
                         {
-                            result = await asyncFunction.ExecuteAsync(parameters, contextContainer)
-                                .ConfigureAwait(false);
+                            result = await asyncFunction.ExecuteAsync(parameters, contextContainer);
                         }
                         else
                         {

@@ -104,13 +104,13 @@ namespace Composite.AspNet
 
                         using (Profiler.Measure($"{nameof(IAsyncPageRenderer)}.{nameof(IAsyncPageRenderer.RenderAsync)}"))
                         {
-                            document = await asyncRenderer.RenderAsync(renderingContext.PageContentToRender, functionContext).ConfigureAwait(false);
+                            document = await asyncRenderer.RenderAsync(renderingContext.PageContentToRender, functionContext);
                         }
                     }
 
                     allFunctionsExecuted = sync
                         ? PageRenderer.ExecuteCacheableFunctions(document.Root, functionContext)
-                        : await PageRenderer.ExecuteCacheableFunctionsAsync(document.Root, functionContext).ConfigureAwait(false);
+                        : await PageRenderer.ExecuteCacheableFunctionsAsync(document.Root, functionContext);
 
                     if (cachingEnabled && !allFunctionsExecuted && OutputCacheHelper.ResponseCacheable(context))
                     {
@@ -139,10 +139,7 @@ namespace Composite.AspNet
                     {
                         using (Profiler.Measure("Executing embedded functions (async)"))
                         {
-                            await PageRenderer.ExecuteEmbeddedFunctionsAsync(document.Root, functionContext)
-                                .ConfigureAwait(false);
-
-                            functionContext.RestoreContext();
+                            await PageRenderer.ExecuteEmbeddedFunctionsAsync(document.Root, functionContext);
                         }
                     }
                 }

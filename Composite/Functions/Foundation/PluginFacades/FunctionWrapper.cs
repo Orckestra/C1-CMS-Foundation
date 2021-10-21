@@ -30,7 +30,7 @@ namespace Composite.Functions.Foundation.PluginFacades
 
                 //return dynamicMethod(() => _functionToWrap.Execute(parameters, context));
 
-                return await _asyncFunction.ExecuteAsync(parameters, context).ConfigureAwait(false);
+                return await _asyncFunction.ExecuteAsync(parameters, context);
             }
             catch (Exception ex)
             {

@@ -69,7 +69,7 @@ namespace Composite.AspNet.Razor
             {
                 webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
 
-                return await ExecuteRazorPageAsync(webPage, setParameters, asyncAction, resultType, functionContextContainer).ConfigureAwait(false);
+                return await ExecuteRazorPageAsync(webPage, setParameters, asyncAction, resultType, functionContextContainer);
             }
             finally
             {
@@ -195,14 +195,7 @@ namespace Composite.AspNet.Razor
 
             setParameters?.Invoke(webPage);
 
-            try
-            {
-                await asyncAction(webPage).ConfigureAwait(false);
-            }
-            finally
-            {
-                functionContextContainer?.RestoreContext();
-            }
+            await asyncAction(webPage);
 
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))

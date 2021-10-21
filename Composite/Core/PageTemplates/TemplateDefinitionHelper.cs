@@ -156,7 +156,7 @@ namespace Composite.Core.PageTemplates
                     {
                         allFunctionsExecuted = sync
                             ? PageRenderer.ExecuteCacheableFunctions(placeholderXhtml.Root, functionContextContainer)
-                            : await PageRenderer.ExecuteCacheableFunctionsAsync(placeholderXhtml.Root, functionContextContainer).ConfigureAwait(false);
+                            : await PageRenderer.ExecuteCacheableFunctionsAsync(placeholderXhtml.Root, functionContextContainer);
                     }
 
                     if (allFunctionsExecuted)
