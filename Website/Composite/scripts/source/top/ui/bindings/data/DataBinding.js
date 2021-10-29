@@ -85,7 +85,8 @@ DataBinding.warnings = {
 	"maxlength"					: "{0} characters maximum",
 	"currency"					: "Invalid notation",
 	"email"						: "Invalid e-mail",
-	"guid"						: "Invalid GUID"
+	"guid"						: "Invalid GUID",
+	"character"				: "'{0}', hexadecimal value {1}, is an invalid character."
 }
 
 /**
