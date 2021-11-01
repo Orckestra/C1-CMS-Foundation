@@ -45,5 +45,6 @@ namespace Composite.Core.Configuration
         TimeZoneInfo TimeZone { get; }
         bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
         bool OmitAspNetWebFormsSupport { get; }
+        bool ProtectResizedImagesWithHash { get; }
     }
 }

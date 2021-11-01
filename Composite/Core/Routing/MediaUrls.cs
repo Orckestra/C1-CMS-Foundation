@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
-using System.Management;
 using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
@@ -267,9 +266,6 @@ namespace Composite.Core.Routing
             {
                 urlProvider = _defaultMediaUrlProvider.Value;
             }
-
-             
-            
 
             if (mediaUrlData.QueryParameters.Count > 0)
             {

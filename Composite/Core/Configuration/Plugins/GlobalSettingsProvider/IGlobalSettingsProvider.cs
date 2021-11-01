@@ -89,5 +89,7 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
 
         bool OmitAspNetWebFormsSupport { get; }
+
+        bool ProtectResizedImagesWithHash { get; }
     }
 }

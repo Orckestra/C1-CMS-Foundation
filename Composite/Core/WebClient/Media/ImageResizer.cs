@@ -23,8 +23,6 @@ namespace Composite.Core.WebClient.Media
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ImageResizer
     {
-        private static readonly MD5 _hashAlgorithm = MD5.Create();
-
         private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
 
         private static Dictionary<string, IImageFileFormatProvider> _imageFormatProviders;
@@ -194,9 +192,7 @@ namespace Composite.Core.WebClient.Media
 
         private static string GetMediaHash(string mediaKeyPath)
         {
-            var bytes = Encoding.UTF8.GetBytes(mediaKeyPath);
-            var hash = _hashAlgorithm.ComputeHash(bytes);
-            var guid = new Guid(hash);
+            var guid = HashingHelper.ComputeMD5Hash(mediaKeyPath, Encoding.UTF8);
             return UrlUtils.CompressGuid(guid).Substring(10);
         }
 

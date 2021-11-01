@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Composite.Core;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
@@ -15,10 +16,6 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     internal sealed class FileSystemMediaFile : FileSystemFileBase, IMediaFile
     {
-        private static readonly MD5 HashingAlgorithm = MD5.Create(); 
-
-
-
         public FileSystemMediaFile(string systemPath, string fileName, string folderName, string storeId, DataSourceId dataSourceId)
         {
             Id = CalculateId(folderName, fileName);
@@ -36,8 +33,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
         private static Guid GetHashValue(string value)
         {
-            var bytes = HashingAlgorithm.ComputeHash(Encoding.ASCII.GetBytes(value));
-            return new Guid(bytes);
+            return HashingHelper.ComputeMD5Hash(value, Encoding.ASCII);
         }
 
 
