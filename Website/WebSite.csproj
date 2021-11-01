@@ -2805,7 +2805,7 @@
       )
 
       if not exist "$(TargetDir)\System.Threading.Tasks.Dataflow.dll" (
-      copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.6.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
+      copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.7.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
       )
 
       cd "$(ProjectDir)"
