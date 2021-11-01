@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Runtime.Serialization;
 using Composite.Core.Types;
 using Newtonsoft.Json.Serialization;
@@ -46,11 +47,7 @@ namespace Composite.Core.Serialization
 
         private void ValidateTypeIsSupported(string assemblyName, string typeName)
         {
-            var commaOffset = assemblyName.IndexOf(",", StringComparison.Ordinal);
-            if (commaOffset > 0)
-            {
-                assemblyName = assemblyName.Substring(0, commaOffset);
-            }
+            assemblyName = new AssemblyName(assemblyName).Name;
 
             if (assemblyName == "Composite"
                 || assemblyName.StartsWith("Composite.")
