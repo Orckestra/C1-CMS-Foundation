@@ -15,7 +15,7 @@
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
     "chokidar-socket-emitter": "0.5.4",
-    "chromedriver": "^2.34.0",
+    "chromedriver": "^95.0.0",
     "csswring": "^3.0.5",
     "eslint": "^4.18.2",
     "eslint-plugin-mocha": "4.0.0",
@@ -31,15 +31,15 @@
     "istanbul": "^0.4.3",
     "istanbul-lib-coverage": "1.0.0",
     "jsdom": "9.4.1",
-    "jspm": "0.17.0-beta.28",
+    "jspm": "^0.17.0-beta.28",
     "less": "^2.1.2",
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
-    "nightwatch": "0.9.3",
+    "nightwatch": "1.7.11",
     "node-fetch": "2.6.1",
     "rimraf": "2.5.4",
-    "robocopy": "^0.1.15",
-    "selenium-server-standalone-jar": "2.53.1",
+    "robocopy": "^0.1.16",
+    "selenium-server-standalone-jar": "3.141.59",
     "systemjs": "^0.19.36",
     "systemjs-istanbul-hook": "0.1.1",
     "xml2js": "^0.4.10"
@@ -90,12 +90,12 @@
       "zurvan": "npm:zurvan@^0.3.2"
     },
     "peerDependencies": {
-      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
       "bluebird": "npm:bluebird@^3.0.0",
       "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
-      "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+      "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
       "constants": "npm:jspm-nodelibs-constants@^0.2.0",
-      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "crypto": "github:jspm/nodelibs-crypto@^0.2.0-alpha",
       "domain": "npm:jspm-nodelibs-domain@^0.2.0",
       "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
       "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
@@ -106,7 +106,7 @@
       "messy": "npm:messy@^6.12.0",
       "module": "npm:jspm-nodelibs-module@^0.2.0",
       "net": "npm:jspm-nodelibs-net@^0.2.0",
-      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "punycode": "npm:jspm-nodelibs-punycode@^0.2.0",
@@ -123,8 +123,8 @@
       "unexpected-messy": "npm:unexpected-messy@^6.0.0",
       "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
       "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
-      "vm": "npm:jspm-nodelibs-vm@^0.2.0",
-      "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
+      "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha",
+      "zlib": "github:jspm/nodelibs-zlib@^0.2.0-alpha"
     },
     "overrides": {
       "github:socketio/socket.io-client@1.5.0": {
@@ -194,6 +194,11 @@
           "test.js"
         ]
       },
+      "npm:inherits@2.0.4": {
+        "ignore": [
+          "test.js"
+        ]
+      },
       "npm:lodash@4.16.4": {
         "map": {
           "buffer": "@empty",
@@ -214,6 +219,12 @@
         "jspmNodeConversion": false,
         "format": "cjs"
       },
+      "npm:pbkdf2@3.1.2": {
+        "main": "browser.js"
+      },
+      "npm:safe-buffer@5.2.1": {
+        "browser": "index.js"
+      },
       "npm:styled-components@1.1.1": {
         "dependencies": {
           "buffer": "^5.0.0",
@@ -230,5 +241,8 @@
         "jspmPackage": true
       }
     }
+  },
+  "dependencies": {
+    "webdriver-manager": "^12.1.8"
   }
 }
