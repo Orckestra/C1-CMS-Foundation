@@ -1,3 +1,4 @@
+var assert = require('assert');
 var util = require('util');
 var events = require('events');
 var Q = require('q');
@@ -106,7 +107,7 @@ function retry(operation, delay) {
 		}
 		console.log('did not find selector retrying after '+delay+' ms');
         return Q.delay(delay).then(retry.bind(null, operation, delay * 2 ));
-		
+
     });
 }
 
@@ -117,7 +118,8 @@ SelectFrame.prototype.command = function(selector, noReset) {
 	.then(() => retry(()=>findSelectorInsideFrame(this.client.api, selector),500))
 	.then(found => {
 		if (!found) {
-			this.client.assertion(false, 'not found', 'found', 'Did not find selector <' + selector + '> in any frame.', this.abortOnFailure, this._stackTrace);
+			assert.ok(false, 'Did not find selector <' + selector + '> in any frame.');
+			//this.client.assertion(false, 'not found', 'found', 'Did not find selector <' + selector + '> in any frame.', this.abortOnFailure, this._stackTrace);
 		// } else {
 		// 	this.client.assertion(true, null, null, 'Found element <' + selector + '> and entered frame containing it' +
 		// 		(noReset
@@ -127,7 +129,8 @@ SelectFrame.prototype.command = function(selector, noReset) {
 		this.emit('complete');
 	})
 	.catch(err => {
-		this.client.assertion(false, err, null, 'Attempt to find <' + selector + '> failed horribly');
+		assert.ok(false, 'Attempt to find <' + selector + '> failed horribly');
+		//this.client.assertion(false, err, null, 'Attempt to find <' + selector + '> failed horribly');
 		this.emit('complete');
 	});
 }

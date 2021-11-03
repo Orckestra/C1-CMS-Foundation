@@ -1,3 +1,4 @@
+var assert = require('assert');
 var util = require('util');
 var events = require('events');
 
@@ -23,7 +24,8 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 
 	timeoutTimer = setTimeout(() => {
 		clearTimeout(timedRecheck);
-		client.assertion(false, null, null, 'Frame <' + selector + '> did not load within ' + timeout + 'ms', this.abortOnFailure, this._stackTrace);
+		assert.ok(false, 'Frame <' + selector + '> did not load within ' + timeout + 'ms');
+		// client.assertion(false, null, null, 'Frame <' + selector + '> did not load within ' + timeout + 'ms', this.abortOnFailure, this._stackTrace);
 		complete();
 	}, timeout);
 
@@ -34,7 +36,14 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 		}, [selector], (result) => {
 			if (result.value === true) {
 				clearTimeout(timeoutTimer);
-				client.assertion(true, null, null, 'Frame <' + selector + '> loaded within ' + timeElapsed + 'ms', this.abortOnFailure);
+				try {
+					assert.ok(true, 'Frame <' + selector + '> loaded within ' + timeElapsed + 'ms');
+					// client.assertion(true, null, null, 'Frame <' + selector + '> loaded within ' + timeElapsed + 'ms', this.abortOnFailure);
+				}
+				catch (er) {
+					console.log('There is an error');
+					console.log(er);
+				}
 				complete();
 			} else {
 				timedRecheck = setTimeout(checkFrameLoaded, interval);
