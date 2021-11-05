@@ -3,7 +3,7 @@ DataInputBinding.prototype.constructor = DataInputBinding;
 DataInputBinding.superclass = DataBinding.prototype;
 
 
-DataInputBinding.invalidXmlChar = /[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]/gi;
+DataInputBinding.invalidXmlChar = /((?:[\0-\x08\x0B\f\x0E-\x1F\uFFFD\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))/g;
 
 /**
  * @class
