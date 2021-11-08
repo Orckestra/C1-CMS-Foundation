@@ -258,7 +258,9 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private static bool IsMetaTag(XElement e) => e.Name.LocalName.Equals("meta", StringComparison.OrdinalIgnoreCase);
+        private static bool IsTitleOrMetaTag(XElement e) =>
+            e.Name.LocalName.Equals("title", StringComparison.OrdinalIgnoreCase)
+            || e.Name.LocalName.Equals("meta", StringComparison.OrdinalIgnoreCase);
 
         private static bool CheckForDuplication(HashSet<string> values, string value)
         {
@@ -301,30 +303,43 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             var priorityOrderedElements = new List<XElement>();
 
-            priorityOrderedElements.AddRange(head.Elements().Where(IsMetaTag));
+            priorityOrderedElements.AddRange(head.Elements().Where(IsTitleOrMetaTag));
             priorityOrderedElements.Reverse();
-            priorityOrderedElements.AddRange(head.Elements().Where(e => !IsMetaTag(e)));
+            priorityOrderedElements.AddRange(head.Elements().Where(e => !IsTitleOrMetaTag(e)));
+
+            bool titleTagEncountered = false;
 
             foreach (var e in priorityOrderedElements)
             {
-                var id = (string)e.Attribute(XName_Id);
+                var tagName = e.Name.LocalName.ToLowerInvariant();
+                bool toBeRemoved;
 
-                bool toBeRemoved = CheckForDuplication(uniqueIdValues, id);
-
-                if (!toBeRemoved && !e.Nodes().Any())
+                if (tagName == "title")
                 {
-                    switch (e.Name.LocalName.ToLowerInvariant())
+                    toBeRemoved = titleTagEncountered;
+                    titleTagEncountered = true;
+                }
+                else
+                {
+                    var id = (string)e.Attribute(XName_Id);
+
+                    toBeRemoved = CheckForDuplication(uniqueIdValues, id);
+
+                    if (!toBeRemoved && !e.Nodes().Any())
                     {
-                        case "meta":
-                            var name = (string)e.Attribute(XName_Name);
-                            toBeRemoved = CheckForDuplication(uniqueMetaNameValues, name);
-                            break;
-                        case "script":
-                            toBeRemoved = CheckForDuplication(uniqueScriptAttributes, e.AttributesAsString());
-                            break;
-                        case "link":
-                            toBeRemoved = CheckForDuplication(uniqueLinkAttributes, e.AttributesAsString());
-                            break;
+                        switch (tagName)
+                        {
+                            case "meta":
+                                var name = (string)e.Attribute(XName_Name);
+                                toBeRemoved = CheckForDuplication(uniqueMetaNameValues, name);
+                                break;
+                            case "script":
+                                toBeRemoved = CheckForDuplication(uniqueScriptAttributes, e.AttributesAsString());
+                                break;
+                            case "link":
+                                toBeRemoved = CheckForDuplication(uniqueLinkAttributes, e.AttributesAsString());
+                                break;
+                        }
                     }
                 }
 

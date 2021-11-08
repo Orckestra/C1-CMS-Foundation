@@ -11,7 +11,7 @@
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite.Workflows</AssemblyName>
     <ProjectTypeGuids>{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -1373,8 +1373,8 @@
     </PropertyGroup>
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse --abbrev-ref HEAD&gt; &quot;$(GitBranchFile)&quot;" />
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse HEAD&gt; &quot;$(GitCommitHashFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch > &quot;$(GitBranchFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit > &quot;$(GitCommitHashFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch &gt; &quot;$(GitBranchFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit &gt; &quot;$(GitCommitHashFile)&quot;" />
     <PropertyGroup>
       <GitBranch>$([System.IO.File]::ReadAllText("$(GitBranchFile)").Trim())</GitBranch>
       <GitCommitHash>$([System.IO.File]::ReadAllText("$(GitCommitHashFile)").Trim())</GitCommitHash>

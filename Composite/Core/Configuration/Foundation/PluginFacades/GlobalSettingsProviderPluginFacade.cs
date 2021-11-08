@@ -328,6 +328,8 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
         public static bool OmitAspNetWebFormsSupport => UseReaderLock(p => p.OmitAspNetWebFormsSupport);
 
+        public static bool ProtectResizedImagesWithHash => UseReaderLock(p => p.ProtectResizedImagesWithHash);
+
         private static void Flush()
         {
             _resourceLocker.ResetInitialization();

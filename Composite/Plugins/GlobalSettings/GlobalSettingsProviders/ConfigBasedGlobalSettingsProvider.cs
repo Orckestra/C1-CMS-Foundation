@@ -103,6 +103,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             _configurationData.InheritGlobalReadPermissionOnHiddenPerspectives;
 
         public bool OmitAspNetWebFormsSupport => _configurationData.OmitAspNetWebFormsSupport;
+
+        public bool ProtectResizedImagesWithHash => _configurationData.ProtectResizedImagesWithHash;
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -529,6 +531,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (bool)base[_omitAspNetWebFormsSupportPropertyName]; }
             set { base[_omitAspNetWebFormsSupportPropertyName] = value; }
+        }
+
+        private const string _protectResizedImagesWithHash = "protectResizedImagesWithHash";
+        [ConfigurationProperty(_protectResizedImagesWithHash, DefaultValue = false)]
+        public bool ProtectResizedImagesWithHash
+        {
+            get => (bool)base[_protectResizedImagesWithHash];
+            set => base[_protectResizedImagesWithHash] = value;
         }
     }
 

@@ -94,6 +94,7 @@
 //    'bin/Microsoft.Web.*.dll',
     'bin/Microsoft.WindowsAzure.*.dll',
     'bin/Orckestra.Search*.dll',
+    'bin/Orckestra.Web.BundlingAndMinification.dll',
     'bin/Orckestra.Web.Css.Less.dll',
     'bin/System.Web.Optimization.dll',
     'bin/WebGrease.dll',

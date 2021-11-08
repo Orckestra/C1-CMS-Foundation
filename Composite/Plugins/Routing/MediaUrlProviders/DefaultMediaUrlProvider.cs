@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Web;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Routing;
 using Composite.Core.WebClient;
@@ -83,7 +84,13 @@ namespace Composite.Plugins.Routing.MediaUrlProviders
 
             if (resizingOptions != null && !resizingOptions.IsEmpty)
             {
-                return url + "?" + resizingOptions;
+                var urlWithResizing = url + "?" + resizingOptions;
+                if (!GlobalSettingsFacade.ProtectResizedImagesWithHash)
+                {
+                    return urlWithResizing;
+                }
+
+                return $"{urlWithResizing}&sh={resizingOptions.GetSecureHash(mediaId)}";
             }
 
             return url.ToString();

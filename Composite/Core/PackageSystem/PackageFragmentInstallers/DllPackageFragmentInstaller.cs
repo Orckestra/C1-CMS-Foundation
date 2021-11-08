@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,7 +23,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     {
         private List<FileToCopy> _filesToCopy;
 
-        private static readonly string LogTitle = typeof (DllPackageFragmentInstaller).Name;
+        private static readonly string LogTitle = nameof(DllPackageFragmentInstaller);
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
@@ -197,10 +197,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, tempFileName);
 
                 // Checking for dll version here:
-                var sourceAssemblyName = AssemblyName.GetAssemblyName(tempFileName);
+                var sourceAssemblyName = GetAssemblyNameWithErrorText(tempFileName, () => $"Source file name: '{fileToCopy.SourceFilename}'");
+
                 var sourceAssemblyVersion = sourceAssemblyName.Version;
                 var sourceFileVersion = GetDllFileVersion(tempFileName);
-                
+
                 string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
                 if (!Directory.Exists(targetDirectory))
                 {
@@ -213,10 +214,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 if (C1File.Exists(fileToCopy.TargetFilePath) && fileToCopy.Overwrite)
                 {
-                    var existingAssemblyVersion = AssemblyName.GetAssemblyName(fileToCopy.TargetFilePath).Version;
+                    var existingAssemblyName = GetAssemblyNameWithErrorText(fileToCopy.TargetFilePath, () => $"TargetFilePath: '{fileToCopy.TargetFilePath}' ");
+                    var existingAssemblyVersion = existingAssemblyName.Version;
                     var existingFileVersion = GetDllFileVersion(fileToCopy.TargetFilePath);
 
-                    if (existingAssemblyVersion == sourceAssemblyVersion 
+                    if (existingAssemblyVersion == sourceAssemblyVersion
                         && existingFileVersion >= sourceFileVersion)
                     {
                         Log.LogInformation(LogTitle,
@@ -254,12 +256,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     Log.LogInformation(LogTitle, "Overwriting existing file '{0}' version '{2}', new version is '{1}'",
                         fileToCopy.TargetRelativeFilePath, sourceFileVersion, existingFileVersion);
                 }
-                
+
                 if (addAssemblyBinding)
                 {
                     asmBindingsToAdd.Add(sourceAssemblyName);
                 }
-                
 
                 File.Delete(fileToCopy.TargetFilePath);
                 File.Move(tempFileName, fileToCopy.TargetFilePath);
@@ -279,6 +280,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             UpdateBindingRedirects(asmBindingsToAdd);
 
             yield return new XElement("Files", fileElements);
+        }
+
+        private AssemblyName GetAssemblyNameWithErrorText(string filePath, Func<string> getErrorText)
+        {
+            try
+            {
+                return AssemblyName.GetAssemblyName(filePath);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to read AssemblyName from a DLL. " + getErrorText(), ex);
+            }
         }
 
         private Version GetDllFileVersion(string dllFilePath)
@@ -416,8 +429,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 byte[] publicKeyTokenBytes = assemblyName.GetPublicKeyToken();
 
-                return publicKeyTokenBytes == null || publicKeyTokenBytes.Length == 0 
-                    ? "null" 
+                return publicKeyTokenBytes == null || publicKeyTokenBytes.Length == 0
+                    ? "null"
                     : string.Join("", publicKeyTokenBytes.Select(b => $"{b:x2}"));
             }
 
@@ -474,6 +487,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
         }
-    
+
     }
 }

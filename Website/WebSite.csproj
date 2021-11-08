@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite.Website</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -2805,7 +2805,7 @@
       )
 
       if not exist "$(TargetDir)\System.Threading.Tasks.Dataflow.dll" (
-      copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.6.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
+      copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.7.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
       )
 
       cd "$(ProjectDir)"

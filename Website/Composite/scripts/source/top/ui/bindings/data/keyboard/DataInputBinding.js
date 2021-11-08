@@ -1,6 +1,9 @@
-﻿DataInputBinding.prototype = new DataBinding;
+DataInputBinding.prototype = new DataBinding;
 DataInputBinding.prototype.constructor = DataInputBinding;
 DataInputBinding.superclass = DataBinding.prototype;
+
+
+DataInputBinding.invalidXmlChar = /((?:[\0-\x08\x0B\f\x0E-\x1F\uFFFD\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))/g;
 
 /**
  * @class
@@ -51,6 +54,18 @@ function DataInputBinding () {
 	 * @type {boolean}
 	 */
 	this._isInvalidBecauseRequired = false;
+
+	/**
+	 * True when invalid because contains invalid Xml Char.
+	 * @type {boolean}
+	 */
+	this._isInvalidBecauseInvalidXmlChar = false;
+
+	/**
+	 * The invalid Xml Char.
+	 * @type {boolean}
+	 */
+	this._invalidXmlChar = null;
 
 	/**
 	 * True when invalid because of minlength.
@@ -728,6 +743,11 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
 				if ( !this.isFocused ) {
 
 					var message = null;
+					if ( this._isInvalidBecauseInvalidXmlChar == true && this._invalidXmlChar ) {
+						message = DataBinding.warnings [ "character" ];
+						message = message.replace ( "{0}", String ( this._invalidXmlChar ));
+						message = message.replace ( "{1}", String ("0x" + this._invalidXmlChar.charCodeAt(0).toString(16) ));
+					} else
 					if ( this._isInvalidBecauseRequired == true ) {
 						message = DataBinding.warnings [ "required" ];
 					} else if ( this._isInvalidBecauseMinLength == true ) {
@@ -776,6 +796,8 @@ DataInputBinding.prototype._normalizeToValid = function () {
 	}
 };
 
+
+
 /**
  * @return {boolean}
  */
@@ -783,11 +805,19 @@ DataInputBinding.prototype.isValid = function () {
 
 	var isValid = true;
 	this._isInvalidBecauseRequired = false;
+	this._isInvalidBecauseInvalidXmlChar = false;
+	this._invalidXmlChar = "";
 	this._isInvalidBecauseMinLength = false;
 	this._isInvalidaBecuaseMaxLength = false;
 	var value = this.getValue ();
+	var invalidCharMatch = DataInputBinding.invalidXmlChar.exec(value);
 
-	if ( value == "" ) {
+
+	if (invalidCharMatch) {
+		isValid = false;
+		this._isInvalidBecauseInvalidXmlChar = true;
+		this._invalidXmlChar = invalidCharMatch[0];
+	} else if ( value == "" ) {
 		if ( this.isRequired == true ) {
 			isValid = false;
 			this._isInvalidBecauseRequired = true;
@@ -949,6 +979,7 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 
 	return true;
 };
+
 
 /**
  * Manifest. Because postback without validation may happen,
