@@ -46,9 +46,13 @@ namespace Composite.C1Console.Tools
         
         private void initializeCodeActivity_InitializeBindings_ExecuteCode(object sender, EventArgs e)
         {
+            string label;
             var tzs = TimeZoneInfo.GetSystemTimeZones().ToDictionary(systemTimeZone => systemTimeZone.Id, systemTimeZone => 
-            StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames",
-                "TimezoneDisplayName." + systemTimeZone.Id));
+                StringResourceSystemFacade.TryGetString("Composite.Plugins.TimezoneDisplayNames",
+                    "TimezoneDisplayName." + systemTimeZone.Id, out label)
+                ? label
+                : systemTimeZone.DisplayName);
+
             var bindings = new Dictionary<string, object>
             {
                 {"TimeZones", tzs},

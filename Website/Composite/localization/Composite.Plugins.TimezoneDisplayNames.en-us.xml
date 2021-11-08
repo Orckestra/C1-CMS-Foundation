@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <strings>
   <string key = "TimezoneDisplayName.Dateline Standard Time" value = "(UTC-12:00) International Date Line West" />
   <string key = "TimezoneDisplayName.UTC-11" value = "(UTC-11:00) Coordinated Universal Time-11" />
@@ -13,6 +13,7 @@
   <string key = "TimezoneDisplayName.US Mountain Standard Time" value = "(UTC-07:00) Arizona" />
   <string key = "TimezoneDisplayName.Mountain Standard Time (Mexico)" value = "(UTC-07:00) Chihuahua, La Paz, Mazatlan" />
   <string key = "TimezoneDisplayName.Mountain Standard Time" value = "(UTC-07:00) Mountain Time (US &amp; Canada)" />
+  <string key = "TimezoneDisplayName.Yukon Standard Time" value = "(UTC-07:00) Yukon" />
   <string key = "TimezoneDisplayName.Central America Standard Time" value = "(UTC-06:00) Central America" />
   <string key = "TimezoneDisplayName.Central Standard Time" value = "(UTC-06:00) Central Time (US &amp; Canada)" />
   <string key = "TimezoneDisplayName.Easter Island Standard Time" value = "(UTC-06:00) Easter Island" />
@@ -38,6 +39,7 @@
   <string key = "TimezoneDisplayName.Argentina Standard Time" value = "(UTC-03:00) City of Buenos Aires" />
   <string key = "TimezoneDisplayName.Greenland Standard Time" value = "(UTC-03:00) Greenland" />
   <string key = "TimezoneDisplayName.Montevideo Standard Time" value = "(UTC-03:00) Montevideo" />
+  <string key = "TimezoneDisplayName.Magallanes Standard Time" value = "(UTC-03:00) Punta Arenas" />
   <string key = "TimezoneDisplayName.Saint Pierre Standard Time" value = "(UTC-03:00) Saint Pierre and Miquelon" />
   <string key = "TimezoneDisplayName.Bahia Standard Time" value = "(UTC-03:00) Salvador" />
   <string key = "TimezoneDisplayName.UTC-02" value = "(UTC-02:00) Coordinated Universal Time-02" />
@@ -48,6 +50,7 @@
   <string key = "TimezoneDisplayName.Morocco Standard Time" value = "(UTC+00:00) Casablanca" />
   <string key = "TimezoneDisplayName.GMT Standard Time" value = "(UTC+00:00) Dublin, Edinburgh, Lisbon, London" />
   <string key = "TimezoneDisplayName.Greenwich Standard Time" value = "(UTC+00:00) Monrovia, Reykjavik" />
+  <string key = "TimezoneDisplayName.Sao Tome Standard Time" value = "(UTC+00:00) Sao Tome" />
   <string key = "TimezoneDisplayName.W. Europe Standard Time" value = "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna" />
   <string key = "TimezoneDisplayName.Central Europe Standard Time" value = "(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague" />
   <string key = "TimezoneDisplayName.Romance Standard Time" value = "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris" />
@@ -65,30 +68,36 @@
   <string key = "TimezoneDisplayName.FLE Standard Time" value = "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius" />
   <string key = "TimezoneDisplayName.Turkey Standard Time" value = "(UTC+02:00) Istanbul" />
   <string key = "TimezoneDisplayName.Israel Standard Time" value = "(UTC+02:00) Jerusalem" />
+  <string key = "TimezoneDisplayName.South Sudan Standard Time" value = "(UTC+02:00) Juba" />
   <string key = "TimezoneDisplayName.Kaliningrad Standard Time" value = "(UTC+02:00) Kaliningrad" />
+  <string key = "TimezoneDisplayName.Sudan Standard Time" value = "(UTC+02:00) Khartoum" />
   <string key = "TimezoneDisplayName.Libya Standard Time" value = "(UTC+02:00) Tripoli" />
   <string key = "TimezoneDisplayName.Arabic Standard Time" value = "(UTC+03:00) Baghdad" />
   <string key = "TimezoneDisplayName.Arab Standard Time" value = "(UTC+03:00) Kuwait, Riyadh" />
   <string key = "TimezoneDisplayName.Belarus Standard Time" value = "(UTC+03:00) Minsk" />
   <string key = "TimezoneDisplayName.Russian Standard Time" value = "(UTC+03:00) Moscow, St. Petersburg, Volgograd" />
   <string key = "TimezoneDisplayName.E. Africa Standard Time" value = "(UTC+03:00) Nairobi" />
+  <string key = "TimezoneDisplayName.Volgograd Standard Time" value = "(UTC+03:00) Volgograd" />
   <string key = "TimezoneDisplayName.Iran Standard Time" value = "(UTC+03:30) Tehran" />
   <string key = "TimezoneDisplayName.Arabian Standard Time" value = "(UTC+04:00) Abu Dhabi, Muscat" />
   <string key = "TimezoneDisplayName.Astrakhan Standard Time" value = "(UTC+04:00) Astrakhan, Ulyanovsk" />
   <string key = "TimezoneDisplayName.Azerbaijan Standard Time" value = "(UTC+04:00) Baku" />
   <string key = "TimezoneDisplayName.Russia Time Zone 3" value = "(UTC+04:00) Izhevsk, Samara" />
   <string key = "TimezoneDisplayName.Mauritius Standard Time" value = "(UTC+04:00) Port Louis" />
+  <string key = "TimezoneDisplayName.Saratov Standard Time" value = "(UTC+04:00) Saratov" />
   <string key = "TimezoneDisplayName.Georgian Standard Time" value = "(UTC+04:00) Tbilisi" />
   <string key = "TimezoneDisplayName.Caucasus Standard Time" value = "(UTC+04:00) Yerevan" />
   <string key = "TimezoneDisplayName.Afghanistan Standard Time" value = "(UTC+04:30) Kabul" />
   <string key = "TimezoneDisplayName.West Asia Standard Time" value = "(UTC+05:00) Ashgabat, Tashkent" />
   <string key = "TimezoneDisplayName.Ekaterinburg Standard Time" value = "(UTC+05:00) Ekaterinburg" />
   <string key = "TimezoneDisplayName.Pakistan Standard Time" value = "(UTC+05:00) Islamabad, Karachi" />
+  <string key = "TimezoneDisplayName.Qyzylorda Standard Time" value = "(UTC+05:00) Qyzylorda" />
   <string key = "TimezoneDisplayName.India Standard Time" value = "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi" />
   <string key = "TimezoneDisplayName.Sri Lanka Standard Time" value = "(UTC+05:30) Sri Jayawardenepura" />
   <string key = "TimezoneDisplayName.Nepal Standard Time" value = "(UTC+05:45) Kathmandu" />
   <string key = "TimezoneDisplayName.Central Asia Standard Time" value = "(UTC+06:00) Astana" />
   <string key = "TimezoneDisplayName.Bangladesh Standard Time" value = "(UTC+06:00) Dhaka" />
+  <string key = "TimezoneDisplayName.Omsk Standard Time" value = "(UTC+06:00) Omsk" />
   <string key = "TimezoneDisplayName.N. Central Asia Standard Time" value = "(UTC+06:00) Novosibirsk" />
   <string key = "TimezoneDisplayName.Myanmar Standard Time" value = "(UTC+06:30) Yangon (Rangoon)" />
   <string key = "TimezoneDisplayName.SE Asia Standard Time" value = "(UTC+07:00) Bangkok, Hanoi, Jakarta" />
