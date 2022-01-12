@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
@@ -15,25 +15,28 @@ namespace Composite.Data
             return CompositeJsonSerializer.SerializePartial(dataId,propertyNames);
         }
 
-	    public static IDataId Deserialize(string serializedId, string serializedVersionId)
-	    {
-	        if (CompositeJsonSerializer.IsJsonSerialized(serializedId) &&
-	            CompositeJsonSerializer.IsJsonSerialized(serializedVersionId))
-	        {
-	            return CompositeJsonSerializer.Deserialize<IDataId>(serializedId, serializedVersionId);
-	        }
-	        else if (!(CompositeJsonSerializer.IsJsonSerialized(serializedId) &&
-	                   CompositeJsonSerializer.IsJsonSerialized(serializedVersionId)))
-	        {
-	            return DeserializeLegacy(serializedId, serializedVersionId);
-	        }
-	        else
-	        {
-	            throw new ArgumentException($"{nameof(IDataId)} is not serialized properly.",nameof(serializedId)+" and "+ nameof(serializedVersionId));
-	        }
-	    }
+        public static IDataId Deserialize(string serializedId, string serializedVersionId)
+        {
+            var serializedIdIsJson = CompositeJsonSerializer.IsJsonSerialized(serializedId);
+            var serializedVersionIdIsJson = CompositeJsonSerializer.IsJsonSerialized(serializedVersionId);
 
-	    public static IDataId DeserializeLegacy(string serializedId, string serializedVersionId)
+            if (serializedIdIsJson)
+            {
+                if (string.IsNullOrWhiteSpace(serializedVersionId))
+                    return CompositeJsonSerializer.Deserialize<IDataId>(serializedId);
+
+                if (serializedVersionIdIsJson)
+                    return CompositeJsonSerializer.Deserialize<IDataId>(serializedId, serializedVersionId);
+            }
+            else if (!serializedVersionIdIsJson)
+            {
+                return DeserializeLegacy(serializedId, serializedVersionId);
+            }
+
+            throw new ArgumentException($"{nameof(IDataId)} is not serialized properly.", nameof(serializedId) + " and " + nameof(serializedVersionId));
+        }
+
+        public static IDataId DeserializeLegacy(string serializedId, string serializedVersionId)
 	    {
 	        Dictionary<string, string> dataIdValues = ParseKeyValueCollection(serializedId);
 
@@ -60,7 +63,7 @@ namespace Composite.Data
 
 	            if (dataIdValues["_dataIdType_"] != versionValues["_dataIdType_"])
 	            {
-	                throw new ArgumentException("Serialized id and version id have diffrent types", nameof(serializedId));
+	                throw new ArgumentException("Serialized id and version id have different types", nameof(serializedId));
 	            }
 
 	            serializedVersionIdString = DeserializeValueString(versionValues["_dataId_"]);
