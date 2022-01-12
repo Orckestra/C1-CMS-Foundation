@@ -61,7 +61,13 @@ namespace Composite.C1Console.Actions.Data
                 var conditionalAction = _conditionalActions?.FirstOrDefault(f => f.Check(type, data, actionIdentifier));
                 if (conditionalAction != null)
                 {
-                    return conditionalAction.GetActionToken(data);
+                    var actionToken = conditionalAction.GetActionToken(data);
+                    if (actionToken == null)
+                    {
+                        throw new InvalidOperationException($"Conditional action token is null. Type: '{type.FullName}', action type: '{conditionalAction.GetType().FullName}'");
+                    }
+
+                    return actionToken;
                 }
             }
 
@@ -76,17 +82,26 @@ namespace Composite.C1Console.Actions.Data
         /// <returns></returns>
         public ActionToken ResolveDefault(IData data, ActionIdentifier actionIdentifier)
         {
-            var interfaces = GetOrderedInterfaces(data.DataSourceId.InterfaceType);
+            var interfaceType = data.DataSourceId.InterfaceType;
+
+            var interfaces = GetOrderedInterfaces(interfaceType);
 
             foreach (var type in interfaces)
             {
                 var defaultAction = _defaultActions?.LastOrDefault(f => f.Check(type, data, actionIdentifier));
                 if (defaultAction != null)
                 {
-                    return defaultAction.GetActionToken(data);
+                    var actionToken = defaultAction.GetActionToken(data);
+                    if (actionToken == null)
+                    {
+                        throw new InvalidOperationException($"Default action token is null. Type: '{type.FullName}', default action type: '{defaultAction.GetType().FullName}'");
+                    }
+
+                    return actionToken;
                 }
             }
-            return null;
+
+            throw new InvalidOperationException($"No default action token is found. Searched for type: '{interfaceType}', Registered types: '{string.Join(", ",interfaces.Select(_ => _.FullName))}'");
         }
 
         private static List<Type> GetOrderedInterfaces(Type dataType)

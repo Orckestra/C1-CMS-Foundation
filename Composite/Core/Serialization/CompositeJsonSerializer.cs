@@ -203,18 +203,25 @@ namespace Composite.Core.Serialization
 
             string obj;
             var hash = 0;
-            var type = TypeManager.TryGetType(str.GetValue(TypeKeyString));
+
+            var typeName = str.GetValue(TypeKeyString);
+            if (string.IsNullOrWhiteSpace(typeName))
+            {
+                throw new SerializationException($"Failed to extract '{TypeKeyString}' property");
+            }
+
+            var type = TypeManager.TryGetType(typeName);
 
             if (type == null)
             {
-                throw new SerializationException();
+                throw new SerializationException($"Failed to resolve type '{typeName}'");
             }
 
             if (isSigned)
             {
                 if (!int.TryParse(str.GetValue(HashKeyString), out hash))
                 {
-                    throw new SerializationException();
+                    throw new SerializationException($"Missing or invalid '{HashKeyString}' property");
                 }
             }
 
@@ -243,7 +250,6 @@ namespace Composite.Core.Serialization
 
             if (!(typeof(T).IsAssignableFrom(methodInfo.ReturnType)))
             {
-                var typeName = str.GetValue(TypeKeyString);
                 Log.LogWarning("CompositeJsonSerializer", $"The action {typeName} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(T)}");
 
                 throw new InvalidOperationException($"The token {typeName} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(T)}");

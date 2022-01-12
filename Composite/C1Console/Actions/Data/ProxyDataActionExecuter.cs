@@ -1,3 +1,4 @@
+using System;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Data;
@@ -12,6 +13,7 @@ namespace Composite.C1Console.Actions.Data
         {
             return Execute(EntityTokenSerializer.Serialize(entityToken), ActionTokenSerializer.Serialize(actionToken), actionToken, flowControllerServicesContainer);
         }
+
         /// <exclude />
         public FlowToken Execute(string serializedEntityToken, string serializedActionToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
@@ -21,7 +23,13 @@ namespace Composite.C1Console.Actions.Data
 
             Verify.IsNotNull(data, "Failed to get the data from an entity token");
 
-            var action = DataActionTokenResolverFacade.Resolve(data, ((ProxyDataActionToken)actionToken).ActionIdentifier);
+            var actionIdentifier = ((ProxyDataActionToken)actionToken).ActionIdentifier;
+            var action = DataActionTokenResolverFacade.Resolve(data, actionIdentifier);
+
+            if (action == null)
+            {
+                throw new InvalidOperationException($"Failed to resolve action '{actionToken?.ToString() ?? "null"}'");
+            }
 
             return ActionExecutorFacade.Execute(dataEntityToken, action, flowControllerServicesContainer);
         }

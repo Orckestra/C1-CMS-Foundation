@@ -11,6 +11,8 @@ namespace Composite.C1Console.Actions.Data
     /// </summary>
     public class ActionIdentifier
     {
+        private const string ActionIdentifierKey = "_ActionIdentifier_";
+
         private readonly string _value;
 
         private ActionIdentifier(string identifier)
@@ -128,9 +130,9 @@ namespace Composite.C1Console.Actions.Data
         /// <exclude />
         public string Serialize()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_ActionIdentifier_", _value);
+            StringConversionServices.SerializeKeyValuePair(stringBuilder, ActionIdentifierKey, _value);
 
             return stringBuilder.ToString();
         }
@@ -140,14 +142,17 @@ namespace Composite.C1Console.Actions.Data
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedData);
 
-            if (!dic.ContainsKey("_ActionIdentifier_"))
+            if (!dic.TryGetValue(ActionIdentifierKey, out string value))
             {
-                throw new ArgumentException("The serialiedWorkflowActionToken is not a serialized _ActionIdentifier_", nameof(serializedData));
+                throw new ArgumentException($"The serialized data does not contain '{ActionIdentifierKey}'", nameof(serializedData));
             }
 
-            string serializedType = StringConversionServices.DeserializeValueString(dic["_ActionIdentifier_"]);
+            string serializedType = StringConversionServices.DeserializeValueString(value);
 
             return new ActionIdentifier(serializedType);
         }
+
+        /// <inheritdoc />
+        public override string ToString() => _value;
     }
 }
