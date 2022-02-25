@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Composite.Search
@@ -38,6 +38,17 @@ namespace Composite.Search
         /// Returns text fragments of the full text field with highlighted matched terms.
         /// </summary>
         public string[] FullTextHtmlHighlights { get; set; }
+
+        /// <summary>
+        /// Gets or sets the score.
+        /// </summary>
+        public float Score { get; set; }
+
+        /// <summary>
+        /// Gets or sets the explanation summary. This will be set if the <see cref="P:SearchQuery.ShowExplanation" /> property is set to <value>true</value>.
+        /// An explanation describes the score computation for document and query.
+        /// </summary>
+        public string ExplanationSummary { get; set; }
     }
 
     /// <summary>

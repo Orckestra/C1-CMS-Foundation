@@ -257,6 +257,11 @@ namespace Composite.Search
         /// </summary>
         public SearchQueryHighlightSettings HighlightSettings { get; set; } = new SearchQueryHighlightSettings();
 
+        /// <summary>
+        /// Gets or sets a flag indicating whether to set an explanation to the <see cref="SearchResultItem"/>.
+        /// An explanation describes the score computation for document and query.
+        /// </summary>
+        public bool ShowExplanation { get; set; }
 
         /// <summary>
         /// Will indicate that the search results should return facet information for the given field.
