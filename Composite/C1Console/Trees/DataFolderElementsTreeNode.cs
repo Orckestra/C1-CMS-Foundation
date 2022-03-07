@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,8 +288,8 @@ namespace Composite.C1Console.Trees
             {
                 if (key == null) return "(NULL)";
 
-                IData reference = DataFacade.TryGetDataByUniqueKey(referenceInfo.TargetType, key);
-                return reference != null ? reference.GetLabel() : key.ToString();
+                IData reference = DataFacade.TryGetDataVersionsByUniqueKey(referenceInfo.TargetType, key).FirstOrDefault();
+                return reference?.GetLabel() ?? key.ToString();
             };
         }
 
