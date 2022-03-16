@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -118,13 +118,11 @@ namespace Composite.Data
         {
             var sb = new StringBuilder();
 
-            bool first = true;
             foreach (var kvp in _keyProperties)
             {
-                if (first == false) sb.Append(", ");
-                else first = false;
-                    
-                sb.Append(string.Format("{0} =  {1}", kvp.Key, kvp.Value));
+                if (sb.Length > 0) sb.Append(", ");
+
+                sb.AppendFormat("{0} = '{1}'", kvp.Key, kvp.Value);
             }
 
             return sb.ToString();
