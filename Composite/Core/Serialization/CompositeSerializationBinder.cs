@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Composite.C1Console.Security;
 using Composite.Core.Types;
+using Composite.Data;
 using Newtonsoft.Json.Serialization;
 
 namespace Composite.Core.Serialization
@@ -40,36 +42,34 @@ namespace Composite.Core.Serialization
                 if (result != null) return result;
             }
 
-            ValidateTypeIsSupported(assemblyName, typeName);
+            if (!TypeIsSupported(assemblyName, typeName))
+            {
+                throw new NotSupportedException("Not supported object type");
+            }
 
             return base.BindToType(assemblyName, typeName);
         }
 
-        private void ValidateTypeIsSupported(string assemblyName, string typeName)
+        private bool TypeIsSupported(string assemblyName, string typeName)
         {
             assemblyName = new AssemblyName(assemblyName).Name;
 
-            if (assemblyName == "Composite"
-                || assemblyName.StartsWith("Composite.")
-                || assemblyName.StartsWith("Orckestra."))
+            if (assemblyName == typeof(object).Assembly.GetName().Name /* "mscorlib" */)
             {
-                return;
-            }
-
-            if (assemblyName != typeof(object).Assembly.GetName().Name /* "mscorlib" */)
-                throw new NotSupportedException($"Not supported assembly name '{assemblyName}'");
-
-            var dotOffset = typeName.LastIndexOf(".", StringComparison.Ordinal);
-            if (dotOffset > 0)
-            {
-                string ns = typeName.Substring(0, dotOffset);
-                if (ns == nameof(System) || ns.StartsWith("System.Collections"))
+                var dotOffset = typeName.LastIndexOf(".", StringComparison.Ordinal);
+                if (dotOffset > 0)
                 {
-                    return;
+                    string @namespace = typeName.Substring(0, dotOffset);
+
+                    return @namespace == nameof(System) || @namespace.StartsWith("System.Collections");
                 }
             }
 
-            throw new NotSupportedException("Not supported object type");
+            var type = base.BindToType(assemblyName, typeName);
+            return type != null
+                   && (type.IsEnum
+                       || typeof(EntityToken).IsAssignableFrom(type)
+                       || typeof(IDataId).IsAssignableFrom(type));
         }
     }
 }
