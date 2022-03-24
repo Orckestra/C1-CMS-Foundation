@@ -594,9 +594,11 @@ namespace Composite.Data
 
             IQueryable queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
 
-            IData data = queryable.OfType<IData>().SingleOrDefault();
+            var dataList = queryable.OfType<IData>().ToList();
+            if (dataList.Count > 1)
+                throw new InvalidOperationException($"More than one data item of type '{interfaceType}' is matching the key: {dataKeyPropertyCollection}");
 
-            return data;
+            return dataList.SingleOrDefault();
         }
 
         /// <summary>

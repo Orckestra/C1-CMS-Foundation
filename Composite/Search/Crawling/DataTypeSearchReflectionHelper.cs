@@ -53,7 +53,7 @@ namespace Composite.Search.Crawling
             {
                 var processor = ServiceLocator.GetServices<IDataFieldProcessorProvider>()
                     .Select(p => p.GetDataFieldProcessor(pi))
-                    .FirstOrDefault();
+                    .FirstOrDefault(pr => pr != null);
 
                 if (processor != null) return processor;
 
