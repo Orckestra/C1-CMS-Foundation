@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core.Types;
 using Composite.Data;
@@ -42,15 +43,17 @@ namespace Composite.Core.Serialization
                 if (result != null) return result;
             }
 
-            if (!TypeIsSupported(assemblyName, typeName))
+            var type = base.BindToType(assemblyName, typeName);
+
+            if (!TypeIsSupported(assemblyName, typeName, type))
             {
-                throw new NotSupportedException("Not supported object type");
+                throw new NotSupportedException($"Not supported object type '{typeName}'");
             }
 
-            return base.BindToType(assemblyName, typeName);
+            return type;
         }
 
-        private bool TypeIsSupported(string assemblyName, string typeName)
+        private bool TypeIsSupported(string assemblyName, string typeName, Type type)
         {
             assemblyName = new AssemblyName(assemblyName).Name;
 
@@ -65,11 +68,13 @@ namespace Composite.Core.Serialization
                 }
             }
 
-            var type = base.BindToType(assemblyName, typeName);
             return type != null
                    && (type.IsEnum
                        || typeof(EntityToken).IsAssignableFrom(type)
-                       || typeof(IDataId).IsAssignableFrom(type));
+                       || typeof(SearchToken).IsAssignableFrom(type)
+                       || typeof(IDataId).IsAssignableFrom(type)
+                       || type == typeof(DataSourceId)
+                       || type == typeof(DataScopeIdentifier));
         }
     }
 }
