@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
@@ -411,6 +410,26 @@ namespace Composite.Core.WebClient.Media
             if (mediaType == null) throw new ArgumentNullException(nameof(mediaType));
 
             return ImageFormatProviders.ContainsKey(mediaType);
+        }
+
+        /// <exclude />
+        [Obsolete]
+        public class SupportedImageFormats
+        {
+            /// <exclude />
+            public static ImageFormat JPG => ImageFormat.Jpeg;
+
+            /// <exclude />
+            public static ImageFormat PNG => ImageFormat.Png;
+
+            /// <exclude />
+            public static ImageFormat TIFF => ImageFormat.Tiff;
+
+            /// <exclude />
+            public static ImageFormat GIF => ImageFormat.Gif;
+
+            /// <exclude />
+            public static ImageFormat BMP => ImageFormat.Bmp;
         }
     }
 }
