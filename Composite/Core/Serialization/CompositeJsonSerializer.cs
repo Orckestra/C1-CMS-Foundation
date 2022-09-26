@@ -132,7 +132,8 @@ namespace Composite.Core.Serialization
             var obj = JsonConvert.DeserializeObject<T>(str, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
-                Binder = CompositeSerializationBinder.Instance
+                Binder = CompositeSerializationBinder.Instance,
+                MaxDepth = 128
             });
 
             return obj;
@@ -168,7 +169,8 @@ namespace Composite.Core.Serialization
             var obj = JsonConvert.DeserializeObject<T>(combinedObj.ToString(), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
-                Binder = CompositeSerializationBinder.Instance
+                Binder = CompositeSerializationBinder.Instance,
+                MaxDepth = 128
             });
 
             return obj;
@@ -184,7 +186,8 @@ namespace Composite.Core.Serialization
             var obj = JsonConvert.DeserializeObject(str, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                Binder = CompositeSerializationBinder.Instance
+                Binder = CompositeSerializationBinder.Instance,
+                MaxDepth = 128
             });
 
             return obj;
