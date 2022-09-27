@@ -548,6 +548,7 @@ namespace Composite.Data.DynamicTypes
                 BuildNewHandlerTypeName = this.BuildNewHandlerTypeName,
                 LabelFieldName = this.LabelFieldName,
                 InternalUrlPrefix = this.InternalUrlPrefix,
+                Cachable = this.Cachable,
                 Searchable = this.Searchable
             };
 
