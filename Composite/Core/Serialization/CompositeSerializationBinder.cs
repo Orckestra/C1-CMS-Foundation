@@ -45,19 +45,30 @@ namespace Composite.Core.Serialization
 
             var type = base.BindToType(assemblyName, typeName);
 
-            if (!TypeIsSupported(assemblyName, typeName, type))
-            {
-                throw new NotSupportedException($"Not supported object type '{typeName}'");
-            }
+            VerityTypeIsSupported(new AssemblyName(assemblyName), typeName, type);
 
             return type;
         }
 
-        private bool TypeIsSupported(string assemblyName, string typeName, Type type)
+        private void VerityTypeIsSupported(AssemblyName assemblyName, string typeFullName, Type type)
         {
-            assemblyName = new AssemblyName(assemblyName).Name;
+            if (!TypeIsSupported(assemblyName, typeFullName, type))
+            {
+                throw new NotSupportedException($"Not supported object type '{typeFullName}'");
+            }
 
-            if (assemblyName == typeof(object).Assembly.GetName().Name /* "mscorlib" */)
+            if (type.IsGenericType)
+            {
+                foreach (var typeArgument in type.GetGenericArguments())
+                {
+                    VerityTypeIsSupported(typeArgument.Assembly.GetName(), typeArgument.FullName, typeArgument);
+                }
+            }
+        }
+
+        private bool TypeIsSupported(AssemblyName assemblyName, string typeName, Type type)
+        {
+            if (assemblyName.Name == typeof(object).Assembly.GetName().Name /* "mscorlib" */)
             {
                 var dotOffset = typeName.LastIndexOf(".", StringComparison.Ordinal);
                 if (dotOffset > 0)
