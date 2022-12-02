@@ -7,7 +7,7 @@
     protected override void InitializeViewState(){}
 </script>
 
-<%= "<span>" + HttpUtility.HtmlEncode(this.Text).Replace("\n", "</span><br/><span>") + "</span>" %>
+<%= "<span>" + HttpUtility.HtmlEncode(this.Text ?? "").Replace("\n", "</span><br/><span>") + "</span>" %>
 
 
 
