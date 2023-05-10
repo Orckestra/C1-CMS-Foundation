@@ -150,6 +150,7 @@ namespace Composite.Core.Configuration
 
         public bool OnlyTranslateWhenApproved => GlobalSettingsProviderPluginFacade.OnlyTranslateWhenApproved;
 
+        public bool AllowChildPagesTranslationWithoutParent => GlobalSettingsProviderPluginFacade.AllowChildPagesTranslationWithoutParent;
 
         public ICachingSettings Caching => GlobalSettingsProviderPluginFacade.Caching;
 
