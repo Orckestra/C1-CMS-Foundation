@@ -254,15 +254,22 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             }
         }
 
-
         public static bool OnlyTranslateWhenApproved
         {
             get
             {
                 return UseReaderLock(provider => provider.OnlyTranslateWhenApproved);
             }
-        } 
-        
+        }
+
+
+        public static bool AllowChildPagesTranslationWithoutParent
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.AllowChildPagesTranslationWithoutParent);
+            }
+        }
 
 
         public static string WorkflowTimeout

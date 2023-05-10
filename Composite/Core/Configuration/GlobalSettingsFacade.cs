@@ -223,6 +223,11 @@ namespace Composite.Core.Configuration
         public static bool OnlyTranslateWhenApproved => _globalSettingsFacade.OnlyTranslateWhenApproved;
 
         /// <summary>
+        /// When <value>true</value> child pages can be translated without translated parent page.
+        /// </summary>
+        public static bool AllowChildPagesTranslationWithoutParent => _globalSettingsFacade.AllowChildPagesTranslationWithoutParent;
+
+        /// <summary>
         /// The maximum number of characters the path to the application root (like 'C:\InetPub\MySite') can contain.
         /// C1 CMS create files below this path, some of which have very long paths - if the root path is long enough the combined length
         /// can exceed a limitation in Microsoft Windows - see http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths

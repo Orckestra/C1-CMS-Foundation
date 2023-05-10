@@ -11,6 +11,7 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Parallelization;
@@ -843,18 +844,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     bool addAction = false;
 
                     Guid parentId = page.GetParentId();
-                    if (parentId == Guid.Empty || true)
+                    if (parentId == Guid.Empty)
                     {
                         addAction = true;
                     }
                     else
                     {
-                        using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
+                        if (GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
                         {
-                            bool exists = DataFacade.GetData<IPage>(f => f.Id == parentId).Any();
-                            if (exists)
+                            addAction = true;
+                        }
+                        else
+                        {
+                            using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
                             {
-                                addAction = true;
+                                bool exists = DataFacade.GetData<IPage>(f => f.Id == parentId).Any();
+                                if (exists)
+                                {
+                                    addAction = true;
+                                }
                             }
                         }
                     }

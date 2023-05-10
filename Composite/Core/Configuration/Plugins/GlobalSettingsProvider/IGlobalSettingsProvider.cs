@@ -74,6 +74,11 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         /// </summary>
         bool OnlyTranslateWhenApproved { get;  }
 
+        /// <summary>
+        /// Allow child pages to be translated without translated parent page
+        /// </summary>
+        bool AllowChildPagesTranslationWithoutParent { get; }
+
         ICachingSettings Caching { get; }
 
         int ImageQuality { get; }
