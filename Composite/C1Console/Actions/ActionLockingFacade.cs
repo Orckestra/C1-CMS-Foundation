@@ -14,7 +14,7 @@ using Composite.Data.Types;
 
 namespace Composite.C1Console.Actions
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -44,7 +44,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entityToken"></param>
         /// <param name="ownerId">Should be serializable</param>
@@ -61,7 +61,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entityToken"></param>
         /// <param name="newOwnerId">Should be serializable</param>
@@ -80,7 +80,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entityToken"></param>
         /// <param name="ownerId">Should be serializable</param>
@@ -100,7 +100,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ownerId">Should be serializable</param>
         public static void ReleaseAllLocks(object ownerId)
@@ -124,7 +124,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entityToken">Entity token to check if it is locked.</param>
         /// <returns>True if the given entityToken is locked</returns>
@@ -141,7 +141,7 @@ namespace Composite.C1Console.Actions
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entityToken">Entity token to check if it is locked.</param>
         /// <returns>Returns the name of the user who has locked the given entity token. Null if no one has a lock on it.</returns>
@@ -158,14 +158,14 @@ namespace Composite.C1Console.Actions
                 {
                     return null;
                 }
-                
+
                 return lockingInformation.Username;
             }
         }
 
 
 
-        /// <summary>    
+        /// <summary>
         /// </summary>
         /// <exclude />
         public static IDisposable Locker
@@ -201,7 +201,7 @@ namespace Composite.C1Console.Actions
         /// <summary>
         /// This is a "non-safe" release of a lock. For safe use, use ReleaseLock
         /// </summary>
-        /// <param name="entityToken"></param>        
+        /// <param name="entityToken"></param>
         public static void RemoveLock(EntityToken entityToken)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -254,7 +254,7 @@ namespace Composite.C1Console.Actions
                     Username = lockingInformation.Username
                 };
 
-                try 
+                try
                 {
                     _lockingInformations.Add(lockingInformation.LockKey, li);
                 }
@@ -289,7 +289,7 @@ namespace Composite.C1Console.Actions
                 // This will only happen if an entity token subclass is not rightly implemented
                 throw new ActionLockingException("This item is used by another user, try again.");
             }
-            
+
             lockingInformation = new LockingInformation
                 {
                     Username = UserValidationFacade.GetUsername(),

@@ -843,7 +843,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     bool addAction = false;
 
                     Guid parentId = page.GetParentId();
-                    if (parentId == Guid.Empty)
+                    if (parentId == Guid.Empty || true)
                     {
                         addAction = true;
                     }

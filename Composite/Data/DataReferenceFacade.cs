@@ -18,7 +18,7 @@ namespace Composite.Data
     /// Referee type: The type that is "pointing" to a nother type
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class DataReferenceFacade
     {
         private static readonly Dictionary<PropertyInfo, Type> _propertyReferenceTargetTypeLookup = new Dictionary<PropertyInfo, Type>();
@@ -43,8 +43,8 @@ namespace Composite.Data
         {
             var foundDataset = new Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>>();
 
-            GetRefereesRecursively(dataToDelete, true, 
-                (type, foreignKey) => !foreignKey.IsOptionalReference 
+            GetRefereesRecursively(dataToDelete, true,
+                (type, foreignKey) => !foreignKey.IsOptionalReference
                     && (!foreignKey.AllowCascadeDeletes || DataReferenceRegistry.GetRefereeTypes(type).Count > 0), foundDataset);
 
             return foundDataset.All(kvp => kvp.Value.Item2.AllowCascadeDeletes);
@@ -121,8 +121,8 @@ namespace Composite.Data
 
             foreach (ForeignPropertyInfo foreignPropertyInfo in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType))
             {
-                // If Nullable references are allowed, a check for SourcePropertyInfo.PropertyType.GetGenericDef == typeof(Nullable<?>) 
-                // If it is a nullable and has no value, then all is ok and continue 
+                // If Nullable references are allowed, a check for SourcePropertyInfo.PropertyType.GetGenericDef == typeof(Nullable<?>)
+                // If it is a nullable and has no value, then all is ok and continue
                 // If it is a nullable and has a value, assign the value to refereeForeignKeyValue
                 // Else change nothing /MRJ
                 object refereeForeignKeyValue = foreignPropertyInfo.SourcePropertyInfo.GetValue(refereeData, null);
@@ -154,7 +154,7 @@ namespace Composite.Data
 
                     if (object.Equals(nullReferenceKeyValue, refereeForeignKeyValue))
                     {
-                        continue; // The foreign key is a null reference 
+                        continue; // The foreign key is a null reference
                     }
                 }
 
@@ -235,8 +235,8 @@ namespace Composite.Data
             Verify.ArgumentNotNull(propertyInfo, "propertyInfo");
             Verify.ArgumentNotNull(keyValue, "keyValue");
 
-            // Building query:  
-            //   select record from queryable 
+            // Building query:
+            //   select record from queryable
             //   where record.'ForeingIdColumn' = 'keyValue'
             //   [Take(1)]
 
@@ -277,8 +277,8 @@ namespace Composite.Data
             Verify.ArgumentNotNull(propertyInfo, "propertyInfo");
             Verify.ArgumentNotNull(propertyValue, "propertyValue");
 
-            // Building query:  
-            //   select record from queryable 
+            // Building query:
+            //   select record from queryable
             //   where record.'ForeingIdColumn' = 'propertyValue'
             //   any;
 
@@ -319,7 +319,7 @@ namespace Composite.Data
 
         /// <exclude />
         internal static IList<Tuple<IData, ForeignPropertyInfo>> GetRefereesInt(
-            IData data, bool allScopes, Func<Type, ForeignPropertyInfo, bool> propertyFilter) 
+            IData data, bool allScopes, Func<Type, ForeignPropertyInfo, bool> propertyFilter)
         {
             Verify.ArgumentNotNull(data, nameof(data));
 
@@ -525,7 +525,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyProperties, bool allScopes)
         {
             Verify.ArgumentNotNull(referencedData, "referencedData");
@@ -582,7 +582,7 @@ namespace Composite.Data
 
 
 
-        private static void GetRefereesRecursively(IData referencedData, bool allScopes, 
+        private static void GetRefereesRecursively(IData referencedData, bool allScopes,
             Func<Type, ForeignPropertyInfo, bool> foreignKeyPredicate,
             Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>> foundDataset)
         {
@@ -659,7 +659,7 @@ namespace Composite.Data
                          from pi in propertiesToSearchBy
                          where fkpi.SourcePropertyInfo == pi
                          select fkpi).ToList();
-                } 
+                }
 
                 if (allScopes)
                 {
@@ -718,7 +718,7 @@ namespace Composite.Data
                 {
                     typeTitle = type.FullName;
                 }
-                
+
                 string labelPropertyName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
                 if (string.IsNullOrEmpty(labelPropertyName))
                 {
@@ -752,3 +752,4 @@ namespace Composite.Data
         }
     }
 }
+
