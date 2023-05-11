@@ -444,6 +444,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\EditPageWorkflow.Designer.cs">
       <DependentUpon>EditPageWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UnLocalizePageWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UnLocalizePageWorkflow.designer.cs">
+      <DependentUpon>UnLocalizePageWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1111,6 +1117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.layout">
       <DependentUpon>UndoUnpublishedChangesWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\UnLocalizePageWorkflow.layout">
+      <DependentUpon>UnLocalizePageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewMasterPagePageTemplateWorkflow.layout">
       <DependentUpon>AddNewMasterPagePageTemplateWorkflow.cs</DependentUpon>

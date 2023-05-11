@@ -513,7 +513,7 @@ namespace Composite.Data.Types
         /// <summary>
         /// Deletes the versions of the given page in its current localization scope.
         /// </summary>
-        public static void DeletePage(IPage page)
+        public static void DeletePage(IPage page, bool deleteChildPages = true)
         {
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
@@ -524,19 +524,21 @@ namespace Composite.Data.Types
                     var cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
                     cultures.Remove(page.DataSourceId.LocaleScope);
 
-                    List<IPage> pagesToDelete = page.GetSubChildren().ToList();
-
-                    foreach (IPage childPage in pagesToDelete)
+                    if (deleteChildPages)
                     {
-                        if (!ExistInOtherLocale(cultures, childPage))
+                        List<IPage> pagesToDelete = page.GetSubChildren().ToList();
+
+                        foreach (IPage childPage in pagesToDelete)
                         {
-                            RemoveAllFolderAndMetaDataDefinitions(childPage);
+                            if (!ExistInOtherLocale(cultures, childPage))
+                            {
+                                RemoveAllFolderAndMetaDataDefinitions(childPage);
+                            }
+
+                            childPage.DeletePageStructure(false);
+                            ProcessControllerFacade.FullDelete(childPage);
                         }
-
-                        childPage.DeletePageStructure(false);
-                        ProcessControllerFacade.FullDelete(childPage);
                     }
-
 
                     if (!ExistInOtherLocale(cultures, page))
                     {
@@ -591,7 +593,8 @@ namespace Composite.Data.Types
         /// <param name="pageId"></param>
         /// <param name="versionId"></param>
         /// <param name="locale"></param>
-        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale)
+        /// <param name="deleteChildPages">default is true</param>
+        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale, bool deleteChildPages = true)
         {
             Verify.ArgumentNotNull(locale, nameof(locale));
 
@@ -600,7 +603,7 @@ namespace Composite.Data.Types
                 var pages = conn.Get<IPage>().Where(p => p.Id == pageId).ToList();
                 if (pages.Count == 1 && pages[0].VersionId == versionId)
                 {
-                    DeletePage(pages[0]);
+                    DeletePage(pages[0], deleteChildPages);
                     return;
                 }
             }

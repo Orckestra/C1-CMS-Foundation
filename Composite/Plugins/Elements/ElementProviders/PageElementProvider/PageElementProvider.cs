@@ -400,7 +400,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             }
 
-            List<Element> childPageElements = GetElements(resultPages, entityToken is PageElementProviderEntityToken);
+            List<Element> childPageElements = GetElements(resultPages, entityToken is PageElementProviderEntityToken, true);
 
             return GetChildElements(entityToken, childPageElements);
         }
@@ -708,14 +708,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        private List<Element> GetElements(List<KeyValuePair<PageLocaleState, IPage>> pages, bool rootPages)
+        private List<Element> GetElements(List<KeyValuePair<PageLocaleState, IPage>> pages, bool rootPages, bool useForeign = false)
         {
             //ElementDragAndDropInfo dragAndDropInfo = new ElementDragAndDropInfo(typeof(IPage));
             //dragAndDropInfo.AddDropType(typeof(IPage));
             //dragAndDropInfo.SupportsIndexedPosition = true;
-
-
-
 
             string editPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.EditPage");
             string editPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.EditPageToolTip");
@@ -727,6 +724,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
             string duplicatePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Duplicate");
             string duplicatePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DuplicateToolTip");
+            string unLocalizePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.UnLocalizePage");
+            string unLocalizePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.UnLocalizePageToolTip");
 
             string urlMappingName = null;
             if (UserSettings.ForeignLocaleCultureInfo != null)
@@ -817,7 +816,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         });
                     }
 
-
                     element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Delete,DeletePermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
@@ -835,6 +833,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                         }
                     });
+
+                    if (useForeign && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                    {
+                        // Delete Translation for the Page without deleting child pages and only displaying for foreign pages
+                        element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.UnLocalizePageWorkflow"), LocalizePermissionTypes)))
+                        {
+                            VisualData = new ActionVisualizedData
+                            {
+                                Label = unLocalizePageLabel,
+                                ToolTip = unLocalizePageToolTip,
+                                Icon = PageElementProvider.LocalizePage,
+                                Disabled = false,
+                                ActionLocation = new ActionLocation
+                                {
+                                    ActionType = ActionType.Delete,
+                                    IsInFolder = false,
+                                    IsInToolbar = true,
+                                    ActionGroup = PrimaryActionGroup
+                                }
+                            }
+                        });
+                    }
 
                     _pageAssociatedHelper.AttachElementActions(element, page);
                 }
