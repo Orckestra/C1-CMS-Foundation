@@ -7,7 +7,7 @@ using Composite.Data.Types;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
-    internal static class PagePreviewContext
+    public static class PagePreviewContext
     {
         public static readonly string PreviewKeyUrlParameter = "previewKey";
 
