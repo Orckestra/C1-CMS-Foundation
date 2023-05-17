@@ -371,7 +371,7 @@ namespace Composite.C1Console.Elements
 
             if (performSecurityCheck)
             {
-                //children = children.FilterActions().Evaluate();
+                children = children.FilterActions().Evaluate();
             }
 
             PerformanceCounterFacade.EndElementCreation(performanceToken, children.Count, totalElementCount);
