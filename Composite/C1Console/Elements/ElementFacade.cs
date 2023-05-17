@@ -353,7 +353,7 @@ namespace Composite.C1Console.Elements
 
             int totalElementCount = children.Count;
 
-            if (performSecurityCheck && false)
+            if (performSecurityCheck)
             {
                 children = children.FilterElements().Evaluate();
             }

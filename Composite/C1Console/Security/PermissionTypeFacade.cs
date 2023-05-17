@@ -247,7 +247,6 @@ namespace Composite.C1Console.Security
         {
             Verify.ArgumentNotNull(userToken, "userToken");
             Verify.ArgumentNotNull(entityToken, "entityToken");
-            return true;
 
             IEnumerable<PermissionType> permissionTypes = GetCurrentPermissionTypes(userToken, entityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
 

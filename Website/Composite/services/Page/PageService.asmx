@@ -58,8 +58,6 @@ namespace Composite.Services
         {
             if (pageUrl == string.Empty) return string.Empty;
 
-            var test = InternalUrls.TryConvertInternalUrlToPublic(pageUrl);
-            
             PageUrlData urlData = PageUrls.ParseUrl(pageUrl);
             if(urlData == null)
             {
