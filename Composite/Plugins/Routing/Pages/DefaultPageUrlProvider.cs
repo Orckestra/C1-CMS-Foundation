@@ -690,7 +690,7 @@ namespace Composite.Plugins.Routing.Pages
         }
 
         /// <inheritdoc />
-        public string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace)
+        public virtual string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace)
         {
             Verify.ArgumentCondition(urlKind != UrlKind.Undefined, "urlKind", "Url kind is undefined");
 
@@ -715,7 +715,7 @@ namespace Composite.Plugins.Routing.Pages
             throw new NotImplementedException("Only 'Public' and 'Internal' url types are supported.");
         }
 
-        private string BuildPublicUrl(PageUrlData pageUrlData, UrlSpace urlSpace)
+        protected string BuildPublicUrl(PageUrlData pageUrlData, UrlSpace urlSpace)
         {
             var cultureInfo = pageUrlData.LocalizationScope;
             var publicationScope = pageUrlData.PublicationScope;
@@ -765,7 +765,7 @@ namespace Composite.Plugins.Routing.Pages
             return url;
         }
 
-        private bool BuildPageUrlPath(Guid pageId, Guid? versionId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
+        protected virtual bool BuildPageUrlPath(Guid pageId, Guid? versionId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
         {
             IPage page;
             if (versionId != null)
@@ -801,7 +801,7 @@ namespace Composite.Plugins.Routing.Pages
             return true;
         }
 
-        private bool BuildRootPageUrl(IPage rootPage, CultureInfo cultureInfo, UrlSpace urlSpace, StringBuilder result)
+        protected bool BuildRootPageUrl(IPage rootPage, CultureInfo cultureInfo, UrlSpace urlSpace, StringBuilder result)
         {
             var bindings = GetHostnameBindings();
 
@@ -861,7 +861,7 @@ namespace Composite.Plugins.Routing.Pages
             return true;
         }
 
-        private static StringBuilder AppendSlash(StringBuilder sb)
+        protected static StringBuilder AppendSlash(StringBuilder sb)
         {
             if (sb.Length == 0
                 || sb[sb.Length - 1] != '/')
@@ -923,7 +923,7 @@ namespace Composite.Plugins.Routing.Pages
             return sb;
         }
 
-        private static string BuildRenderUrl(PageUrlData pageUrlData)
+        protected virtual string BuildRenderUrl(PageUrlData pageUrlData)
         {
             var cultureInfo = pageUrlData.LocalizationScope;
             string legacyScopeName = GetLegacyPublicationScopeIdentifier(pageUrlData.PublicationScope);
