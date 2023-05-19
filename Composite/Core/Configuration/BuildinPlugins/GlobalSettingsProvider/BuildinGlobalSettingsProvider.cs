@@ -126,6 +126,8 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
 
         public bool OnlyTranslateWhenApproved => false;
 
+        public bool AllowChildPagesTranslationWithoutParent => false;
+
         public ICachingSettings Caching => _cachingSettings;
 
         public int ImageQuality => 80;

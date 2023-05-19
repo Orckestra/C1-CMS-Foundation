@@ -18,7 +18,6 @@ namespace Composite.C1Console.Security
             if (userToken == null) throw new ArgumentNullException("userToken");
             if (actionToken == null) throw new ArgumentNullException("actionToken");
 
-
             return Resolve(userToken, actionToken.PermissionTypes, entityToken, userPermissionDefinitions, userGroupPermissionDefinition);
         }
 

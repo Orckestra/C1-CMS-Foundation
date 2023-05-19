@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Composite.Core.Configuration;
 using Composite.Data.Types;
 using Composite.Core.Extensions;
 
@@ -22,7 +23,21 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 
             using (new DataScope(data.DataSourceId.LocaleScope))
             {
-                return PageManager.GetPageById(parentId);
+                var parent =  PageManager.GetPageById(parentId);
+                if (parent == null && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                {
+                    while (parent == null)
+                    {
+                        parentId = PageManager.GetParentId(parentId);
+                        if (parentId == Guid.Empty)
+                        {
+                            break;
+                        }
+                        parent = PageManager.GetPageById(parentId);
+                    }
+                }
+
+                return parent;
             }
         }
     }

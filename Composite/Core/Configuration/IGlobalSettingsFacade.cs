@@ -37,6 +37,7 @@ namespace Composite.Core.Configuration
         TimeSpan WorkflowTimeout { get; }
         TimeSpan ConsoleTimeout { get; }
         bool OnlyTranslateWhenApproved { get; }
+        bool AllowChildPagesTranslationWithoutParent { get; }
         ICachingSettings Caching { get; }
         int ImageQuality { get; }
         bool PrettifyPublicMarkup { get; }

@@ -1,17 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 using Composite.Core.Extensions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 
 
 namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
-{    
+{
     [ConfigurationElementType(typeof(ConfigBasedGlobalSettingsProviderData))]
     internal sealed class ConfigBasedGlobalSettingsProvider : IGlobalSettingsProvider
     {
@@ -78,6 +78,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         public string AutoCreatedAdministratorUserName => _configurationData.AutoCreatedAdministratorUserName;
 
         public bool OnlyTranslateWhenApproved => _configurationData.OnlyTranslateWhenApproved;
+
+        public bool AllowChildPagesTranslationWithoutParent => _configurationData.AllowChildPagesTranslationWithoutParent;
 
         public string WorkflowTimeout => _configurationData.WorkflowTimeout;
 
@@ -395,6 +397,13 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             set { base[_onlyTranslateWhenApproved] = value; }
         }
 
+        private const string _allowChildPagesTranslationWithoutParent = "allowChildPagesTranslationWithoutParent";
+        [ConfigurationProperty(_allowChildPagesTranslationWithoutParent, IsRequired = false, DefaultValue = false)]
+        public bool AllowChildPagesTranslationWithoutParent
+        {
+            get { return (bool)base[_allowChildPagesTranslationWithoutParent]; }
+            set { base[_allowChildPagesTranslationWithoutParent] = value; }
+        }
 
         private const string _applicationCultureNames = "applicationCultureNames";
         [ConfigurationProperty(_applicationCultureNames, IsRequired = false, DefaultValue = "da-DK,en-US")]

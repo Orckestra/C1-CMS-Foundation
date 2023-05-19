@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.Services.PageService" %>
+<%@ WebService Language="C#" Class="Composite.Services.PageService" %>
 
 using System;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace Composite.Services
         public string ConvertRelativePageUrlToAbsolute(string pageUrl)
         {
             if (pageUrl == string.Empty) return string.Empty;
-            
+
             PageUrlData urlData = PageUrls.ParseUrl(pageUrl);
             if(urlData == null)
             {
