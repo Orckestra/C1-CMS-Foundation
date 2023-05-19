@@ -3966,7 +3966,7 @@ public static string PageElementProvider_LocalizePage=>T("PageElementProvider.Lo
 public static string PageElementProvider_LocalizePageToolTip=>T("PageElementProvider.LocalizePageToolTip");
 ///<summary>&quot;Undo Translation&quot;</summary> 
 public static string PageElementProvider_UnLocalizePage => T("PageElementProvider.UnLocalizePage");
-///<summary>&quot;Delete Translation for selected page&quot;</summary> 
+///<summary>&quot;Delete Translation for Selected Page&quot;</summary> 
 public static string PageElementProvider_UnLocalizePageToolTip => T("PageElementProvider.UnLocalizePageToolTip");
 ///<summary>&quot;Add page&quot;</summary> 
 public static string PageElementProvider_AddSubPage=>T("PageElementProvider.AddSubPage");

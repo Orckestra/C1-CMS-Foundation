@@ -44,7 +44,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // initializeCodeActivity_Copy
             // 
             this.initializeCodeActivity_Copy.Name = "initializeCodeActivity_Copy";
-            this.initializeCodeActivity_Copy.ExecuteCode += new System.EventHandler(this.initializeCodeActivity_Copy_ExecuteCode);
+            this.initializeCodeActivity_Copy.ExecuteCode += new System.EventHandler(this.InitializeCodeActivity_ExecuteCode);
             // 
             // initializeStateInitializationActivity
             // 

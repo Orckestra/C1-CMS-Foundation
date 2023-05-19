@@ -75,7 +75,7 @@
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
   <string key="PageElementProvider.UnLocalizePage" value="Undo Translation" />
-  <string key="PageElementProvider.UnLocalizePageToolTip" value="Delete Translation for the selected page" />
+  <string key="PageElementProvider.UnLocalizePageToolTip" value="Delete translation for the selected page" />
   <string key="PageElementProvider.AddSubPage" value="Add page" />
   <string key="PageElementProvider.AddSubPageFormat" value="Add {0}" />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />

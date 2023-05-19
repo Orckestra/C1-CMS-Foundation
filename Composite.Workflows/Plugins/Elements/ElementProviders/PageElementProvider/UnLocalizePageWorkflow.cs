@@ -12,7 +12,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             InitializeComponent();
         }
 
-        private void initializeCodeActivity_Copy_ExecuteCode(object sender, EventArgs e)
+        private void InitializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
             IPage selectedPage = (IPage)dataEntityToken.Data;
