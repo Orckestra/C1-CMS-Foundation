@@ -23,21 +23,7 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 
             using (new DataScope(data.DataSourceId.LocaleScope))
             {
-                var parent =  PageManager.GetPageById(parentId);
-                if (parent == null && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
-                {
-                    while (parent == null)
-                    {
-                        parentId = PageManager.GetParentId(parentId);
-                        if (parentId == Guid.Empty)
-                        {
-                            break;
-                        }
-                        parent = PageManager.GetPageById(parentId);
-                    }
-                }
-
-                return parent;
+                return PageManager.GetPageById(parentId);
             }
         }
     }
