@@ -17,6 +17,7 @@ using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.PageTemplates;
@@ -76,6 +77,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (parentPageId != Guid.Empty)
             {
                 parentPage = PageManager.GetPageById(parentPageId);
+                if (parentPage == null && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                {
+                    using (new DataScope(DataLocalizationFacade.DefaultLocalizationCulture))
+                    {
+                        parentPage = PageManager.GetPageById(parentPageId);
+                    }
+                }
             }
 
             return
