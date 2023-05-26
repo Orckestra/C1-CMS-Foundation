@@ -79,14 +79,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 parentPage = PageManager.GetPageById(parentPageId);
                 if (parentPage == null && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
                 {
-                    while (parentPage == null)
+                    using (new DataScope(DataLocalizationFacade.DefaultLocalizationCulture))
                     {
-                        parentPageId = PageManager.GetParentId(parentPageId);
-                        if (parentPageId == Guid.Empty)
-                        {
-                            break;
-                        }
-
                         parentPage = PageManager.GetPageById(parentPageId);
                     }
                 }
