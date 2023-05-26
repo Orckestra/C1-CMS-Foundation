@@ -595,7 +595,8 @@ namespace Composite.Plugins.Routing.Pages
             return null;
         }
 
-        private static IEnumerable<IPage> GetChildPages(Guid parentId)
+        /// <xmlignore />
+        protected virtual IEnumerable<IPage> GetChildPages(Guid parentId)
         {
             var children = PageManager.GetChildrenIDs(parentId);
 
