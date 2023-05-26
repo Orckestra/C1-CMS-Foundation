@@ -421,7 +421,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue(nameof(IPage.Id));
                 Guid parentPageId = PageManager.GetParentId(pageId);
 
-                if (parentPageId != Guid.Empty) continue;
+                if (parentPageId != Guid.Empty)
+                {
+                    if (!GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                        continue;
+
+                    using (new DataScope(dataEntityToken.DataSourceId.LocaleScope))
+                    {
+                        var parentPage = PageManager.GetPageById(parentPageId);
+                        if (parentPage != null)
+                            continue;
+                    }
+                }
 
                 result.Add(entityToken, new EntityToken[] { new PageElementProviderEntityToken(_context.ProviderName) });
             }
