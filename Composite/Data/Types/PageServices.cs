@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.ProcessControlled;
@@ -66,10 +67,10 @@ namespace Composite.Data.Types
             if (structure.IsEnumerableQuery() && pages.IsEnumerableQuery())
             {
                 return (from ps in structure.AsEnumerable()
-                       where ps.ParentId == parentId
-                       join p in pages.AsEnumerable() on ps.Id equals p.Id
-                       orderby ps.LocalOrdering
-                       select p).AsQueryable();
+                        where ps.ParentId == parentId
+                        join p in pages.AsEnumerable() on ps.Id equals p.Id
+                        orderby ps.LocalOrdering
+                        select p).AsQueryable();
             }
 
             return from ps in structure
@@ -389,7 +390,57 @@ namespace Composite.Data.Types
                         yield return subPage;
                     }
                 }
+
+                if (GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                {
+                    var pagesLookup = DataFacade.GetData<IPage>(true).ToLookup(p => p.Id);
+                    foreach (Guid emptyPageId in GetEmptyChildren(parentPage.Id, pagesLookup))
+                    {
+                        foreach (var page in GetSubChildrenInEmptyParent(emptyPageId, pagesLookup))
+                        {
+                            yield return page;
+                        }
+                    }
+                }
             }
+        }
+
+        private static IEnumerable<IPage> GetSubChildrenInEmptyParent(Guid emptyParentId, ILookup<Guid, IPage> pages)
+        {
+            foreach (IPage childPage in GetChildren(emptyParentId))
+            {
+                yield return childPage;
+
+                foreach (IPage subPage in childPage.GetSubChildren())
+                {
+                    yield return subPage;
+                }
+            }
+
+            foreach (Guid emptyPageId in GetEmptyChildren(emptyParentId, pages))
+            {
+                foreach (IPage subPage in GetSubChildrenInEmptyParent(emptyPageId, pages))
+                {
+                    yield return subPage;
+                }
+
+            }
+        }
+
+        private static IQueryable<Guid> GetEmptyChildren(Guid parentId, ILookup<Guid, IPage> pages)
+        {
+            var structure = DataFacade.GetData<IPageStructure>(true);
+
+            if (structure.IsEnumerableQuery())
+            {
+                return (from ps in structure.AsEnumerable()
+                        where ps.ParentId == parentId && !pages[ps.Id].Any()
+                        select ps.Id).AsQueryable();
+            }
+
+            return from ps in structure
+                   where ps.ParentId == parentId && !pages[ps.Id].Any()
+                   select ps.Id;
         }
 
         /// <summary>
