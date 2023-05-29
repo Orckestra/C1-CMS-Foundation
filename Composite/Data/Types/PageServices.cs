@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.ProcessControlled;
@@ -79,6 +80,25 @@ namespace Composite.Data.Types
                    select p;
 
 #warning revisit this - we return all versions (by design so far). Any ordering on page versions? - check history for original intent
+        }
+
+        public static IQueryable<Guid> GetEmptyChildren(this IPage page)
+        {
+            Verify.ArgumentNotNull(page, nameof(page));
+            var parentId = page.Id;
+            var structure = DataFacade.GetData<IPageStructure>();
+            var pagesIds = DataFacade.GetData<IPage>().Select(p => p.Id).ToList();
+
+            if (structure.IsEnumerableQuery())
+            {
+                return (from ps in structure.AsEnumerable()
+                        where ps.ParentId == parentId && !pagesIds.Contains(ps.Id)
+                        select ps.Id).AsQueryable();
+            }
+
+            return from ps in structure
+                   where ps.ParentId == parentId && !pagesIds.Contains(ps.Id)
+                   select ps.Id;
         }
 
 
@@ -387,6 +407,22 @@ namespace Composite.Data.Types
                     foreach (IPage subPage in childPage.GetSubChildren())
                     {
                         yield return subPage;
+                    }
+                }
+
+                if(GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                {
+                    foreach (Guid emptyPageId in parentPage.GetEmptyChildren())
+                    {
+                        foreach (IPage childPage in GetChildren(emptyPageId))
+                        {
+                            yield return childPage;
+
+                            foreach (IPage subPage in childPage.GetSubChildren())
+                            {
+                                yield return subPage;
+                            }
+                        }
                     }
                 }
             }

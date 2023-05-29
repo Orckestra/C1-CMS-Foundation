@@ -8,6 +8,7 @@ using Composite.Data.Types;
 using Composite.C1Console.Workflow;
 using Composite.Core.Collections.Generic;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageElementProvider;
+using Composite.Core.Configuration;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -95,6 +96,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage selectedPage = (IPage)dataEntityToken.Data;
 
             bool hasChildren = PageServices.GetChildren(selectedPage.Id).Any();
+            if(!hasChildren && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+            {
+                hasChildren = PageServices.GetEmptyChildren(selectedPage).Any();
+            }
 
             this.Bindings.AddDictionary(new Dictionary<string, object>
             {
