@@ -405,7 +405,7 @@ namespace Composite.Data.Types
             }
         }
 
-        public static IEnumerable<IPage> GetSubChildrenInEmptyParent(Guid emptyParentId, ILookup<Guid, IPage> pages)
+        private static IEnumerable<IPage> GetSubChildrenInEmptyParent(Guid emptyParentId, ILookup<Guid, IPage> pages)
         {
             foreach (IPage childPage in GetChildren(emptyParentId))
             {
@@ -427,7 +427,7 @@ namespace Composite.Data.Types
             }
         }
 
-        public static IQueryable<Guid> GetEmptyChildren(Guid parentId, ILookup<Guid, IPage> pages)
+        private static IQueryable<Guid> GetEmptyChildren(Guid parentId, ILookup<Guid, IPage> pages)
         {
             var structure = DataFacade.GetData<IPageStructure>(true);
 
