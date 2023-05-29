@@ -67,10 +67,10 @@ namespace Composite.Data.Types
             if (structure.IsEnumerableQuery() && pages.IsEnumerableQuery())
             {
                 return (from ps in structure.AsEnumerable()
-                       where ps.ParentId == parentId
-                       join p in pages.AsEnumerable() on ps.Id equals p.Id
-                       orderby ps.LocalOrdering
-                       select p).AsQueryable();
+                        where ps.ParentId == parentId
+                        join p in pages.AsEnumerable() on ps.Id equals p.Id
+                        orderby ps.LocalOrdering
+                        select p).AsQueryable();
             }
 
             return from ps in structure
@@ -80,25 +80,6 @@ namespace Composite.Data.Types
                    select p;
 
 #warning revisit this - we return all versions (by design so far). Any ordering on page versions? - check history for original intent
-        }
-
-        public static IQueryable<Guid> GetEmptyChildren(this IPage page)
-        {
-            Verify.ArgumentNotNull(page, nameof(page));
-            var parentId = page.Id;
-            var structure = DataFacade.GetData<IPageStructure>();
-            var pagesIds = DataFacade.GetData<IPage>().Select(p => p.Id).ToList();
-
-            if (structure.IsEnumerableQuery())
-            {
-                return (from ps in structure.AsEnumerable()
-                        where ps.ParentId == parentId && !pagesIds.Contains(ps.Id)
-                        select ps.Id).AsQueryable();
-            }
-
-            return from ps in structure
-                   where ps.ParentId == parentId && !pagesIds.Contains(ps.Id)
-                   select ps.Id;
         }
 
 
@@ -410,22 +391,56 @@ namespace Composite.Data.Types
                     }
                 }
 
-                if(GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
+                if (GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
                 {
-                    foreach (Guid emptyPageId in parentPage.GetEmptyChildren())
+                    var pagesLookup = DataFacade.GetData<IPage>(true).ToLookup(p => p.Id);
+                    foreach (Guid emptyPageId in GetEmptyChildren(parentPage.Id, pagesLookup))
                     {
-                        foreach (IPage childPage in GetChildren(emptyPageId))
+                        foreach (var page in GetSubChildrenInEmptyParent(emptyPageId, pagesLookup))
                         {
-                            yield return childPage;
-
-                            foreach (IPage subPage in childPage.GetSubChildren())
-                            {
-                                yield return subPage;
-                            }
+                            yield return page;
                         }
                     }
                 }
             }
+        }
+
+        public static IEnumerable<IPage> GetSubChildrenInEmptyParent(Guid emptyParentId, ILookup<Guid, IPage> pages)
+        {
+            foreach (IPage childPage in GetChildren(emptyParentId))
+            {
+                yield return childPage;
+
+                foreach (IPage subPage in childPage.GetSubChildren())
+                {
+                    yield return subPage;
+                }
+            }
+
+            foreach (Guid emptyPageId in GetEmptyChildren(emptyParentId, pages))
+            {
+                foreach (IPage subPage in GetSubChildrenInEmptyParent(emptyPageId, pages))
+                {
+                    yield return subPage;
+                }
+
+            }
+        }
+
+        public static IQueryable<Guid> GetEmptyChildren(Guid parentId, ILookup<Guid, IPage> pages)
+        {
+            var structure = DataFacade.GetData<IPageStructure>(true);
+
+            if (structure.IsEnumerableQuery())
+            {
+                return (from ps in structure.AsEnumerable()
+                        where ps.ParentId == parentId && !pages[ps.Id].Any()
+                        select ps.Id).AsQueryable();
+            }
+
+            return from ps in structure
+                   where ps.ParentId == parentId && !pages[ps.Id].Any()
+                   select ps.Id;
         }
 
         /// <summary>
