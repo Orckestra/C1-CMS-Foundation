@@ -95,11 +95,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
             IPage selectedPage = (IPage)dataEntityToken.Data;
 
-            bool hasChildren = PageServices.GetChildren(selectedPage.Id).Any();
-            if(!hasChildren && GlobalSettingsFacade.AllowChildPagesTranslationWithoutParent)
-            {
-                hasChildren = PageServices.GetEmptyChildren(selectedPage).Any();
-            }
+            bool hasChildren = PageServices.GetSubChildren(selectedPage).Any();
 
             this.Bindings.AddDictionary(new Dictionary<string, object>
             {
