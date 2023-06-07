@@ -1,4 +1,5 @@
-﻿using System;
+using Composite.Core.Routing.Pages;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
@@ -28,6 +29,7 @@ namespace Composite.AspNet.Caching
             }
 
             OutputHeaders = headersCopy;
+            PathInfoUsed = C1PageRoute.PathInfoUsed;
         }
 
         public XDocument Document
@@ -35,6 +37,8 @@ namespace Composite.AspNet.Caching
             get => new XDocument(_document);
             set => _document = value;
         }
+
+        public bool PathInfoUsed { get; set; }
 
         public IReadOnlyCollection<HeaderElement> OutputHeaders { get; set; }
     }

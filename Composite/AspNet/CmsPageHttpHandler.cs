@@ -5,6 +5,7 @@ using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Instrumentation;
 using Composite.Core.PageTemplates;
+using Composite.Core.Routing.Pages;
 using Composite.Core.WebClient.Renderings;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
@@ -55,6 +56,11 @@ namespace Composite.AspNet
                     foreach (var header in cacheEntry.OutputHeaders)
                     {
                         context.Response.Headers[header.Name] = header.Value;
+                    }
+
+                    if(cacheEntry.PathInfoUsed)
+                    {
+                        C1PageRoute.RegisterPathInfoUsage();
                     }
 
                     // Making sure this response will not go to the output cache
