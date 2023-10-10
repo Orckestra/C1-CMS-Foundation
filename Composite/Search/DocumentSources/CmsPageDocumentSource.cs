@@ -16,14 +16,18 @@ using Composite.Data.Types;
 
 namespace Composite.Search.DocumentSources
 {
-    internal class CmsPageDocumentSource : ISearchDocumentSource
+    public class CmsPageDocumentSource : ISearchDocumentSource
     {
         const string LogTitle = nameof(CmsPageDocumentSource);
 
-        private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
+        protected List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
-        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
-        private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
+        protected Lazy<IReadOnlyCollection<DocumentField>> _customFields;
+        protected IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
+
+        protected CmsPageDocumentSource()
+        {
+        }
 
         public CmsPageDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
@@ -55,14 +59,14 @@ namespace Composite.Search.DocumentSources
             _changesIndexNotifier.Start();
         }
 
-        public string Name => typeof (IPage).FullName;
+        public virtual string Name => typeof (IPage).FullName;
 
-        public void Subscribe(IDocumentSourceListener sourceListener)
+        public virtual void Subscribe(IDocumentSourceListener sourceListener)
         {
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
+        public virtual IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
             ICollection<IPage> unpublishedPages;
             IDictionary<Guid, Guid> parentPageIDs;
@@ -145,7 +149,7 @@ namespace Composite.Search.DocumentSources
         public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
 
 
-        private SearchDocument FromPage(IPage page, EntityToken entityToken, Dictionary<Tuple<Guid, Guid>, List<IData>> allMetaData)
+        protected virtual SearchDocument FromPage(IPage page, EntityToken entityToken, Dictionary<Tuple<Guid, Guid>, List<IData>> allMetaData)
         {
             string label = page.MenuTitle;
             if (string.IsNullOrWhiteSpace(label))
@@ -216,7 +220,7 @@ namespace Composite.Search.DocumentSources
             }
         }
 
-        private string GetDocumentId(IPage page)
+        protected virtual string GetDocumentId(IPage page)
         {
             bool isUnpublished = page.DataSourceId.PublicationScope == PublicationScope.Unpublished;
 
@@ -329,7 +333,7 @@ namespace Composite.Search.DocumentSources
             return false;
         }
 
-        private bool PageShouldBeIndexed(IData data)
+        protected bool PageShouldBeIndexed(IData data)
         {
             if (!(data is IPage page))
             {
