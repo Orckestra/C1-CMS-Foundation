@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Composite.Functions;
 
@@ -28,7 +29,22 @@ namespace Composite.Core.PageTemplates
         /// </summary>
         /// <param name="contentToRender">The render job.</param>
         /// <param name="functionContextContainer">The function context container.</param>
-        XDocument Render(PageContentToRender contentToRender, 
-                         FunctionContextContainer functionContextContainer);
+        XDocument Render(PageContentToRender contentToRender,
+            FunctionContextContainer functionContextContainer);
+    }
+
+    /// <summary>
+    /// A page renderer that supports async functions.
+    /// ASP.NET User Web Forms and UserControl-s are not supported.
+    /// </summary>
+    public interface IAsyncPageRenderer : IPageRenderer
+    {
+        /// <summary>
+        /// Rendering the content into an <c cref="XDocument" />.
+        /// </summary>
+        /// <param name="contentToRender">The render job.</param>
+        /// <param name="functionContextContainer">The function context container.</param>
+        Task<XDocument> RenderAsync(PageContentToRender contentToRender,
+            FunctionContextContainer functionContextContainer);
     }
 }
