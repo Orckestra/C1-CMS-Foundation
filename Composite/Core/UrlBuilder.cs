@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Util;
 using Composite.Core.Extensions;
 using Composite.Core.Routing.Pages;
 
@@ -85,28 +88,91 @@ namespace Composite.Core
 
         internal static class DefaultHttpEncoder
         {
-            public static string UrlEncode(string urlPart)
+            private static readonly Func<string, string> _urlPathEncodeFunc;
+            private static readonly Func<string, Encoding, string> _urlDecodeFunc;
+            private static readonly Func<byte[], int, int, byte[]> _urlEncodeFunc;
+
+            static DefaultHttpEncoder()
             {
+                HttpEncoder defaultHttpEncoder;
                 using (new NoHttpContext())
                 {
-                    return HttpUtility.UrlEncode(urlPart);
+                    defaultHttpEncoder = HttpEncoder.Current;
+                }
+
+                var instanceExpression = Expression.Constant(defaultHttpEncoder);
+
+                // Compiling: str => _defaultHttpEncoder.UrlPathEncode(str)
+                {
+                    var stringParam = Expression.Parameter(typeof(string));
+                    var methodInfo = typeof(HttpEncoder)
+                        .GetMethod("UrlPathEncode", BindingFlags.Instance | BindingFlags.NonPublic, null, new []{typeof(string)}, null);
+                    Verify.IsNotNull(methodInfo, "Failed to get method 'UrlPathEncode' from " + typeof(HttpEncoder).FullName);
+                    var methodCallExpression = Expression.Call(instanceExpression, methodInfo, stringParam);
+                    _urlPathEncodeFunc = Expression.Lambda<Func<string, string>>(methodCallExpression, stringParam).Compile();
+                }
+
+                // Compiling: (str, encoding) => _defaultHttpEncoder.UrlDecode(str, encoding);
+                {
+                    var stringParam = Expression.Parameter(typeof(string));
+                    var encodingParam = Expression.Parameter(typeof(Encoding));
+                    var methodInfo = typeof(HttpEncoder)
+                        .GetMethod("UrlDecode", BindingFlags.Instance | BindingFlags.NonPublic, null, new []{ typeof(string), typeof(Encoding) }, null);
+                    Verify.IsNotNull(methodInfo, "Failed to get method 'UrlDecode' from " + typeof(HttpEncoder).FullName);
+
+                    var methodCallExpression = Expression.Call(instanceExpression, methodInfo, stringParam, encodingParam);
+                    _urlDecodeFunc = Expression.Lambda<Func<string, Encoding, string>>(
+                        methodCallExpression, stringParam, encodingParam).Compile();
+                }
+
+                // Compiling: (bytes, offset, length) => _defaultHttpEncoder.UrlEncode(str, bytes, offset, length);
+                {
+                    var bytesParam = Expression.Parameter(typeof(byte[]));
+                    var offsetParam = Expression.Parameter(typeof(int));
+                    var lengthParam = Expression.Parameter(typeof(int));
+                    var methodInfo = typeof(HttpEncoder)
+                        .GetMethod("UrlEncode", BindingFlags.Instance | BindingFlags.NonPublic, null,
+                            new[] { typeof(byte[]), typeof(int), typeof(int) }, null);
+                    Verify.IsNotNull(methodInfo, "Failed to get method 'UrlDecode' from " + typeof(HttpEncoder).FullName);
+
+                    var methodCallExpression = Expression.Call(instanceExpression, methodInfo, bytesParam, offsetParam, lengthParam);
+                    _urlEncodeFunc = Expression.Lambda<Func<byte[], int, int, byte[]>>(
+                        methodCallExpression, bytesParam, offsetParam, lengthParam).Compile();
                 }
             }
 
+            private static byte[] UrlEncodeToBytes(string str, Encoding e)
+            {
+                if (str == null)
+                {
+                    return null;
+                }
+                byte[] bytes = e.GetBytes(str);
+
+                return _urlEncodeFunc(bytes, 0, bytes.Length);
+            }
+
+
+            public static string UrlEncode(string urlPart)
+            {
+                if (urlPart == null)
+                {
+                    return null;
+                }
+
+                return Encoding.ASCII.GetString(UrlEncodeToBytes(urlPart, Encoding.UTF8));
+            }
+
+
+
             public static string UrlPathEncode(string urlPart)
             {
-                using (new NoHttpContext())
-                {
-                    return HttpUtility.UrlPathEncode(urlPart);
-                }
+                return _urlPathEncodeFunc(urlPart);
             }
 
             public static string UrlDecode(string urlPart)
             {
-                using (new NoHttpContext())
-                {
-                    return HttpUtility.UrlDecode(urlPart);
-                }
+                return _urlDecodeFunc(urlPart, Encoding.UTF8);
             }
 
             private class NoHttpContext : IDisposable

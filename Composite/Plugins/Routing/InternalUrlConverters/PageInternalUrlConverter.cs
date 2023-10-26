@@ -26,7 +26,7 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
 
             try
             {
-                anchor = new UrlBuilder(internalPageUrl).Anchor;
+                anchor = GetAnchor(internalPageUrl);
                 pageUrlData = PageUrls.UrlProvider.ParseInternalUrl(internalPageUrl);
             }
             catch
@@ -59,6 +59,14 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
             }
 
             return publicPageUrl;
+        }
+
+        private static string GetAnchor(string url)
+        {
+            int anchorIndex = url.IndexOf('#');
+            if (anchorIndex <= -1) return null;
+
+            return anchorIndex == url.Length - 1 ? string.Empty : url.Substring(anchorIndex + 1);
         }
 
         /// <inheritdoc />
