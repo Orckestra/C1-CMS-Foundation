@@ -265,8 +265,23 @@ namespace Composite.Search.Crawling
 
         internal static string GetEntityTokenHash(EntityToken entityToken)
         {
-            var entityTokenString = EntityTokenSerializer.Serialize(entityToken);
-            var md5Hash  = HashingHelper.ComputeMD5Hash(entityTokenString, Encoding.UTF8);
+            var token = new StringBuilder();
+            if (entityToken is DataEntityToken dataEntityToken && typeof(IVersioned).IsAssignableFrom(dataEntityToken.InterfaceType))
+            {
+                var dataSourceId = dataEntityToken.DataSourceId;
+                // Serialize without versionId
+                token.Append(dataEntityToken.Id);
+                token.Append(':');
+                token.Append(dataSourceId.LocaleScope);
+                token.Append(":");
+                token.Append(dataSourceId.DataScopeIdentifier);
+            }
+            else
+            {
+                token.Append(EntityTokenSerializer.Serialize(entityToken));
+            }
+
+            var md5Hash  = HashingHelper.ComputeMD5Hash(token.ToString(), Encoding.UTF8);
 
             return UrlUtils.CompressGuid(md5Hash);
         }
