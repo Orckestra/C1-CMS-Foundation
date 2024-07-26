@@ -564,7 +564,15 @@ namespace Composite.Data.Types
         /// <summary>
         /// Deletes the versions of the given page in its current localization scope.
         /// </summary>
-        public static void DeletePage(IPage page, bool deleteChildPages = true)
+        public static void DeletePage(IPage page)
+        {
+            DeletePage(page, true);
+        }
+
+        /// <summary>
+        /// Deletes the versions of the given page in its current localization scope.
+        /// </summary>
+        public static void DeletePage(IPage page, bool deleteChildPages)
         {
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
@@ -644,8 +652,19 @@ namespace Composite.Data.Types
         /// <param name="pageId"></param>
         /// <param name="versionId"></param>
         /// <param name="locale"></param>
-        /// <param name="deleteChildPages">default is true</param>
-        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale, bool deleteChildPages = true)
+        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale)
+        {
+            DeletePage(pageId, versionId, locale, true);
+        }
+
+        /// <summary>
+        /// Delete the specific version of the page in the current localization scope.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="versionId"></param>
+        /// <param name="locale"></param>
+        /// <param name="deleteChildPages"></param>
+        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale, bool deleteChildPages)
         {
             Verify.ArgumentNotNull(locale, nameof(locale));
 
