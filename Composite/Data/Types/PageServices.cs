@@ -699,7 +699,8 @@ namespace Composite.Data.Types
 
                         if (pageToDelete != null)
                         {
-                            DataFacade.Delete(pageToDelete);
+                            // References should be retained if another version of the page exists; hence, the use of CascadeDeleteType.Disable is justified.
+                            DataFacade.Delete(pageToDelete, CascadeDeleteType.Disable);
                         }
                     }
                 }
