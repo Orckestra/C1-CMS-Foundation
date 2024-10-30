@@ -11,6 +11,7 @@ using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
+using Composite.Data.Types;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper
@@ -576,7 +577,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 {
                     Type refType = TypeManager.GetType(dataFieldDescriptor.ForeignKeyReferenceTypeName);
 
-                    IData data = DataFacade.TryGetDataByUniqueKey(refType, obj); // Could be a newly added null field...
+                    IData data = typeof(IVersioned).IsAssignableFrom(refType)
+                        ? DataFacade.TryGetDataVersionsByUniqueKey(refType, obj).FirstOrDefault()
+                        : DataFacade.TryGetDataByUniqueKey(refType, obj);
 
                     if (data != null)
                     {
