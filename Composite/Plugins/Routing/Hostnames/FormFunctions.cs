@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -37,6 +37,14 @@ namespace Composite.Plugins.Routing.Hostnames
             }
 
             return result;
+        }
+
+        public static Dictionary<string, string> GetWebsitesRootPages()
+        {
+            return PageManager.GetChildrenIDs(Guid.Empty)
+                .Select(rootPageId => PageManager.GetPageById(rootPageId))
+                .Where(page => page != null)
+                .ToDictionary(page => page.Id.ToString(), page => page.Title);
         }
     }
 }
