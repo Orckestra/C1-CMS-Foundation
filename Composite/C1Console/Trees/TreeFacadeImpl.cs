@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -621,6 +621,18 @@ namespace Composite.C1Console.Trees
                 DataFacade.ExistsInAnyLocale(interfaceType, dataEventArgs.Data.DataSourceId.LocaleScope))
             {
                 return; // Data exists in other locales, so do not remove this attachment point
+            }
+
+            if (typeof(IVersioned).IsAssignableFrom(interfaceType) && interfaceType.GetKeyProperties().Count == 1)
+            {
+                var key = dataEventArgs.Data.GetUniqueKey();
+                var versions = DataFacade.TryGetDataVersionsByUniqueKey(interfaceType, key).ToList();
+
+                if (versions.Count > 0)
+                {
+                    return; // Do not delete the attachment point if the data is versioned
+                            // and not all of the versions of the element are deleted.
+                }
             }
 
             PropertyInfo propertyInfo = interfaceType.GetKeyProperties()[0];
