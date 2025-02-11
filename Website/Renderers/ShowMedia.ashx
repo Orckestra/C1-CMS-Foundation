@@ -331,32 +331,34 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
 
             string rangeStr = context.Request.Headers["Range"];
+            List<Range> rangeSegments = null;
 
             if (canAcceptRanges && !rangeStr.IsNullOrEmpty())
             {
-                List<Range> rangeSegments = ParseRanges(rangeStr, length.Value);
-
-                context.Response.AddHeader("Content-Range", BuildContentRangeResponseHeader(rangeSegments, length.Value));
+                rangeSegments = ParseRanges(rangeStr, length.Value);
+            }
+            // Support only one range. Multi-range requires multipart/data response
+            if(rangeSegments != null && rangeSegments.Count == 1) {
+                var rangeSegment = rangeSegments.Single();
+                context.Response.AddHeader("Content-Range", BuildContentRangeResponseHeader(rangeSegment, length.Value));
                 context.Response.StatusCode = 206; // Partial content
 
-                int totalLength = (int)rangeSegments.Select(rs => rs.Length).Sum();
-                Verify.That(totalLength <= length.Value, "Combined download range is bigger then stream length");
+                long totalLength = rangeSegment.Length;
 
                 context.Response.AddHeader("Content-Length", totalLength.ToString(CultureInfo.InvariantCulture));
 
-                foreach (var rangeSegment in rangeSegments)
+  
+                if (source.IsFile)
                 {
-                    if (source.IsFile)
-                    {
-                        context.Response.WriteFile(source.GetFilePath(), rangeSegment.Offset, rangeSegment.Length);
-                    }
-                    else
-                    {
-                        inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
-
-                        OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
-                    }
+                    context.Response.WriteFile(source.GetFilePath(), rangeSegment.Offset, rangeSegment.Length);
                 }
+                else
+                {
+                    inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
+
+                    OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
+                }
+
             }
             else
             {
@@ -445,7 +447,9 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
     private static List<Range> ParseRanges(string rangesStr, long streamLength)
     {
         const string requiredPrefix = "bytes=";
-        Verify.That(rangesStr.StartsWith(requiredPrefix), "Incorrect 'Range' header. Prefix '{0}' is missing. '{1}'", requiredPrefix, rangesStr);
+        if (!rangesStr.StartsWith(requiredPrefix)) {
+            return null;//Incorrect 'Range' header
+        }
 
         rangesStr = rangesStr.Substring(requiredPrefix.Length);
         var result = new List<Range>();
@@ -481,30 +485,26 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 Verify.That(beginOffset <= endOffset, "End offset should be greater than begin offset");
 
-                result.Add(new Range(beginOffset.Value, endOffset.Value - beginOffset.Value + 1));
+                result.Add(new Range(beginOffset.Value, Math.Min(endOffset.Value, streamLength - 1) - beginOffset.Value + 1));
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Incorrect range segment '{0}'. Range: '{1}'".FormatWith(rangeStr, rangesStr), ex);
+                //Incorrect range segment
+                return null;
             }
         }
 
         return result;
     }
 
-    private static string BuildContentRangeResponseHeader(List<Range> rangeSegments, long length)
+    private static string BuildContentRangeResponseHeader(Range rangeSegment, long length)
     {
         var contentRangeHeader = new StringBuilder();
         contentRangeHeader.Append("bytes ");
 
-        foreach (var rangeSegment in rangeSegments)
-        {
-            contentRangeHeader.Append(rangeSegment.Offset);
-            contentRangeHeader.Append("-");
-            contentRangeHeader.Append(rangeSegment.Offset + rangeSegment.Length - 1);
-        }
-
-        Verify.That(rangeSegments.Count <= 10, "Too many range segments");
+        contentRangeHeader.Append(rangeSegment.Offset);
+        contentRangeHeader.Append("-");
+        contentRangeHeader.Append(rangeSegment.Offset + rangeSegment.Length - 1);
 
         contentRangeHeader.Append("/").Append(length);
 
