@@ -17,6 +17,11 @@ body {
 	padding: 22px 26px 30px 26px;
 	line-height: 20px;
 }
+/* Fix for a Firefox glitch that makes the page editor jump to the top every time you add or edit a function */
+body#tinymce {
+	height: auto;
+	min-height: 100%;
+}
 h1:first-child,
 h2:first-child,
 h3:first-child,
@@ -124,11 +129,12 @@ img.compositeFunctionWysiwygRepresentation.loaded{
     background-size: 8000px 60px;
     background-repeat: no-repeat;
     background-position: top right;
-    background-color: none;
+    background-color: transparent;
     width: auto; 
     min-height: 0;
     opacity: 1;
     cursor: default;
+	display: inline; /* Fix for Firefox. The "block" value makes the page editor almost unusable because it tries to add elements inside the [function] */
 }
 
 img.compositeFunctionWysiwygRepresentation.loaded:hover {
