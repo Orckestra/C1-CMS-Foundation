@@ -216,7 +216,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 var methods = type.GetMethods();
 
-                startupHandler.ConfigureServicesMethod = methods.FirstOrDefault(m => m.Name == ConfigureServicesMethodName && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(IServiceCollection));
+                startupHandler.ConfigureServicesMethod = methods.FirstOrDefault(m => m.Name == ConfigureServicesMethodName && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType.FullName == typeof(IServiceCollection).FullName); 
                 startupHandler.OnBeforeInitializeMethod = methods.FirstOrDefault(m => m.Name == OnBeforeInitializeMethodName);
                 startupHandler.OnInitializedMethod = methods.FirstOrDefault(m => m.Name == OnInitializedMethodName);
 
@@ -579,3 +579,4 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
     }
 }
+
