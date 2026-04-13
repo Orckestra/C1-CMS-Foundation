@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
@@ -47,7 +48,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 TimeStamp = logEntry.TimeStamp.Add(TimeZoneAdjustment),
                 ApplicationDomainId = AppDomain.CurrentDomain.Id,
                 ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                Message = logEntry.Message,
+                Message = SanitizeForLog(logEntry.Message), 
                 Severity = logEntry.Severity.ToString(),
             };
 
@@ -60,7 +61,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 fileLogEntry.DisplayOptions = title.Substring(0, title.IndexOf(')') + 1);
                 title = title.Substring(fileLogEntry.DisplayOptions.Length);
             }
-            fileLogEntry.Title = title;
+            fileLogEntry.Title = SanitizeForLog(title);
 
             LoggerInstance.WriteEntry(fileLogEntry);
         }
@@ -76,5 +77,25 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         }
 
         public static FileLogger LoggerInstance { get; private set; }
+ 
+        private static string SanitizeForLog(string input) 
+        { 
+            if (string.IsNullOrEmpty(input)) 
+            { 
+                return input; 
+            } 
+ 
+            var builder = new StringBuilder(input.Length); 
+ 
+            foreach (char ch in input) 
+            { 
+                bool isAllowedControlCharacter = ch == '\t' || ch == '\n' || ch == '\r'; 
+                bool isInvalidCharacter = (ch < 0x20 && !isAllowedControlCharacter) || ch == (char)160 || ch == (char)65533; 
+ 
+                builder.Append(isInvalidCharacter ? ' ' : ch); 
+            } 
+ 
+            return builder.ToString(); 
+        }
     }
 }
