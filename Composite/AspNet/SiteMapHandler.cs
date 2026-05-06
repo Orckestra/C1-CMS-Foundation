@@ -56,11 +56,9 @@ namespace Composite.AspNet
 
                     if (rootNode != null)
                     {
-                        var pageNotFoundId = GetPageNotFoundId(Guid.Parse(rootNode.Key), rootNode.Culture.Name);
-
                         using (new DataScope(rootNode.Culture))
                         {
-                            WriteFullSiteMap(writer, provider, pageNotFoundId);
+                            WriteFullSiteMap(writer, provider, Guid.Parse(rootNode.Key), rootNode.Culture.Name);
                         }
                     }
                 }
@@ -75,11 +73,9 @@ namespace Composite.AspNet
                     return;
                 }
 
-                var pageNotFoundId = GetPageNotFoundId(rootPage.Id, rootPage.SourceCultureName);
-
                 using (new SiteMapContext(rootPage))
                 {
-                    WriteFullSiteMap(writer, provider, pageNotFoundId);
+                    WriteFullSiteMap(writer, provider, rootPage.Id, rootPage.SourceCultureName);
                 }
             }
 
@@ -96,7 +92,7 @@ namespace Composite.AspNet
 
                 var binding = FindMatchingBinding(homePageId, cultureName, bindings);
 
-                return !string.IsNullOrEmpty(binding.PageNotFoundUrl) && Guid.TryParse(binding.PageNotFoundUrl.Substring(7, 36), out var pageNotFoundId)
+                return binding?.PageNotFoundUrl != null && binding.PageNotFoundUrl.Length >= 43 && Guid.TryParse(binding.PageNotFoundUrl.Substring(7, 36), out var pageNotFoundId)
                     ? pageNotFoundId
                     : (Guid?)null;
             }
@@ -246,11 +242,11 @@ namespace Composite.AspNet
                     homePageId, cultureName);
         }
 
-        private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider, Guid? pageNotFoundId)
+        private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider, Guid pageId, string cultureName)
         {
             writer.WriteStartElement("urlset", SiteMapNamespace);
 
-            WriteElement(writer, provider.RootNode, new HashSet<string>(), pageNotFoundId);
+            WriteElement(writer, provider.RootNode, new HashSet<string>(), GetPageNotFoundId(pageId, cultureName));
 
             writer.WriteEndElement();
         }
