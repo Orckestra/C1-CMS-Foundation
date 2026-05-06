@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Xml;
 using Composite.Core.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
@@ -89,10 +90,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
  
             foreach (char ch in input) 
             { 
-                bool isAllowedControlCharacter = ch == '\t' || ch == '\n' || ch == '\r'; 
-                bool isInvalidCharacter = (ch < 0x20 && !isAllowedControlCharacter) || ch == (char)160 || ch == (char)65533; 
- 
-                builder.Append(isInvalidCharacter ? ' ' : ch); 
+                builder.Append(XmlConvert.IsXmlChar(ch) ? ch : ' ');
             } 
  
             return builder.ToString(); 
