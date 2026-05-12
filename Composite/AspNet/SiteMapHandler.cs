@@ -91,10 +91,10 @@ namespace Composite.AspNet
                 var bindings = data.Get<IHostnameBinding>().ToList();
 
                 var binding = FindMatchingBinding(homePageId, cultureName, bindings);
+                
+                var dataReference = binding?.PageNotFoundUrl != null ? InternalUrls.TryParseInternalUrl(binding.PageNotFoundUrl) : null;
 
-                return binding?.PageNotFoundUrl != null && binding.PageNotFoundUrl.Length >= 43 && Guid.TryParse(binding.PageNotFoundUrl.Substring(7, 36), out var pageNotFoundId)
-                    ? pageNotFoundId
-                    : (Guid?)null;
+                return dataReference == null ? (Guid?)null : DataUrls.TryGetPageUrlData(dataReference)?.PageId;
             }
         }
 
