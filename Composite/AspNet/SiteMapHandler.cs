@@ -1,3 +1,9 @@
+using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
+using Composite.Core.WebClient;
+using Composite.Data;
+using Composite.Data.Types;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -5,12 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Xml;
-using Composite.Core;
-using Composite.Core.Extensions;
-using Composite.Core.Linq;
-using Composite.Core.WebClient;
-using Composite.Data;
-using Composite.Data.Types;
 
 namespace Composite.AspNet
 {
@@ -58,7 +58,7 @@ namespace Composite.AspNet
                     {
                         using (new DataScope(rootNode.Culture))
                         {
-                            WriteFullSiteMap(writer, provider);
+                            WriteFullSiteMap(writer, provider, Guid.Parse(rootNode.Key), rootNode.Culture.Name);
                         }
                     }
                 }
@@ -73,9 +73,9 @@ namespace Composite.AspNet
                     return;
                 }
 
-                using(new SiteMapContext(rootPage))
+                using (new SiteMapContext(rootPage))
                 {
-                    WriteFullSiteMap(writer, provider);
+                    WriteFullSiteMap(writer, provider, rootPage.Id, rootPage.SourceCultureName);
                 }
             }
 
@@ -84,13 +84,28 @@ namespace Composite.AspNet
             writer.Flush();
         }
 
+        private Guid? GetPageNotFoundId(Guid homePageId, string cultureName)
+        {
+            using (var data = new DataConnection())
+            {
+                var bindings = data.Get<IHostnameBinding>().ToList();
+
+                var binding = FindMatchingBinding(homePageId, cultureName, bindings);
+                
+                var dataReference = binding?.PageNotFoundUrl != null ? InternalUrls.TryParseInternalUrl(binding.PageNotFoundUrl) : null;
+
+                return dataReference == null ? (Guid?)null : DataUrls.TryGetPageUrlData(dataReference)?.PageId;
+            }
+        }
+
         private IPage ExtractRootPageFromSiteMapUrl(string relativeUrl)
         {
             Verify.That(relativeUrl.StartsWith(UrlUtils.PublicRootPath, StringComparison.OrdinalIgnoreCase), "Incorrect url prefix");
 
 
-            string[] requestParts = relativeUrl.Substring(UrlUtils.PublicRootPath.Length)
-                                               .Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] requestParts = relativeUrl
+                .Substring(UrlUtils.PublicRootPath.Length)
+                .Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             
             Verify.That(requestParts.Length > 0, "error parsing url");
             string languageCode = requestParts[0];
@@ -102,8 +117,7 @@ namespace Composite.AspNet
             {
                 return null;
             }
-
-
+            
             using(new DataScope(PublicationScope.Published, culture))
             {
                 foreach(Guid rootPageId in PageManager.GetChildrenIDs(Guid.Empty))
@@ -171,7 +185,7 @@ namespace Composite.AspNet
                     }
                 }
 
-                IHostnameBinding binding = FindMatchingBinding(node, bindings);
+                IHostnameBinding binding = FindMatchingBinding(Guid.Parse(node.Key), node.Culture.Name, bindings);
 
                 writer.WriteStartElement("sitemap");
 
@@ -203,11 +217,8 @@ namespace Composite.AspNet
             writer.WriteEndElement();
         }
 
-        private IHostnameBinding FindMatchingBinding(CmsPageSiteMapNode sitemapNode, List<IHostnameBinding> bindings)
+        private IHostnameBinding FindMatchingBinding(Guid homePageId, string cultureName, List<IHostnameBinding> bindings)
         {
-            Guid homePageId = Guid.Parse(sitemapNode.Key);
-            string cultureName = sitemapNode.Culture.Name;
-
             var bestMatch = FindMatch(bindings, homePageId, cultureName);
             if (bestMatch != null)
             {
@@ -221,21 +232,21 @@ namespace Composite.AspNet
                 return secondBestMatch;
             }
 
-            return  bindings.OrderBy(b => b.Hostname).FirstOrDefault(h => h.HomePageId == homePageId);
+            return bindings.OrderBy(b => b.Hostname).FirstOrDefault(h => h.HomePageId == homePageId);
         }
 
         private IHostnameBinding FindMatch(IEnumerable<IHostnameBinding> bindings, Guid homePageId, string cultureName)
         {
             return bindings.Where(h => h.HomePageId == homePageId && h.Culture == cultureName)
-                .SingleOrDefaultOrException("There are multiple hostname bindings refering to the same home page id '{0}' and the same culture '{1}'",
+                .SingleOrDefaultOrException("There are multiple hostname bindings referring to the same home page id '{0}' and the same culture '{1}'",
                     homePageId, cultureName);
         }
 
-        private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider)
+        private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider, Guid pageId, string cultureName)
         {
             writer.WriteStartElement("urlset", SiteMapNamespace);
 
-            WriteElement(writer, provider.RootNode, new HashSet<string>());
+            WriteElement(writer, provider.RootNode, new HashSet<string>(), GetPageNotFoundId(pageId, cultureName));
 
             writer.WriteEndElement();
         }
@@ -245,14 +256,18 @@ namespace Composite.AspNet
             return string.Equals(relativeUrl, UrlUtils.PublicRootPath + "/sitemap.xml", StringComparison.OrdinalIgnoreCase);
         }
 
-        private void WriteElement(XmlWriter writer, SiteMapNode node, HashSet<string> alreadyVisitedNodes)
+        private void WriteElement(XmlWriter writer, SiteMapNode node, HashSet<string> alreadyVisitedNodes, Guid? pageNotFoundId)
         {
-            if (alreadyVisitedNodes.Contains(node.Key))
+            if(!Guid.TryParse(node.Key, out var nodeId) || nodeId == pageNotFoundId.GetValueOrDefault())
+            {
+                return;
+            }
+
+            if (!alreadyVisitedNodes.Add(node.Key))
             {
                 Log.LogError(nameof(SiteMapHandler), $"Loop in sitemap nodes detected. Node key: '{node.Key}'");
                 return;
             }
-            alreadyVisitedNodes.Add(node.Key);
 
             writer.WriteStartElement("url");
 
@@ -291,7 +306,7 @@ namespace Composite.AspNet
 
             foreach (SiteMapNode child in node.ChildNodes)
             {
-                WriteElement(writer, child, alreadyVisitedNodes);
+                WriteElement(writer, child, alreadyVisitedNodes, pageNotFoundId);
             }
         }
     }
