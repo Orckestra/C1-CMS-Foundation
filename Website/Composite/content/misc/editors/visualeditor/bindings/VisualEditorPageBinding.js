@@ -145,7 +145,18 @@ VisualEditorPageBinding.prototype.initializeComponent = function ( editor, engin
 		self.updateUndoBroadcasters ();
 		editor.checkForDirty ();
 	});
-	
+
+	/*
+	 * The editor triggers the dirty-check on the "keypress" event, which
+	 * does not fire for non-character keys such as Backspace and Delete.
+	 * As a result, removing content with these keys did not activate the
+	 * Save button. The "input" event fires for any content change (Backspace,
+	 * Delete, cut, paste, typing), so hook it to detect these edits.
+	 */
+	instance.on('input',  function () {
+		editor.checkForDirty ();
+	});
+
 	/*
 	 * Register content change handler to support undo-redo.
 	 */
