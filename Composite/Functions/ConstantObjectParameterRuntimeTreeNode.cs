@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -35,18 +36,12 @@ namespace Composite.Functions
         /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
-            return new string[0];
+            return Array.Empty<string>();
         }
 
 
         /// <exclude />
-        public override bool ContainsNestedFunctions
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ContainsNestedFunctions => false;
 
 
         /// <exclude />
@@ -55,9 +50,9 @@ namespace Composite.Functions
             var element = new XElement(FunctionTreeConfigurationNames.ParamTag, 
                 new XAttribute(FunctionTreeConfigurationNames.NameAttribute, this.Name));
 
-            if (_constantValue is IEnumerable && !(_constantValue is string))
+            if (_constantValue is IEnumerable enumerable && !(_constantValue is string))
             {
-                foreach (object obj in (IEnumerable)_constantValue)
+                foreach (object obj in enumerable)
                 {
                     element.Add(new XElement(FunctionTreeConfigurationNames.ParamElementTag,
                             new XAttribute(FunctionTreeConfigurationNames.ValueAttribute, 
@@ -70,9 +65,9 @@ namespace Composite.Functions
             object xValue;
             if (_constantValue is XNode)
             {
-                if (_constantValue is XDocument)
+                if (_constantValue is XDocument xDoc)
                 {
-                    xValue = ((XDocument) _constantValue).Root;
+                    xValue = xDoc.Root;
                 }
                 else
                 {

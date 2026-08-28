@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
@@ -10,7 +10,9 @@ namespace Composite.Functions
 {
 	internal sealed class XElementParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
     {
-        private XElement _element;
+        private static readonly XName FunctionXName = Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName;
+
+        private readonly XElement _element;
 
         private XElement ExecuteInnerFunctions(FunctionContextContainer contextContainer)
         {
@@ -19,8 +21,7 @@ namespace Composite.Functions
 
             while (true)
             {
-                XName functionXName = Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName;
-                IEnumerable<XElement> nestedFunctionCalls = resultRoot.Descendants(functionXName).Where(f => !f.Ancestors(functionXName).Any());
+                IEnumerable<XElement> nestedFunctionCalls = resultRoot.Descendants(FunctionXName).Where(f => !f.Ancestors(FunctionXName).Any());
                 var evaluatedListOfInnerFunctions = nestedFunctionCalls.ToList();
 
                 if (!evaluatedListOfInnerFunctions.Any())
@@ -83,20 +84,13 @@ namespace Composite.Functions
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             return
-                from nameAttribute in _element.Elements(Namespaces.Function10 + FunctionTreeConfigurationNames.FunctionTagName).Attributes( FunctionTreeConfigurationNames.NameAttributeName )
+                from nameAttribute in _element.Elements(FunctionXName).Attributes( FunctionTreeConfigurationNames.NameAttributeName )
                 select nameAttribute.Value;
         }
 
 
 
-        public override bool ContainsNestedFunctions
-        {
-            get
-            {
-                return GetAllSubFunctionNames().Any();
-            }
-        }
-
+        public override bool ContainsNestedFunctions => GetAllSubFunctionNames().Any();
 
 
         public XElement GetHostedXElement()

@@ -1,11 +1,17 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Composite.Core.Types;
 
 
 namespace Composite.Functions
 {
+    internal interface IAsyncRuntimeTreeNode
+    {
+        Task<object> GetValueAsync(FunctionContextContainer contextContainer);
+    }
+
     /// <summary>    
     /// </summary>
     /// <exclude />

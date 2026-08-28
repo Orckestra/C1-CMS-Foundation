@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -19,6 +20,7 @@ using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
+using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching;
 using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
@@ -30,7 +32,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PageRenderer
     {
-        private static readonly string LogTitle = typeof(PageRenderer).Name;
+        private static readonly string LogTitle = nameof(PageRenderer);
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
         private static readonly XName XName_function = Namespaces.Function10 + "function";
@@ -46,7 +48,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 XEmbedableMapper = mapper,
                 SuppressXhtmlExceptions = GlobalSettingsFacade.PrettifyRenderFunctionExceptions 
-                                            || PageRenderer.RenderingReason == RenderingReason.ScreenshotGeneration 
+                                            || PageRenderer.RenderingReason == RenderingReason.ScreenshotGeneration
             };
 
             return contextContainer;
@@ -360,7 +362,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 using (Profiler.Measure("Executing embedded functions"))
                 {
-                    ExecuteFunctionsRec(document.Root, contextContainer, func =>
+                    ExecuteFunctionsRecursively(document.Root, contextContainer, func =>
                     {
                         if (!disableCaching && !FunctionAllowsCaching(func))
                         {
@@ -572,32 +574,27 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+
         /// <summary>
-        /// Executes functions that match the predicate recursively,
-        /// 
+        /// Executes functions that match the predicate recursively
         /// </summary>
         /// <param name="element"></param>
         /// <param name="functionContext"></param>
         /// <param name="functionShouldBeExecuted">A predicate that defines whether a function should be executed based on its name.</param>
         /// <returns><value>True</value> if all of the functions has matched the predicate</returns>
-        internal static bool ExecuteFunctionsRec(
+        private static bool ExecuteFunctionsRecursively(
             XElement element, 
             FunctionContextContainer functionContext,
-            Predicate<string> functionShouldBeExecuted = null)
+            Predicate<string> functionShouldBeExecuted)
         {
             if (element.Name != XName_function)
             {
-                var children = element.Elements();
-                if (element.Elements(XName_function).Any())
-                {
-                    // Allows replacing the function elements without breaking the iterator
-                    children = children.ToList(); 
-                }
+                var nonNestedDescFunctions = FindNonNestedFunctionDescendants(element);
 
                 bool allChildrenExecuted = true;
-                foreach (var childElement in children)
+                foreach (var functionElement in nonNestedDescFunctions)
                 {
-                    if (!ExecuteFunctionsRec(childElement, functionContext, functionShouldBeExecuted))
+                    if (!ExecuteFunctionsRecursively(functionElement, functionContext, functionShouldBeExecuted))
                     {
                         allChildrenExecuted = false;
                     }
@@ -623,7 +620,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                         continue;
                     }
 
-                    if (!ExecuteFunctionsRec(parameterNode, functionContext, functionShouldBeExecuted))
+                    if (!ExecuteFunctionsRecursively(parameterNode, functionContext, functionShouldBeExecuted))
                     {
                         allParametersEvaluated = false;
                     }
@@ -651,7 +648,111 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     foreach (XElement xelement in GetXElements(result).ToList())
                     {
-                        if (!ExecuteFunctionsRec(xelement, functionContext, functionShouldBeExecuted))
+                        if (!ExecuteFunctionsRecursively(xelement, functionContext, functionShouldBeExecuted))
+                        {
+                            allRecFunctionsExecuted = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                using (Profiler.Measure("PageRenderer. Logging exception: " + ex.Message))
+                {
+                    XElement errorBoxHtml;
+
+                    if (!functionContext.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
+                    {
+                        throw;
+                    }
+
+                    result = errorBoxHtml;
+                }
+            }
+
+            ReplaceFunctionWithResult(element, result);
+
+            return allRecFunctionsExecuted;
+        }
+
+        /// <summary>
+        /// Executes functions that match the predicate recursively, supports async functions.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <param name="functionShouldBeExecuted">A predicate that defines whether a function should be executed based on its name.</param>
+        /// <returns><value>True</value> if all of the functions has matched the predicate</returns>
+        private static async Task<bool> ExecuteFunctionsRecursivelyAsync(
+            XElement element,
+            FunctionContextContainer functionContext,
+            Predicate<string> functionShouldBeExecuted)
+        {
+            if (element.Name != XName_function)
+            {
+                var nonNestedDescFunctions = FindNonNestedFunctionDescendants(element);
+
+                bool allChildrenExecuted = true;
+                foreach (var functionElement in nonNestedDescFunctions)
+                {
+                    if (!await ExecuteFunctionsRecursivelyAsync(functionElement, functionContext, functionShouldBeExecuted))
+                    {
+                        allChildrenExecuted = false;
+                    }
+                }
+                return allChildrenExecuted;
+            }
+
+            bool allRecFunctionsExecuted = true;
+
+            string functionName = (string)element.Attribute(XName_Name);
+            object result;
+            try
+            {
+                // Evaluating function calls in parameters
+                IEnumerable<XElement> parameters = element.Elements();
+
+                bool allParametersEvaluated = true;
+                foreach (XElement parameterNode in parameters.ToList())
+                {
+                    var parameterName = (string)parameterNode.Attribute(XName_Name);
+                    if (ParameterIsLazyEvaluated(functionName, parameterName))
+                    {
+                        continue;
+                    }
+
+                    if (!await ExecuteFunctionsRecursivelyAsync(parameterNode, functionContext, functionShouldBeExecuted))
+                    {
+                        allParametersEvaluated = false;
+                    }
+                }
+
+                if (!allParametersEvaluated)
+                {
+                    return false;
+                }
+
+                if (functionShouldBeExecuted != null &&
+                    !functionShouldBeExecuted(functionName))
+                {
+                    return false;
+                }
+
+                // Executing a function call
+                var runtimeTreeNode = FunctionTreeBuilder.Build(element);
+                result = runtimeTreeNode is IAsyncRuntimeTreeNode asyncRuntimeTreeNode
+                    ? await asyncRuntimeTreeNode.GetValueAsync(functionContext)
+                    : runtimeTreeNode.GetValue(functionContext);
+
+                if (result != null)
+                {
+                    // Evaluating functions in a result of a function call
+                    result = functionContext.MakeXEmbedable(result);
+
+                    foreach (XElement xelement in GetXElements(result).ToList())
+                    {
+                        var subtreeExecuted  = await ExecuteFunctionsRecursivelyAsync(xelement, functionContext, functionShouldBeExecuted);
+
+                        if (!subtreeExecuted)
                         {
                             allRecFunctionsExecuted = false;
                         }
@@ -687,7 +788,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer functionContext)
         {
-            ExecuteFunctionsRec(element, functionContext, null);
+            ExecuteFunctionsRecursively(element, functionContext, null);
+        }
+
+        public static Task ExecuteEmbeddedFunctionsAsync(XElement element, FunctionContextContainer functionContext)
+        {
+            return ExecuteFunctionsRecursivelyAsync(element, functionContext, null);
         }
 
         /// <summary>
@@ -699,7 +805,19 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <returns></returns>
         internal static bool ExecuteCacheableFunctions(XElement element, FunctionContextContainer functionContext)
         {
-            return ExecuteFunctionsRec(element, functionContext, FunctionAllowsCaching);
+            return ExecuteFunctionsRecursively(element, functionContext, FunctionAllowsCaching);
+        }
+
+        /// <summary>
+        /// Executes all cacheable (not dynamic) functions and returns <value>True</value> 
+        /// if all of the functions were cacheable.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <returns></returns>
+        internal static Task<bool> ExecuteCacheableFunctionsAsync(XElement element, FunctionContextContainer functionContext)
+        {
+            return ExecuteFunctionsRecursivelyAsync(element, functionContext, FunctionAllowsCaching);
         }
 
         private static bool FunctionAllowsCaching(string name)
@@ -818,6 +936,32 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 DisableAspNetPostback(child, out formDisabled);
                 if (formDisabled) break;
+            }
+        }
+
+        internal static IEnumerable<XElement> FindNonNestedFunctionDescendants(XElement element)
+        {
+            List<XElement> list = null;
+
+            FindNonNestedFunctionDescendants(element, ref list);
+
+            return list ?? Enumerable.Empty<XElement>();
+        }
+
+        private static void FindNonNestedFunctionDescendants(XElement element, ref List<XElement> list)
+        {
+            foreach (var childElement in element.Elements())
+            {
+                if (childElement.Name == XName_function)
+                {
+                    if (list == null) list = new List<XElement>();
+
+                    list.Add(childElement);
+                }
+                else
+                {
+                    FindNonNestedFunctionDescendants(childElement, ref list);
+                }
             }
         }
     }

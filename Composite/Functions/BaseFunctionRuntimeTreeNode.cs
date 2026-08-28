@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.Extensions;
@@ -17,7 +17,7 @@ namespace Composite.Functions
         /// <exclude />
         public void SetParameter(BaseParameterRuntimeTreeNode parameterRuntimeTreeNode)
         {
-            if (parameterRuntimeTreeNode == null) throw new ArgumentNullException("parameterRuntimeTreeNode");
+            if (parameterRuntimeTreeNode == null) throw new ArgumentNullException(nameof(parameterRuntimeTreeNode));
 
             BaseParameterRuntimeTreeNode node = this.Parameters.Find(n => n.Name == parameterRuntimeTreeNode.Name);
 
@@ -36,7 +36,7 @@ namespace Composite.Functions
         {
             if (string.IsNullOrEmpty(parameterName)) throw new ArgumentException("parameterName can not be null or an empty string");
 
-            BaseParameterRuntimeTreeNode toRemove = this.Parameters.Where(f => f.Name == parameterName).FirstOrDefault();
+            BaseParameterRuntimeTreeNode toRemove = this.Parameters.FirstOrDefault(f => f.Name == parameterName);
 
             if (toRemove != null)
             {
@@ -62,8 +62,7 @@ namespace Composite.Functions
             {
                 foreach (var parameter in this.Parameters)
                 {
-
-                    if (parameter.GetAllSubFunctionNames().Count() > 0)
+                    if (parameter.GetAllSubFunctionNames().Any())
                     {
                         return true;
                     }
@@ -75,7 +74,7 @@ namespace Composite.Functions
 
 
         /// <exclude />
-        abstract protected IMetaFunction HostedFunction { get; }
+        protected abstract IMetaFunction HostedFunction { get; }
 
 
 
@@ -127,8 +126,7 @@ namespace Composite.Functions
         protected void ValidateNotSelfCalling()
         {
             var function = HostedFunction;
-            if (function is ICompoundFunction
-                && (function as ICompoundFunction).AllowRecursiveCall)
+            if (function is ICompoundFunction compoundFunction && compoundFunction.AllowRecursiveCall)
             {
                 return;
             }
@@ -148,21 +146,18 @@ namespace Composite.Functions
 
         private static bool IsSelfCalling(string functionName, BaseRuntimeTreeNode runtimeTreeNode)
         {            
-            if (runtimeTreeNode is FunctionParameterRuntimeTreeNode)
+            if (runtimeTreeNode is FunctionParameterRuntimeTreeNode functionParameterRuntimeTreeNode)
             {
-                FunctionParameterRuntimeTreeNode functionParameterRuntimeTreeNode = runtimeTreeNode as FunctionParameterRuntimeTreeNode;
-
                 if (functionParameterRuntimeTreeNode.GetHostedFunction().GetCompositeName() == functionName)
                 {
                     return true;
                 }
+
                 return IsSelfCalling(functionName, functionParameterRuntimeTreeNode.GetHostedFunction());
             }
 
-            if (runtimeTreeNode is BaseFunctionRuntimeTreeNode)
+            if (runtimeTreeNode is BaseFunctionRuntimeTreeNode functionRuntimeTreeNode)
             {
-                BaseFunctionRuntimeTreeNode functionRuntimeTreeNode = runtimeTreeNode as BaseFunctionRuntimeTreeNode;
-
                 if (functionName == functionRuntimeTreeNode.GetCompositeName())
                 {
                     return true;
