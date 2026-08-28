@@ -16,11 +16,10 @@ namespace Composite.Core.Xml
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class XhtmlPrettifier
     {
-        private static string _ampersandWord = "C1AMPERSAND";
+        private static readonly string _ampersandWord = "C1AMPERSAND";
         private static readonly Regex _encodeCDataRegex = new Regex(@"<!\[CDATA\[((?:[^]]|\](?!\]>))*)\]\]>", RegexOptions.Compiled);
         private static readonly Regex _decodeCDataRegex = new Regex("C1CDATAREPLACE(?<counter>[0-9]*)", RegexOptions.Compiled);
         private static readonly Regex _encodeRegex = new Regex(@"&(?<tag>[^\;]+;)", RegexOptions.Compiled);
-        private static readonly Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
 
         private static readonly char[] IncorrectEscapeSequenceCharacters = { '\'', '\"', '<', '>', ' ' };
         
@@ -168,7 +167,7 @@ namespace Composite.Core.Xml
                             || node.ParentNode == null 
                             || node.ParentNode.NamespaceByPrefix(attribute.Name) != node.NamespaceURI)
                         {
-                            stringBuilder.Append(" ").Append(attribute.Name).Append("=\"").Append(EncodeAttributeString(attribute.Value)).Append("\"");
+                            stringBuilder.Append(" ").Append(attribute.Name).Append("=\"").AppendEncodeAttributeString(attribute.Value).Append("\"");
                         }
                     }
 
@@ -236,7 +235,7 @@ namespace Composite.Core.Xml
                         stringBuilder.Append(" ");
                     }
 
-                    stringBuilder.Append(EncodeElementString(value));
+                    stringBuilder.AppendEncodeElementString(value);
 
                     if (addSpaceToEnd)
                     {
@@ -281,7 +280,7 @@ namespace Composite.Core.Xml
                         stringBuilder.AppendLine().AddIndent(node.Level, indentString);
                     }
 
-                    stringBuilder.Append("<!--").Append(RemoveC1EncodedAmpersands(node.Value)).Append("-->");
+                    stringBuilder.Append("<!--").AppendRemoveC1EncodedAmpersands(node.Value).Append("-->");
                     if (node.ParentNode != null && !node.ParentNode.IsBlockElement())
                     {
                         stringBuilder.AppendLine().AddIndent(node.Level - 1, indentString);
@@ -329,26 +328,48 @@ namespace Composite.Core.Xml
 
 
 
-        private static string EncodeAttributeString(string value)
+        private static StringBuilder AppendEncodeAttributeString(this StringBuilder sb, string value)
         {
             value = value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
 
-            return RemoveC1EncodedAmpersands(value);
+            return sb.AppendRemoveC1EncodedAmpersands(value);
         }
 
 
 
-        private static string EncodeElementString(string value)
+        private static StringBuilder AppendEncodeElementString(this StringBuilder sb, string value)
         {
             value = value.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
-            return RemoveC1EncodedAmpersands(value);
+            return sb.AppendRemoveC1EncodedAmpersands(value);
         }
 
 
-        private static string RemoveC1EncodedAmpersands(string value)
+        private static StringBuilder AppendRemoveC1EncodedAmpersands(this StringBuilder sb, string value)
         {
-            return _decodeRegex.Replace(value, match => "&" + match.Groups["tag"].Value);
+            var pointer = 0;
+            var ampersandWordPosition = value.IndexOf(_ampersandWord, StringComparison.Ordinal);
+            while (ampersandWordPosition > -1)
+            {
+                if (ampersandWordPosition > pointer)
+                {
+                    sb.Append(value, pointer, ampersandWordPosition - pointer);
+                }
+
+                sb.Append('&');
+
+                pointer = ampersandWordPosition + _ampersandWord.Length;
+                if (pointer == value.Length) break;
+
+                ampersandWordPosition = value.IndexOf(_ampersandWord, pointer, StringComparison.Ordinal);
+            }
+
+            if (pointer < value.Length)
+            {
+                sb.Append(value, pointer, value.Length - pointer);
+            }
+
+            return sb;
         }
 
 

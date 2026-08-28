@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -37,7 +37,7 @@ namespace Composite.Data
 
         internal static object GetService(Type t)
         {
-            if (DisableServicesFlag.HasValue && DisableServicesFlag.Value)
+            if (DisableServicesFlag ?? false)
                 return null;
 
             foreach(var serviceList in DataServiceScopeStack)

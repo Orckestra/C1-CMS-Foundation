@@ -175,7 +175,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static bool IsHtmlControlElement(XElement element)
         {
             var name = element.Name;
-            string xNamespace = element.Name.Namespace.NamespaceName;
+            string xNamespace = name.Namespace.NamespaceName;
 
             return (xNamespace == Namespaces.Xhtml.NamespaceName || xNamespace == string.Empty)
                    && !VoidElements.Contains(name.LocalName);
@@ -232,7 +232,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             foreach (var attribute in source.Attributes())
             {
-                if (attribute.Name.LocalName == "id")
+                string localName = attribute.Name.LocalName;
+
+                if (localName == "id")
                 {
                     target.ID = attribute.Value;
                     continue;
@@ -243,16 +245,15 @@ namespace Composite.Core.WebClient.Renderings.Page
                     string namespaceName = attribute.Value;
 
                     if (namespaceName != "http://www.w3.org/1999/xhtml"
-                        && !namespaceName.StartsWith("http://www.composite.net/ns"))
+                        && !namespaceName.StartsWith("http://www.composite.net/ns", StringComparison.Ordinal))
                     {
-                        target.Attributes.Add($"xmlns:{attribute.Name.LocalName}", attribute.Value);
+                        target.Attributes.Add($"xmlns:{localName}", attribute.Value);
                     }
 
                     continue;
                 }
 
-                string localName = attribute.Name.LocalName;
-                if (localName != XName_Xmlns
+                if (localName != XName_Xmlns.LocalName
                     || (copyXmlnsAttribute
                         && (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace)))
                 {
