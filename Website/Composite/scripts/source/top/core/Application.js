@@ -558,10 +558,10 @@ _Application.prototype = {
 		 * Setup shutdown stuff
 		 * TODO: make beforeunloadd stuff work reliably in both engines!
 		 */
-		DOMEvents.addEventListener ( top, DOMEvents.UNLOAD, {
+		DOMEvents.addEventListener ( top, DOMEvents.PAGEHIDE, {
 			handleEvent : function ( e ) {
 				/*
-				 * "pagehide" (see DOMEvents.UNLOAD) also fires when the page is put
+				 * "pagehide" (see DOMEvents.PAGEHIDE) also fires when the page is put
 				 * into the bfcache. In that case e.persisted is true and the page may
 				 * be restored, so we must NOT release resources or log out.
 				 */

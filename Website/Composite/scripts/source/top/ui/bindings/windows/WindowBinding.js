@@ -378,9 +378,9 @@ WindowBinding.prototype._registerUnloadListener = function ( isRegister ) {
 			}
 		}
 	}
-	DOMEvents [ action ] ( 
+	DOMEvents [ action ] (
 		this.getContentWindow (),
-		DOMEvents.UNLOAD, 
+		DOMEvents.PAGEHIDE,
 		this._unloadHandler
 	);
 };
