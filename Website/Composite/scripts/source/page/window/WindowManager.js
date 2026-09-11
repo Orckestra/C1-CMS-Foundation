@@ -161,7 +161,7 @@ _WindowManager.prototype = {
 		 */
 		DOMEvents.addEventListener ( window, DOMEvents.DOM, this );
 		DOMEvents.addEventListener ( window, DOMEvents.LOAD, this );
-		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );
+		DOMEvents.addEventListener ( window, DOMEvents.PAGEHIDE, this );
 	},
 	
 	/**
@@ -248,8 +248,8 @@ _WindowManager.prototype = {
 				}
 				break;
 				
-			case DOMEvents.UNLOAD :
-			
+			case DOMEvents.PAGEHIDE :
+
 				/*
 				 * Currently not intercepted by nothing.
 				 */

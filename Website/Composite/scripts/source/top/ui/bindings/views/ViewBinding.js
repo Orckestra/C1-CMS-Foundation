@@ -479,7 +479,7 @@ ViewBinding.prototype.handleAction = function ( action ) {
 						var self = this;
 						DOMEvents.addEventListener (
 							binding.getContentWindow (),
-							DOMEvents.UNLOAD, { // beforeunload invoked at random in exploder!
+							DOMEvents.PAGEHIDE, { // beforeunload invoked at random in exploder!
 								handleEvent : function ( e ) {
 									if ( Binding.exists ( self._coverBinding ) == true ) {
 										self._coverBinding.show ();

@@ -205,7 +205,9 @@ _UpdateManager.prototype = {
 		}
 		if (xmlns == "http://www.w3.org/1999/xhtml") {
 			this._addListener(window, "load");
-			this._addListener(window, "unload");
+			// "unload" is deprecated and blocked by Permissions Policy; "pagehide"
+			// is the reliable, bfcache-friendly replacement.
+			this._addListener(window, "pagehide");
 		} else {
 			this.error("Not an XHTML document!");
 		}
@@ -312,7 +314,7 @@ _UpdateManager.prototype = {
 				}
 				break;
 
-			case "unload":
+			case "pagehide":
 				this.isEnabled = false;
 				break;
 

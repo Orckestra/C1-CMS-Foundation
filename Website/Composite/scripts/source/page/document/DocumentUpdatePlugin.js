@@ -86,7 +86,7 @@ _DocumentUpdatePlugin.prototype = {
 		DOMEvents.addEventListener ( document, DOMEvents.BEFOREUPDATE, this );
 		DOMEvents.addEventListener ( document, DOMEvents.AFTERUPDATE, this );
 		DOMEvents.addEventListener ( document, DOMEvents.ERRORUPDATE, this );
-		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );
+		DOMEvents.addEventListener ( window, DOMEvents.PAGEHIDE, this );
 
 		/*
 		 * This evil hackery fixes the glitch where a the Gecko serializer
@@ -129,7 +129,7 @@ _DocumentUpdatePlugin.prototype = {
 				this._errorUpdate ();
 				break;
 
-			case DOMEvents.UNLOAD :
+			case DOMEvents.PAGEHIDE :
 				if ( Application.hasLock ( this )) {
 					Application.unlock ( this );
 				}

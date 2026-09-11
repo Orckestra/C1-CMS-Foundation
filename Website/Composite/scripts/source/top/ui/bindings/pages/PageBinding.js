@@ -413,7 +413,7 @@ PageBinding.prototype._setupDotNet = function () {
 	 * form.__isSetup was set by UpdateManager.
 	 */
 	if (!form.__isSetup && this.isNonAjaxPage) {
-		DOMEvents.addEventListener ( this.bindingWindow, DOMEvents.UNLOAD, {
+		DOMEvents.addEventListener ( this.bindingWindow, DOMEvents.PAGEHIDE, {
 			handleEvent : function () {
 				if ( isLocked ) {
 					Application.unlock ( self );

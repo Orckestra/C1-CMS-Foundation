@@ -52,11 +52,27 @@ module.exports = function (grunt) {
         { expand: true, cwd: 'bower_components/babel-polyfill', src: ['browser-polyfill.js'], dest: 'Composite/lib/babel' },
       ]
     },
+    // TinyMCE core script. Copied through a content transform that swaps the
+    // deprecated "unload" event (blocked by Chrome's Permissions Policy and being
+    // removed) for the supported "pagehide". Kept in its own target so the transform
+    // never touches the binary skin assets (fonts/images) copied by the "tinymce"
+    // target below. Re-applied on every build, so it survives a `bower install`
+    // regenerating bower_components/tinymce/tinymce.min.js.
+    tinymceCore: {
+        options: {
+            process: function (content) {
+                return content.replace(/"unload"/g, '"pagehide"');
+            }
+        },
+        files: [
+            { expand: true, cwd: 'bower_components/tinymce', src: ['tinymce.min.js'], dest: 'Composite/content/misc/editors/visualeditor/tinymce' }
+        ]
+    },
     tinymce: {
         files: function () {
             let tinymceDestFolder = "Composite/content/misc/editors/visualeditor/tinymce";
             let tinymcePlugins = ["autolink", "lists", "paste", "table", "searchreplace"];
-            let tinymceFiles = [{ expand: true, cwd: 'bower_components/tinymce', src: ['tinymce.min.js'], dest: `${tinymceDestFolder}` }];
+            let tinymceFiles = [];
             tinymcePlugins.forEach(function (pluginName, index) {
                 tinymceFiles.push({ expand: true, cwd: `bower_components/tinymce/plugins/${pluginName}`, src: ['*.min.js'], dest: `${tinymceDestFolder}/plugins/${pluginName}` });
             });
