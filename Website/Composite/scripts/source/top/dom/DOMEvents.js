@@ -25,7 +25,11 @@ _DOMEvents.prototype = {
 	SCROLL: "scroll",
 	LOAD: "load",
 	BEFOREUNLOAD: "beforeunload",
-	UNLOAD: "unload",
+	// "unload" is deprecated and blocked by Permissions Policy in modern browsers
+	// (and it disables the bfcache). "pagehide" is the reliable, bfcache-friendly
+	// replacement. All call sites reference this constant symbolically and dispatch
+	// with `case DOMEvents.UNLOAD`, so repointing the value migrates every usage.
+	UNLOAD: "pagehide",
 	RESIZE: "resize",
 	FOCUS: "focus",
 	BLUR: "blur",

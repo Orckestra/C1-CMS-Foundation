@@ -560,6 +560,14 @@ _Application.prototype = {
 		 */
 		DOMEvents.addEventListener ( top, DOMEvents.UNLOAD, {
 			handleEvent : function ( e ) {
+				/*
+				 * "pagehide" (see DOMEvents.UNLOAD) also fires when the page is put
+				 * into the bfcache. In that case e.persisted is true and the page may
+				 * be restored, so we must NOT release resources or log out.
+				 */
+				if ( e && e.persisted ) {
+					return;
+				}
 				EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_ONSHUTDOWN );
 				EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_SHUTDOWN );
 				if ( !Application.isShuttingDown ) { // this may be set by quit method already
