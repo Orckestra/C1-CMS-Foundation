@@ -35,7 +35,9 @@ namespace Composite.Functions.Foundation.PluginFacades
 
                 foreach (IFunction function in functionsFromProvider)
                 {
-                    functions.Add(new FunctionWrapper(function));
+                    functions.Add(function is IAsyncFunction asyncFunction
+                                  ? new AsyncFunctionWrapper(asyncFunction)
+                                  : new FunctionWrapper(function));
                 }
 
                 return functions;

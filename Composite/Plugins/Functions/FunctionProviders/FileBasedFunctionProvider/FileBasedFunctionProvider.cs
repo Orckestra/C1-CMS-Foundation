@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -110,7 +110,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                             function = InstantiateFunctionFromCache(virtualPath, @namespace, name,
                                                                     cachedFunctionInfo.ReturnType,
                                                                     cachedFunctionInfo.Description,
-                                                                    cachedFunctionInfo.PreventCaching);
+                                                                    cachedFunctionInfo.PreventCaching,
+                                                                    cachedFunctionInfo.IsAsync);
                         }
                     }
                     catch (ThreadAbortException)
@@ -215,6 +216,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <param name="returnType">Cached value of return type.</param>
         /// <param name="cachedDescription">Cached value of the description.</param>
         /// <param name="preventCaching">Cached PreventFunctionOutputCache property value.</param>
+        /// <param name="isAsync">Cached value indicating if the function implements <see cref="IAsyncFunction"/>.</param>
         /// <returns></returns>
         protected virtual IFunction InstantiateFunctionFromCache(
             string virtualPath,
@@ -222,7 +224,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             string name,
             Type returnType,
             string cachedDescription,
-            bool preventCaching)
+            bool preventCaching,
+            bool isAsync)
         {
             return InstantiateFunction(virtualPath, @namespace, name);
         }
@@ -285,6 +288,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             public string Description { get; private set; }
             public bool PreventCaching { get; private set; }
 
+            public bool IsAsync { get; private set; }
+
             private CachedFunctionInformation() {}
 
             public CachedFunctionInformation(IFunction function)
@@ -293,6 +298,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 Description = function.Description;
                 PreventCaching = function is IDynamicFunction dynamicFunction
                                  && dynamicFunction.PreventFunctionOutputCaching;
+                IsAsync = function is IAsyncFunction;
             }
 
             public static void Serialize(CachedFunctionInformation data, string filePath)
@@ -302,7 +308,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 if (data != null)
                 {
                     lines.Add(TypeManager.SerializeType(data.ReturnType));
-                    lines.Add(data.PreventCaching.ToString());
+                    lines.Add($"{data.PreventCaching}|{data.IsAsync}");
                     lines.AddRange(data.Description.Split(new [] { Environment.NewLine }, StringSplitOptions.None));
                 }
 
@@ -320,13 +326,17 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 Type type = TypeManager.TryGetType(lines[0]);
                 if (type == null) return null;
 
-                bool preventCaching = bool.Parse(lines[1]);
+                var parts = lines[1].Split('|');
+                bool preventCaching = bool.Parse(parts[0]);
+                bool isAsync = parts.Length > 1 && bool.Parse(parts[1]);
+
                 string description = string.Join(Environment.NewLine, lines.Skip(2));
 
                 return new CachedFunctionInformation
                 {
                     Description = description,
                     PreventCaching = preventCaching,
+                    IsAsync = isAsync,
                     ReturnType = type
                 };
             }
